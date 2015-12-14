@@ -12,11 +12,11 @@ module leesFriends {
     }
 
     getVariable():string {
-      return "Hello!";
+      return 'Hello!';
     }
   }
 
-  interface IHeaderScope extends ng.IScope{
+  interface IHeaderScope extends ng.IScope {
     variable:string
   }
 

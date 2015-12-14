@@ -1,22 +1,24 @@
 /// <reference path="../../.tmp/typings/tsd.d.ts" />
-
-/// <reference path="main/main.controller.ts" />
-/// <reference path="../app/components/navbar/navbar.controller.ts" />
-/// <reference path="../app/components/header/header.directive.ts" />
+/// <reference path="../typings/statehelper.d.ts" />
 
 module leesFriends {
   'use strict';
 
-  angular.module('leesFriends')
-  .config(function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
-      $stateProvider
-        .state('home', {
-          url: '/',
-          templateUrl: 'app/main/main.html',
-          controller: 'MainCtrl'
-        });
+  export class AppStates {
+    constructor($stateHelperProvider:ng.ui.IStateHelperProvider, $urlRouterProvider:ng.ui.IUrlRouterProvider) {
+      $stateHelperProvider
+        .state({
+          name: 'home',
+          url: '/home',
+          template: '<home></home>'
+        })
+      .state({
+        name: 'services',
+        url: '/services',
+        template: '<services></services>'
+      });
 
-      $urlRouterProvider.otherwise('/')  ;
-    })
-;
+      $urlRouterProvider.otherwise('/home');
+    }
+  }
 }
