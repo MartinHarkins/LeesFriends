@@ -1,0 +1,21 @@
+<nav class="navbar navbar-static-top navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">
+        <span class="glyphicon glyphicon-home"></span> Lee's Friends
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+      <ul class="nav navbar-nav">
+        <li class="active"><a ng-href="#home">Home</a></li>
+        <li><a ng-href="#services">Services</a></li>
+        <li><a ng-href="#">{{ variable }}</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>Current date: {{ date | date:'yyyy-MM-dd' }}</li>
+      </ul>
+    </div>
+  </div>
+</nav>

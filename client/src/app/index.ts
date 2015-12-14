@@ -2,12 +2,13 @@
 
 /// <reference path="main/main.controller.ts" />
 /// <reference path="../app/components/navbar/navbar.controller.ts" />
+/// <reference path="../app/components/header/header.directive.ts" />
 
 module leesFriends {
   'use strict';
 
   angular.module('leesFriends')
-    .config(function ($stateProvider:ng.ui.IStateProvider, $urlRouterProvider:ng.ui.IUrlRouterProvider) {
+  .config(function ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
       $stateProvider
         .state('home', {
           url: '/',
@@ -15,7 +16,7 @@ module leesFriends {
           controller: 'MainCtrl'
         });
 
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/')  ;
     })
-  ;
+;
 }
