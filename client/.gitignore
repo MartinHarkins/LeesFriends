@@ -3,5 +3,5 @@ bower_components/
 .sass-cache/
 .tmp/
 dist/
-typings/
-tsd.json
+#typings/
+#tsd.json

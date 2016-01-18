@@ -1,0 +1,12 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": ".tmp/typings",
+  "bundle": ".tmp/typings/tsd.d.ts",
+  "typescript": {
+    "definitions": [
+      "src/typings/statehelper.d.ts"
+    ]
+  }
+}
