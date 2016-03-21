@@ -6,6 +6,7 @@
 /// <reference path="main/main.controller.ts" />
 /// <reference path="../app/components/navbar/navbar.controller.ts" />
 /// <reference path="components/header/header.directive.ts" />
+/// <reference path="components/carousel/carousel.ts" />
 /// <reference path="components/home/home.ts" />
 /// <reference path="../app/components/awesome-things/awesome-things.ts" />
 /// <reference path="components/services/services.directive.ts" />
@@ -19,6 +20,7 @@ module leesFriends {
 
   angular.module('leesFriends.components', [])
     .component('home', new HomeComponent())
+    .component('carousel', new CarouselComponent())
     .component('awesomeThings', new ATComponent())
     .directive('header', () => new HeaderDirective())
     .directive('services', () => new ServicesDirective());

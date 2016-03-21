@@ -3,6 +3,12 @@ var leesFriends;
     'use strict';
     var HomeController = (function () {
         function HomeController() {
+            this.carouselItems = [
+                {
+                    'imgSrc': '',
+                    'text': 'page 1'
+                }
+            ];
             this.thoseThings = [
                 {
                     'title': 'AngularJS',

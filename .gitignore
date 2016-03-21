@@ -42,3 +42,4 @@ dataSources.xml
 .idea/runConfigurations/test__LeesFriends.xml
 *.js.map
 encodings.xml
+typescript-compiler.xml

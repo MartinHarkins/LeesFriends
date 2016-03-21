@@ -7,9 +7,17 @@ module leesFriends {
   }
 
   class HomeController implements IHomeController {
-    public thoseThings: Array<Thing>;
+    //noinspection TypeScriptUnresolvedVariable
+    public thoseThings:Array<Thing>;
+    public carouselItems:Array<CarouselItem>;
 
     constructor() {
+      this.carouselItems = [
+        {
+          'imgSrc': '',
+          'text': 'page 1'
+        }
+      ];
       this.thoseThings = [
         {
           'title': 'AngularJS',
@@ -84,7 +92,7 @@ module leesFriends {
     }
   }
 
-  export class HomeComponent implements ng.IComponentOptions {
+  export class HomeComponent implements angular.IComponentOptions {
     templateUrl = 'app/components/home/home.html';
 
     controller = HomeController;
