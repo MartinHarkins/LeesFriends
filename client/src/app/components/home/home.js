@@ -1,19 +1,9 @@
 var leesFriends;
 (function (leesFriends) {
     'use strict';
-    var Thing = (function () {
-        function Thing(title, url, description, logo) {
-            this.title = title;
-            this.url = url;
-            this.description = description;
-            this.logo = logo;
-            this.rank = Math.random();
-        }
-        return Thing;
-    })();
     var HomeController = (function () {
         function HomeController() {
-            this.awesomeThings = [
+            this.thoseThings = [
                 {
                     'title': 'AngularJS',
                     'url': 'https://angularjs.org/',
@@ -84,13 +74,13 @@ var leesFriends;
         };
         return HomeController;
     })();
-    var HomeDirective = (function () {
-        function HomeDirective() {
+    var HomeComponent = (function () {
+        function HomeComponent() {
             this.templateUrl = 'app/components/home/home.html';
             this.controller = HomeController;
         }
-        return HomeDirective;
+        return HomeComponent;
     })();
-    leesFriends.HomeDirective = HomeDirective;
+    leesFriends.HomeComponent = HomeComponent;
 })(leesFriends || (leesFriends = {}));
 //# sourceMappingURL=home.js.map

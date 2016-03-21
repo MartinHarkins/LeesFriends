@@ -2,10 +2,12 @@
 /// <reference path="../typings/statehelper.d.ts" />
 
 /// <reference path="index.ts" />
+/// <reference path="models/thing.ts" />
 /// <reference path="main/main.controller.ts" />
 /// <reference path="../app/components/navbar/navbar.controller.ts" />
 /// <reference path="components/header/header.directive.ts" />
-/// <reference path="components/home/home.directive.ts" />
+/// <reference path="components/home/home.ts" />
+/// <reference path="../app/components/awesome-things/awesome-things.ts" />
 /// <reference path="components/services/services.directive.ts" />
 
 /**
@@ -16,8 +18,9 @@ module leesFriends {
   'use strict';
 
   angular.module('leesFriends.components', [])
+    .component('home', new HomeComponent())
+    .component('awesomeThings', new ATComponent())
     .directive('header', () => new HeaderDirective())
-    .directive('home', () => new HomeDirective())
     .directive('services', () => new ServicesDirective());
 
   angular.module('leesFriends', [

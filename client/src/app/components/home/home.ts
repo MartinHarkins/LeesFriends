@@ -1,32 +1,16 @@
 module leesFriends {
   'use strict';
 
-  class Thing {
-    public rank:number;
-    public title:string;
-    public url:string;
-    public description:string;
-    public logo:string;
-
-    constructor(title:string, url:string, description:string, logo:string) {
-      this.title = title;
-      this.url = url;
-      this.description = description;
-      this.logo = logo;
-      this.rank = Math.random();
-    }
-  }
-
   interface IHomeController {
     print(text:string):void;
     getVariable():any;
   }
 
   class HomeController implements IHomeController {
-    public awesomeThings: Array<Thing>;
+    public thoseThings: Array<Thing>;
 
     constructor() {
-      this.awesomeThings = [
+      this.thoseThings = [
         {
           'title': 'AngularJS',
           'url': 'https://angularjs.org/',
@@ -100,7 +84,7 @@ module leesFriends {
     }
   }
 
-  export class HomeDirective implements ng.IComponentOptions {
+  export class HomeComponent implements ng.IComponentOptions {
     templateUrl = 'app/components/home/home.html';
 
     controller = HomeController;

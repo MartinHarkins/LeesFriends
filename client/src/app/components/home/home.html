@@ -1,3 +1,9 @@
+<div class="row">
+  <div class="col-lg-9 hero-container">
+  </div>
+  <div class="col-lg-3 links-container"></div>
+</div>
+
 <div class="jumbotron text-center">
   <h1>'Allo, 'Allo!</h1>
   <p class="lead">
@@ -6,17 +12,9 @@
   </p>
   <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
 </div>
-
 <div class="row">
-  <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in $ctrl.awesomeThings | orderBy:'rank'">
-    <div class="thumbnail">
-      <img class="pull-right" ng-src="assets/images/{{awesomeThing.logo}}" alt="{{awesomeThing.title}}">
-      <div class="caption">
-        <h3>{{awesomeThing.title}}</h3>
-        <p>{{awesomeThing.description}}</p>
-        <p><a ng-href="{{awesomeThing.url}}">{{awesomeThing.url}}</a></p>
-      </div>
-    </div>
-  </div>
+  <awesome-things list="$ctrl.thoseThings"/>
+  <!--<awesome-things></awesome-things>-->
 </div>
+
 
