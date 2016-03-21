@@ -41,3 +41,4 @@ dataSources.xml
 .idea/runConfigurations/spec__LeesFriends.xml
 .idea/runConfigurations/test__LeesFriends.xml
 *.js.map
+encodings.xml
