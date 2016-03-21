@@ -34,3 +34,9 @@ config/secrets.yml
 # Ignore pow environment settings
 .powenv
 workspace.xml
+dataSources.ids
+dataSources.xml
+.idea/runConfigurations/Development__LeesFriends.xml
+.idea/runConfigurations/Production__LeesFriends.xml
+.idea/runConfigurations/spec__LeesFriends.xml
+.idea/runConfigurations/test__LeesFriends.xml
