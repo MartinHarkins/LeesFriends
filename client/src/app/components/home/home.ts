@@ -17,34 +17,16 @@ module leesFriends {
     }
   }
 
-  interface IHomeScope extends ng.IScope {
-    awesomeThings: Thing[]
-  }
-
   interface IHomeController {
-
     print(text:string):void;
     getVariable():any;
   }
 
   class HomeController implements IHomeController {
-    print(text:string):void {
-      console.log(text);
-    }
+    public awesomeThings: Array<Thing>;
 
-    getVariable():string {
-      return 'Hello!';
-    }
-  }
-
-  export class HomeDirective implements ng.IDirective {
-    restrict = 'E';
-    templateUrl = 'app/components/home/home.html';
-
-    controller = HomeController;
-
-    link = (scope:IHomeScope, element:ng.IAugmentedJQuery, attributes:ng.IAttributes, controller:IHomeController):void => {
-      var awesomeThings = [
+    constructor() {
+      this.awesomeThings = [
         {
           'title': 'AngularJS',
           'url': 'https://angularjs.org/',
@@ -107,11 +89,20 @@ module leesFriends {
         }
       ];
 
-      scope.awesomeThings = new Array<Thing>();
+    }
 
-      awesomeThings.forEach(function (awesomeThing:Thing) {
-        scope.awesomeThings.push(awesomeThing);
-      });
-    };
+    print(text:string):void {
+      console.log(text);
+    }
+
+    getVariable():string {
+      return 'Hello!';
+    }
+  }
+
+  export class HomeDirective implements ng.IComponentOptions {
+    templateUrl = 'app/components/home/home.html';
+
+    controller = HomeController;
   }
 }

@@ -13,8 +13,8 @@ var leesFriends;
 (function (leesFriends) {
     'use strict';
     angular.module('leesFriends.components', [])
+        .component('home', new leesFriends.HomeDirective())
         .directive('header', function () { return new leesFriends.HeaderDirective(); })
-        .directive('home', function () { return new leesFriends.HomeDirective(); })
         .directive('services', function () { return new leesFriends.ServicesDirective(); });
     angular.module('leesFriends', [
         'ngAnimate',

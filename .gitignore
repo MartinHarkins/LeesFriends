@@ -40,3 +40,4 @@ dataSources.xml
 .idea/runConfigurations/Production__LeesFriends.xml
 .idea/runConfigurations/spec__LeesFriends.xml
 .idea/runConfigurations/test__LeesFriends.xml
+*.js.map
