@@ -29,9 +29,9 @@ module.exports = function(options) {
       addRootSlash: false
     };
 
-    var indexFilter = $.filter('index.scss');
-    var vendorFilter = $.filter('vendor.scss');
-    var cssFilter = $.filter('**/*.css');
+    var indexFilter = $.filter('index.scss', {restore: true});
+    var vendorFilter = $.filter('vendor.scss', {restore: true});
+    var cssFilter = $.filter('**/*.css', {restore: true});
 
     return gulp.src([
       options.src + '/app/index.scss',
@@ -39,16 +39,16 @@ module.exports = function(options) {
     ])
       .pipe(indexFilter)
       .pipe($.inject(injectFiles, injectOptions))
-      .pipe(indexFilter.restore())
+      .pipe(indexFilter.restore)
       .pipe(vendorFilter)
       .pipe(wiredep(options.wiredep))
-      .pipe(vendorFilter.restore())
-      .pipe($.rubySass(sassOptions)).on('error', options.errorHandler('RubySass'))
+      .pipe(vendorFilter.restore)
+      .pipe($.sass(sassOptions)).on('error', options.errorHandler('Sass'))
       .pipe(cssFilter)
       .pipe($.sourcemaps.init({ loadMaps: true }))
       .pipe($.autoprefixer()).on('error', options.errorHandler('Autoprefixer'))
       .pipe($.sourcemaps.write())
-      .pipe(cssFilter.restore())
+      .pipe(cssFilter.restore)
       .pipe(gulp.dest(options.tmp + '/serve/app/'))
       .pipe(browserSync.reload({ stream: true }));
   });
