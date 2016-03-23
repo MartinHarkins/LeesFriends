@@ -1,15 +1,11 @@
-module leesFriends {
-  'use strict';
+interface INavbarScope extends ng.IScope {
+  date: Date
+}
 
-  interface INavbarScope extends ng.IScope {
-    date: Date
+/** @ngInject */
+export class NavbarCtrl {
+  /** @ngInject */
+  constructor($scope:INavbarScope) {
+    $scope.date = new Date();
   }
-
-  export class NavbarCtrl {
-    /* @ngInject */
-    constructor ($scope: INavbarScope) {
-      $scope.date = new Date();
-    }
-  }
-
 }

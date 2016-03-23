@@ -1,37 +1,38 @@
 'use strict';
 
+var path = require('path');
 var gulp = require('gulp');
+var conf = require('./conf');
 
 var $ = require('gulp-load-plugins')();
 
 var wiredep = require('wiredep').stream;
+var _ = require('lodash');
 
-module.exports = function(options) {
-  gulp.task('inject', ['scripts', 'styles'], function () {
-    var injectStyles = gulp.src([
-      options.tmp + '/serve/app/**/*.css',
-      '!' + options.tmp + '/serve/app/vendor.css'
-    ], { read: false });
+var browserSync = require('browser-sync');
 
-    var sortOutput = require('../' + options.tmp + '/sortOutput.json');
+gulp.task('inject-reload', ['inject'], function() {
+  browserSync.reload();
+});
 
-    var injectScripts = gulp.src([
-      '{' + options.src + ',' + options.tmp + '/serve}/app/**/*.js',
-      '!' + options.src + '/app/**/*.spec.js',
-      '!' + options.src + '/app/**/*.mock.js'
-    ], { read: false })
-    .pipe($.order(sortOutput, {base: options.tmp + '/serve/app'}));
+gulp.task('inject', ['scripts', 'styles'], function () {
+  var injectStyles = gulp.src([
+    path.join(conf.paths.tmp, '/serve/app/**/*.css'),
+    path.join('!' + conf.paths.tmp, '/serve/app/vendor.css')
+  ], { read: false });
 
-    var injectOptions = {
-      ignorePath: [options.src, options.tmp + '/serve'],
-      addRootSlash: false
-    };
+  var injectScripts = gulp.src([
+    path.join(conf.paths.tmp, '/serve/app/**/*.module.js')
+  ], { read: false });
 
-    return gulp.src(options.src + '/*.html')
-      .pipe($.inject(injectStyles, injectOptions))
-      .pipe($.inject(injectScripts, injectOptions))
-      .pipe(wiredep(options.wiredep))
-      .pipe(gulp.dest(options.tmp + '/serve'));
+  var injectOptions = {
+    ignorePath: [conf.paths.src, path.join(conf.paths.tmp, '/serve')],
+    addRootSlash: false
+  };
 
-  });
-};
+  return gulp.src(path.join(conf.paths.src, '/*.html'))
+    .pipe($.inject(injectStyles, injectOptions))
+    .pipe($.inject(injectScripts, injectOptions))
+    .pipe(wiredep(_.extend({}, conf.wiredep)))
+    .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
+});

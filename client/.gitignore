@@ -1,7 +1,12 @@
 node_modules/
 bower_components/
+coverage/
 .sass-cache/
+.idea/
 .tmp/
 dist/
-#typings/
-#tsd.json
+
+typings/
+
+client/src/app/**/*.js
+client/src/app/**/*.js.map

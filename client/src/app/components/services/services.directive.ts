@@ -1,9 +1,5 @@
-module leesFriends {
-  'use strict';
+export class ServicesDirective implements ng.IDirective {
+  restrict = 'E';
 
-  export class ServicesDirective implements ng.IDirective {
-    restrict = 'E';
-
-    templateUrl = 'app/components/services/services.html';
-  }
+  templateUrl = 'app/components/services/services.html';
 }

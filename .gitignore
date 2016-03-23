@@ -43,3 +43,4 @@ dataSources.xml
 *.js.map
 encodings.xml
 typescript-compiler.xml
+client/src/app/**/*.js

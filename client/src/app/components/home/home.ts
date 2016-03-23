@@ -1,5 +1,5 @@
-module leesFriends {
-  'use strict';
+  import {Thing} from "../../models/thing";
+  import {CarouselItem} from "../carousel/carousel";
 
   interface IHomeController {
     print(text:string):void;
@@ -18,6 +18,7 @@ module leesFriends {
           'text': 'page 1'
         }
       ];
+
       this.thoseThings = [
         {
           'title': 'AngularJS',
@@ -92,9 +93,9 @@ module leesFriends {
     }
   }
 
+  /** @ngInject */
   export class HomeComponent implements angular.IComponentOptions {
     templateUrl = 'app/components/home/home.html';
 
     controller = HomeController;
   }
-}

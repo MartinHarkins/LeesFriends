@@ -1,5 +1,3 @@
-/// <reference path="../../.tmp/typings/angular-ui-router/angular-ui-router.d.ts" />
-
 // Support for AMD require and CommonJS
 declare module "angular-ui-router-statehelper" {
   // Since angular-ui-router adds providers for a bunch of

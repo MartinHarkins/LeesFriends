@@ -1,36 +1,30 @@
-/**
- * Created by mharkins on 3/20/16.
- */
-module leesFriends {
-  'use strict';
+export class CarouselItem {
+  imgSrc:string;
+  text:string;
+}
 
-   class CarouselItem {
-     imgSrc:string;
-     text:string;
-   }
+interface ICarouselController {
 
-  interface ICarouselController {
+}
+
+class CarouselController implements ICarouselController {
+  public items:Array<CarouselItem>;
+
+  constructor() {
 
   }
+}
 
-  class CarouselController implements ICarouselController {
-    public items: Array<CarouselItem>;
+/** @ngInject */
+export class CarouselComponent implements ng.IComponentOptions {
+  bindings:any;
 
-    constructor() {
+  templateUrl = 'app/components/carousel/carousel.html';
+  controller = CarouselController;
 
-    }
-  }
-
-  export class CarouselComponent implements angular.IComponentOptions {
-    bindings = {
+  constructor() {
+    this.bindings = {
       items: '='
     };
-
-    templateUrl = 'app/components/carousel/carousel.html';
-    controller = CarouselController;
-
-    constructor() {
-
-    }
   }
 }
