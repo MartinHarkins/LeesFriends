@@ -11,6 +11,11 @@ import { CarouselComponent } from './components/carousel/carousel';
 import { HomeComponent } from './components/home/home';
 import { ATComponent } from './components/awesome-things/awesome-things';
 import { ServicesDirective } from './components/services/services.directive';
+import { AboutUsDirective } from './components/about-us/about-us.directive';
+import { AwardsDirective } from './components/awards/awards.directive';
+import { FaqDirective } from './components/faq/faq.directive';
+import { OurMissionDirective } from './components/our-mission/our-mission.directive';
+
 
 declare var malarkey: any;
 declare var moment: moment.MomentStatic;
@@ -23,7 +28,12 @@ module leesFriends {
         .component('carousel', new CarouselComponent())
         .component('awesomeThings', new ATComponent())
         .directive('header', () => new HeaderDirective())
-        .directive('services', () => new ServicesDirective());
+        .directive('services', () => new ServicesDirective())
+        .directive('about', () => new AboutUsDirective())
+        .directive('awards', () => new AwardsDirective())
+        .directive('faq', () => new FaqDirective())
+        .directive('ourmission', () => new OurMissionDirective());
+
 
     angular.module('leesFriends', [
         'ngAnimate',
