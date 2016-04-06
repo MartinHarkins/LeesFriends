@@ -11,10 +11,10 @@ import { CarouselComponent } from './components/carousel/carousel';
 import { HomeComponent } from './components/home/home';
 import { ATComponent } from './components/awesome-things/awesome-things';
 import { ServicesDirective } from './components/services/services.directive';
-import { AboutUsDirective } from './components/about-us/about-us.directive';
-import { AwardsDirective } from './components/awards/awards.directive';
-import { FaqDirective } from './components/faq/faq.directive';
-import { OurMissionDirective } from './components/our-mission/our-mission.directive';
+import { AboutUsDirective } from './components/about-us/about-us.directives';
+import { AwardsDirective } from './components/awards/awards.directives';
+import { FaqDirective } from './components/faq/faq.directives';
+import { OurMissionDirective } from './components/our-mission/our-mission.directives';
 
 
 declare var malarkey: any;
