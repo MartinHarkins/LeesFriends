@@ -13,6 +13,7 @@ import {FaqDirective} from './components/faq/faq.directives';
 import {OurMissionDirective} from './components/our-mission/our-mission.directives';
 import {HeaderComponent} from "./components/header/header";
 import {ServicesComponent} from "./components/services/services";
+import {ServiceItemComponent} from "./components/service-item/service-item";
 
 declare var moment:moment.MomentStatic;
 
@@ -25,6 +26,7 @@ module leesFriends {
     .component('awesomeThings', new ATComponent())
     .component('header', new HeaderComponent())
     .component('services', new ServicesComponent())
+    .component('serviceItem', new ServiceItemComponent())
     .directive('about', () => new AboutUsDirective())
     .directive('awards', () => new AwardsDirective())
     .directive('faq', () => new FaqDirective())
