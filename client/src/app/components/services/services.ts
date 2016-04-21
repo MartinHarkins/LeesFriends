@@ -1,4 +1,4 @@
-export class ServicesDirective implements ng.IDirective {
+export class ServicesComponent implements ng.IComponentOptions {
   restrict = 'E';
 
   templateUrl = 'app/components/services/services.html';
