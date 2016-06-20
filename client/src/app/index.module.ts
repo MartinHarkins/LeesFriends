@@ -9,7 +9,7 @@ import {ATComponent} from './components/awesome-things/awesome-things';
 import {AboutUsDirective} from './components/about-us/about-us.directives';
 import {AwardsDirective} from './components/awards/awards.directives';
 import {FaqDirective} from './components/faq/faq.directives';
-import {OurMissionDirective} from './components/our-mission/our-mission.directives';
+import {OurMissionComponent} from './components/our-mission/our-mission';
 import {HeaderComponent} from './components/header/header';
 import {ServicesComponent} from './components/services/services';
 import {ServiceItemComponent} from './components/service-item/service-item';
@@ -30,10 +30,10 @@ module leesFriends {
     .component('header', new HeaderComponent())
     .component('services', new ServicesComponent())
     .component('serviceItem', new ServiceItemComponent())
+    .component('ourmission', new OurMissionComponent())
     .directive('about', () => new AboutUsDirective())
     .directive('awards', () => new AwardsDirective())
-    .directive('faq', () => new FaqDirective())
-    .directive('ourmission', () => new OurMissionDirective());
+    .directive('faq', () => new FaqDirective());
 
   angular.module('leesFriends', [
       'ngAnimate',
