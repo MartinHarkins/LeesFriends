@@ -1,7 +1,6 @@
 import {config} from './index.config';
 import {routerConfig} from './index.route';
 import {runBlock} from './index.run';
-import {WebDevTecService} from '../app/components/webDevTec/webDevTec.service';
 import {acmeNavbar} from '../app/components/navbar/navbar.directive';
 import {CarouselComponent} from './components/carousel/carousel';
 import {HomeComponent} from './components/home/home';
@@ -11,16 +10,20 @@ import {AboutUsDirective} from './components/about-us/about-us.directives';
 import {AwardsDirective} from './components/awards/awards.directives';
 import {FaqDirective} from './components/faq/faq.directives';
 import {OurMissionDirective} from './components/our-mission/our-mission.directives';
-import {HeaderComponent} from "./components/header/header";
-import {ServicesComponent} from "./components/services/services";
-import {ServiceItemComponent} from "./components/service-item/service-item";
+import {HeaderComponent} from './components/header/header';
+import {ServicesComponent} from './components/services/services';
+import {ServiceItemComponent} from './components/service-item/service-item';
+import {FadeInDirective} from "./directives/fade-in";
 
 declare var moment:moment.MomentStatic;
 
 module leesFriends {
   'use strict';
 
-  angular.module('leesFriends.components', [])
+  angular.module('leesFriends.directives', [])
+    .directive('fadeIn', () => new FadeInDirective());
+
+  angular.module('leesFriends.components', ['leesFriends.directives'])
     .component('home', new HomeComponent())
     .component('carousel', new CarouselComponent())
     .component('awesomeThings', new ATComponent())
@@ -46,6 +49,5 @@ module leesFriends {
     .config(config)
     .config(routerConfig)
     .run(runBlock)
-    .service('webDevTec', WebDevTecService)
     .directive('acmeNavbar', acmeNavbar);
 }
