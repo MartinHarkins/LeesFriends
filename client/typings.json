@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": false,
-  "ambientDependencies": {
+  "globalDependencies": {
     "angular": "registry:dt/angular#1.5.0+20160318102130",
     "angular-animate": "registry:dt/angular-animate#1.5.0+20160317120654",
     "angular-cookies": "registry:dt/angular-cookies#1.4.0+20160317120654",

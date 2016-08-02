@@ -1,5 +1,12 @@
 # LeesFriends
 
+##Environment setup
+1. `node -v`-> v6.3.1
+2. `npm -v` -> 3.10.5
+3. `typings -v` -> 1.3.2
+4. `bower -v` -> 1.7.9
+> Typings and bower can be installed using `npm`
+
 ##Setup
 1. `cd {project_root}/`
 2. `bundle install`
