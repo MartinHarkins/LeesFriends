@@ -8,6 +8,7 @@ interface IEventsController {
 class EventsController implements IEventsController {
   public events:Event[];
   public newEvent:Event;
+  public tinymceOptions:any;
 
   public service: restangular.IService;
 
@@ -15,6 +16,10 @@ class EventsController implements IEventsController {
 
   constructor(public RestangularService: restangular.IService) {
     this.service = RestangularService;
+    this.tinymceOptions = {
+      plugins: 'link image code',
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+    };
     this.events = [{
       title: 'Title 1',
       content: 'Content 1',
@@ -37,7 +42,8 @@ class EventsController implements IEventsController {
 
   save(newEvent: Event) {
     console.log("Saving event");
-    this.service.all('events').get<restangular.ICollection>().then((eventList: restangular.ICollection) => {
+
+    this.service.all('events').getList<restangular.ICollection>().then((eventList: restangular.ICollection) => {
       eventList.post({event: newEvent}).then(() => this.getEvents());
     });
   }

@@ -11,8 +11,10 @@ interface IEventItemController extends IEventBindings{
 class EventItemController implements IEventItemController {
   public event:Event;
 
-  constructor() {
+  constructor($sce: ng.ISCEService) {
     console.log('Event:', this.event);
+
+    this.event.content = $sce.trustAsHtml(this.event.content);
   }
 
   getVariable():string {

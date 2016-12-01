@@ -46,6 +46,7 @@ module leesFriends {
       'restangular',
       'ui.router',
       'ui.bootstrap',
+      'ui.tinymce',
       'toastr',
       'leesFriends.components'
     ])
