@@ -1,4 +1,5 @@
 import {Event} from "../../models/event";
+
 interface IEventsController {
 
 }
@@ -6,7 +7,9 @@ interface IEventsController {
 class EventsController implements IEventsController {
   public events:Event[];
 
-  constructor() {
+  static $inject = ['Restangular'];
+
+  constructor(public RestangularService: restangular.IService) {
     this.events = [{
       title: 'Title 1',
       content: 'Content 1',
@@ -17,6 +20,10 @@ class EventsController implements IEventsController {
       date: new Date()
     }];
     console.log('created events');
+
+    RestangularService.all('events').getList().then((eventList: Event[]) => {
+      this.events = eventList;
+    });
   }
 }
 

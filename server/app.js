@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var cors = require('cors');
+
 var helmet = require('helmet');
 
 var index = require('./routes/index');
@@ -14,6 +16,8 @@ var events = require('./routes/events');
 var app = express();
 
 app.use(helmet());
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
