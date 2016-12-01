@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+var events = {
+  data: [
+    {
+      name: "first event"
+    }
+  ]
+};
+
+/* GET events listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.json(events);
 });
 
 module.exports = router;
