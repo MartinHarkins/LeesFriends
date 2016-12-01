@@ -1,0 +1,31 @@
+.header {
+  background-color: $color-header;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+
+  color: $color-font;
+  a {
+    color: $color-font;
+  }
+
+  h1 {
+    font-family: Gunny sans-serif;
+  }
+
+  ul {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    /* For IE, the outcast */
+    zoom: 1;
+    *display: inline;
+  }
+  li {
+    float: left;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

@@ -1,26 +1,17 @@
-<nav class="navbar navbar-static-top navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" ng-href="#home">
-        Lee's Friends
+<div class="container-fluid header">
+  <ul class="menu">
+    <li><a ng-href="#services"><h2>Services</h2></a></li>
+    <li><a ng-href="#our-mission"><h2>Our Mission</h2></a></li>
+    <li>
+      <a ng-href="#home">
+        <h1 class="title">
+          Lee's Friends
+        </h1>
       </a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-      <ul class="nav navbar-nav">
-        <li><a ng-href="#home">Home</a></li>
-        <li><a ng-href="#services">Services</a></li>
-        <li><a ng-href="#our-mission">Our Mission</a></li>
-        <li><a ng-href="#awards">Awards</a></li>
-        <li><a ng-href="#about-us">About Us</a></li>
-        <li><a ng-href="#faq">FAQ</a></li>
-
-        <li><a ng-href="#">{{ $ctrl.getVariable() }}</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <li>Current date: {{ date | date:'yyyy-MM-dd' }}</li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    </li>
+    <li><a ng-href="#events"><h2>Events</h2></a></li>
+    <li><a ng-href="#awards"><h2>Awards</h2></a></li>
+    <li><a ng-href="#about-us"><h2>About Us</h2></a></li>
+    <li><a ng-href="#faq"><h2>FAQ</h2></a></li>
+  </ul>
+</div>
