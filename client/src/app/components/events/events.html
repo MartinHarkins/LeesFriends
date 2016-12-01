@@ -1,5 +1,38 @@
 <div class="container">
-  <div class="row" ng-repeat="evtObj in $ctrl.events">
+  <div class="row">
+    <form name="form" class="css-form" novalidate>
+      <label>Title:
+        <input type="text" ng-model="$ctrl.newEvent.title" name="eTitle" required="" />
+      </label>
+      <br />
+      <div ng-show="form.$submitted || form.eTitle.$touched">
+        <div ng-show="form.eTitle.$error.required">Set a title.</div>
+      </div>
+
+      <label>Date:
+        <input type="text" ng-model="$ctrl.newEvent.date" name="eDate" required="" />
+      </label>
+      <br />
+      <div ng-show="form.$submitted || form.eDate.$touched">
+        <span ng-show="form.eDate.$error.required">Set a date for the event.</span>
+      </div>
+
+      <label>Content:
+        <input type="text" ng-model="$ctrl.newEvent.content" name="eContent" required="" />
+      </label>
+      <br />
+      <div ng-show="form.$submitted || form.eContent.$touched">
+        <span ng-show="form.eContent.$error.required">Set a content for the event.</span>
+      </div>
+
+      <br />
+
+      <input type="button" ng-click="reset(form)" value="Reset" />
+      <input type="submit" ng-click="$ctrl.save($ctrl.newEvent)" value="Save" />
+    </form>
+  </div>
+
+  <div class="row" ng-repeat="evtObj in $ctrl.events | orderBy: date:true">
     <event-item event="evtObj"></event-item>
   </div>
 </div>
