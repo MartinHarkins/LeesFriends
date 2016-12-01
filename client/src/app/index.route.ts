@@ -30,6 +30,11 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
       name: 'our-mission',
       url: '/our-mission',
       template: '<ourmission></ourmission>'
+    })
+    .state({
+      name: 'events',
+      url: '/events',
+      template: '<events></events>'
     });
 
   $urlRouterProvider.otherwise('/home');

@@ -14,6 +14,8 @@ import {HeaderComponent} from './components/header/header';
 import {ServicesComponent} from './components/services/services';
 import {ServiceItemComponent} from './components/service-item/service-item';
 import {FadeInDirective} from "./directives/fade-in";
+import {EventsComponent} from "./components/events/events";
+import {EventItemComponent} from "./components/event-item/event-item";
 
 declare var moment:moment.MomentStatic;
 
@@ -31,6 +33,8 @@ module leesFriends {
     .component('services', new ServicesComponent())
     .component('serviceItem', new ServiceItemComponent())
     .component('ourmission', new OurMissionComponent())
+    .component('events', new EventsComponent())
+    .component('eventItem', new EventItemComponent())
     .directive('about', () => new AboutUsDirective())
     .directive('awards', () => new AwardsDirective())
     .directive('faq', () => new FaqDirective());
