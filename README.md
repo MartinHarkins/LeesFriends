@@ -15,11 +15,13 @@
 5. `bower install`
 
 ## Client code
-Can be found in `/client` directory.
+Can be found in `client/` directory.
 
 `gulp` build environment.  
 `Typescript` for JS language.  
 `Angular 1.X` for framework.  
+
+> `cd client`
 
 - `$ gulp` to build an optimized version of your application in folder dist
 - `$ gulp serve` to start BrowserSync server on your source files with live reload
@@ -30,6 +32,12 @@ Can be found in `/client` directory.
 - `$ gulp protractor:dist` to launch your e2e tests with Protractor on the dist files
 
 
+## Server code
+Can be found in `server/`
+
+> `cd server`
+
+- `$ DEBUG=myapp:*;PORT=8080 npm start` to start the server in debug mode and on port 8080
 
 ## Client coding
 ### How to add a component:
