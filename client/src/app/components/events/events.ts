@@ -1,14 +1,12 @@
 import {Event} from "../../models/event";
 
 interface IEventsController {
-  save(event: Event): void;
   getEvents(): void;
+  onNewEvent(event: Event): void;
 }
 
 class EventsController implements IEventsController {
   public events:Event[];
-  public newEvent:Event;
-  public tinymceOptions:any;
 
   public service: restangular.IService;
 
@@ -16,19 +14,6 @@ class EventsController implements IEventsController {
 
   constructor(public RestangularService: restangular.IService) {
     this.service = RestangularService;
-    this.tinymceOptions = {
-      plugins: 'link image code',
-      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-    };
-    this.events = [{
-      title: 'Title 1',
-      content: 'Content 1',
-      date: new Date()
-    }, {
-      title: 'Title 2',
-      content: 'Content 2',
-      date: new Date()
-    }];
     console.log('created events');
 
     this.getEvents();
@@ -40,15 +25,10 @@ class EventsController implements IEventsController {
     });
   }
 
-  save(newEvent: Event) {
-    console.log("Saving event");
 
-    this.service.all('events').getList<restangular.ICollection>().then((eventList: restangular.ICollection) => {
-      eventList.post({event: newEvent}).then(() => this.getEvents());
-    });
+  onNewEvent(event: Event) {
+    this.getEvents();
   }
-
-
 }
 
 export class EventsComponent implements ng.IComponentOptions {
