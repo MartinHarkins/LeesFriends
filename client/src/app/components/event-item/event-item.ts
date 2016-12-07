@@ -36,3 +36,5 @@ export class EventItemComponent implements ng.IComponentOptions {
     }
   }
 }
+
+import { Component } from '@angular/core'

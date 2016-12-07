@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    "allowUnusedLabels": false,
     "target": "es5",
     "module": "commonjs",
     "declaration": false,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "removeComments": false,
     "noLib": false,
     "sourceMap": true
