@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "awesome-typescript-loader": "~1.1.1",
-    "browser-sync": "~2.14.0",
+    "browser-sync": "^2.14.0",
     "browser-sync-spa": "~1.0.3",
     "chalk": "~1.1.1",
     "del": "~2.2.0",
