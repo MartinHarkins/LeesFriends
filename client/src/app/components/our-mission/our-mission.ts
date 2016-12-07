@@ -1,3 +1,9 @@
-export class OurMissionComponent implements ng.IComponentOptions {
-  templateUrl = 'app/components/our-mission/our-mission.html';
+import {Component} from "@angular/core";
+
+@Component({
+  selector: 'our-mission',
+  templateUrl: './our-mission.html'
+})
+export class OurMissionComponent {
+  constructor() {}
 }

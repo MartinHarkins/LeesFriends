@@ -4,6 +4,6 @@
   </div>
 
   <div class="row" ng-repeat="evtObj in $ctrl.events | orderBy: date:true">
-    <event-item event="evtObj"></event-item>
+    <event-item [event]="evtObj"></event-item>
   </div>
 </div>

@@ -26,7 +26,7 @@ class EventsController implements IEventsController {
   }
 
 
-  onNewEvent(event: Event) {
+  onNewEvent() {
     this.getEvents();
   }
 }
