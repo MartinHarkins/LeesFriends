@@ -11,7 +11,6 @@ import {FaqDirective} from './components/faq/faq.directives';
 import {ServicesComponent} from './components/services/services';
 import {ServiceItemComponent} from './components/service-item/service-item';
 import {FadeInDirective} from "./directives/fade-in";
-import {EventsComponent} from "./components/events/events";
 import {EventItemComponent} from "./components/event-item/event-item";
 import {NewEventComponent} from "./components/new-event/new-event";
 
@@ -26,7 +25,6 @@ angular.module('leesFriends.directives', [])
     .component('awesomeThings', new ATComponent())
     .component('services', new ServicesComponent())
     .component('serviceItem', new ServiceItemComponent())
-    .component('events', new EventsComponent())
     .component('newEvent', new NewEventComponent())
     .directive('eventItem', downgradeComponent({
       component: EventItemComponent,

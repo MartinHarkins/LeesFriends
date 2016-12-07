@@ -9,7 +9,6 @@ import { bootloader } from '@angularclass/hmr';
  * our top level module that holds all of our components
  */
 import { AppModule } from './app';
-import {UpgradeModule} from "@angular/upgrade/src/aot/upgrade_module";
 
 /*
  * Bootstrap our Angular app with a top level NgModule
@@ -17,10 +16,6 @@ import {UpgradeModule} from "@angular/upgrade/src/aot/upgrade_module";
 export function main(): Promise<any> {
   return platformBrowserDynamic()
     .bootstrapModule(AppModule)
-    .then(platformRef => {
-      const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
-      upgrade.bootstrap(document.body, ['leesFriends'], {strictDi: true});
-    })
     .then(decorateModuleRef)
     .catch(err => console.error(err));
 }

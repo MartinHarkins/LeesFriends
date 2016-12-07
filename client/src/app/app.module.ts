@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
+import { RestangularModule } from 'ng2-restangular';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -19,6 +20,7 @@ import {EventItemComponent} from "./components/event-item/event-item";
 import {NoContentComponent} from "./components/no-content/no-content.component";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
+import {EventsComponent} from "./components/events/events";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -41,6 +43,7 @@ type StoreType = {
     AppComponent,
     HomeComponent,
     HeaderComponent,
+    EventsComponent,
     EventItemComponent,
     OurMissionComponent,
     NoContentComponent
@@ -49,7 +52,14 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    RestangularModule.forRoot((RestangularProvider) => {
+      RestangularProvider.setBaseUrl("http://localhost:8080/");
+      RestangularProvider.setDefaultHeaders({
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      });
+    })
   ],
   entryComponents: [
     EventItemComponent

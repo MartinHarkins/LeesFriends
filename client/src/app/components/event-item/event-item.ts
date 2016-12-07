@@ -10,6 +10,11 @@ export class EventItemComponent {
   @Input() event: Event;
 
   constructor() {
+
+  }
+
+  ngOnInit() {
     console.log('Event:', this.event);
+
   }
 }

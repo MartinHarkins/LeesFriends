@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row">
-    <new-event on-event-added="$ctrl.onNewEvent($newEvent)"></new-event>
+    <!--<new-event on-event-added="$ctrl.onNewEvent($newEvent)"></new-event>-->
   </div>
 
-  <div class="row" ng-repeat="evtObj in $ctrl.events | orderBy: date:true">
-    <event-item [event]="evtObj"></event-item>
+  <div class="row" *ngFor="let event of events">
+    <event-item [event]="event"></event-item>
   </div>
 </div>

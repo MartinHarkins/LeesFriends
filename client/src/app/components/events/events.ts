@@ -1,41 +1,34 @@
 import {Event} from "../../models/event";
+import {Component} from '@angular/core'
+import {Restangular} from "ng2-restangular";
 
-interface IEventsController {
-  getEvents(): void;
-  onNewEvent(event: Event): void;
-}
+import _ from 'lodash'
 
-class EventsController implements IEventsController {
-  public events:Event[];
+@Component({
+  selector: 'events',
+  templateUrl: './events.html'
+})
+export class EventsComponent {
+  public events: Event[];
 
-  public service: restangular.IService;
+  constructor(private restangular: Restangular) {
+  }
 
-  static $inject = ['Restangular'];
-
-  constructor(public RestangularService: restangular.IService) {
-    this.service = RestangularService;
-    console.log('created events');
-
+  ngOnInit() {
     this.getEvents();
   }
 
   getEvents() {
-    this.service.all('events').getList().then((eventList: Event[]) => {
+    this.restangular.all('events').getList().subscribe((eventList: Event[]) => {
       this.events = eventList;
-    });
+    }, (error) => { console.log('Error getting list of events', error)});
   }
 
 
   onNewEvent() {
+    console.log('created events');
+
     this.getEvents();
   }
-}
-
-export class EventsComponent implements ng.IComponentOptions {
-  restrict = 'E';
-
-  templateUrl = 'app/components/events/events.html';
-
-  controller = EventsController;
 }
 
