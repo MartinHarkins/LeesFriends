@@ -60,14 +60,14 @@
     "webpack": "webpack"
   },
   "dependencies": {
-    "@angular/common": "2.2.1",
-    "@angular/compiler": "2.2.1",
-    "@angular/core": "2.2.1",
-    "@angular/forms": "2.2.1",
-    "@angular/http": "2.2.1",
-    "@angular/platform-browser": "2.2.1",
-    "@angular/platform-browser-dynamic": "2.2.1",
-    "@angular/platform-server": "2.2.1",
+    "@angular/common": "2.2.4",
+    "@angular/compiler": "2.2.4",
+    "@angular/core": "2.2.4",
+    "@angular/forms": "2.2.4",
+    "@angular/http": "2.2.4",
+    "@angular/platform-browser": "2.2.4",
+    "@angular/platform-browser-dynamic": "2.2.4",
+    "@angular/platform-server": "2.2.4",
     "@angular/router": "3.2.1",
     "@angular/upgrade": "^2.2.4",
     "@angularclass/conventions-loader": "^1.0.2",
@@ -83,7 +83,7 @@
     "ng2-restangular": "^0.1.21",
     "rxjs": "5.0.0-beta.12",
     "tinymce": "^4.5.1",
-    "typescript": "^2.0.10",
+    "typescript": "~2.0.10",
     "zone.js": "~0.6.26"
   },
   "devDependencies": {

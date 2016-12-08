@@ -5,7 +5,7 @@
     <input type="text" [(ngModel)]="event.title" id="eTitle" name="eTitle" required #eTitle="ngModel"/>
   </label>
   <br/>
-  <div [hidden]="eTitle.valid || eTitle.prestine">
+  <div [hidden]="eTitle.valid || eTitle.pristine">
     Set a title.
   </div>
 
@@ -13,7 +13,7 @@
     <input type="text" [(ngModel)]="event.date" id="eDate" name="eDate" required #eDate="ngModel"/>
   </label>
   <br/>
-  <div [hidden]="eDate.valid || eDate.prestine">
+  <div [hidden]="eDate.valid || eDate.pristine">
     Set a date for the event.
   </div>
 
@@ -22,7 +22,7 @@
     <!--<textarea ui-tinymce="$ctrl.tinymceOptions" [[(ngModel)]]="event.content" name="eContent" required #name="ngModel"></textarea>-->
   </label>
   <br/>
-  <div [hidden]="eContent.valid || eContent.prestine">
+  <div [hidden]="eContent.valid || eContent.pristine">
     Set a content for the event.
   </div>
 
