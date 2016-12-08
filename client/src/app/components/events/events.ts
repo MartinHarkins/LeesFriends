@@ -2,8 +2,6 @@ import {Event} from "../../models/event";
 import {Component} from '@angular/core'
 import {Restangular} from "ng2-restangular";
 
-import _ from 'lodash'
-
 @Component({
   selector: 'events',
   templateUrl: './events.html'
