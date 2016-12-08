@@ -1,30 +1,32 @@
-<form name="form" class="css-form" novalidate>
-  <label>Title:
-    <input type="text" ng-model="$ctrl.event.title" name="eTitle" required=""/>
+{{diagnostic}}
+
+<form (ngSubmit)="save()" name="form" class="css-form" #newEventForm="ngForm">
+  <label for="eTitle">Title:
+    <input type="text" [(ngModel)]="event.title" id="eTitle" name="eTitle" required #eTitle="ngModel"/>
   </label>
   <br/>
-  <div ng-show="form.$submitted || form.eTitle.$touched">
-    <div ng-show="form.eTitle.$error.required">Set a title.</div>
+  <div [hidden]="eTitle.valid || eTitle.prestine">
+    Set a title.
   </div>
 
-  <label>Date:
-    <input type="text" ng-model="$ctrl.event.date" name="eDate" required=""/>
+  <label for="eDate">Date:
+    <input type="text" [(ngModel)]="event.date" id="eDate" name="eDate" required #eDate="ngModel"/>
   </label>
   <br/>
-  <div ng-show="form.$submitted || form.eDate.$touched">
-    <span ng-show="form.eDate.$error.required">Set a date for the event.</span>
+  <div [hidden]="eDate.valid || eDate.prestine">
+    Set a date for the event.
   </div>
 
   <label>Content:
-    <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="$ctrl.event.content" name="eContent" required=""></textarea>
+    <input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>
+    <!--<textarea ui-tinymce="$ctrl.tinymceOptions" [[(ngModel)]]="event.content" name="eContent" required #name="ngModel"></textarea>-->
   </label>
   <br/>
-  <div ng-show="form.$submitted || form.eContent.$touched">
-    <span ng-show="form.eContent.$error.required">Set a content for the event.</span>
+  <div [hidden]="eContent.valid || eContent.prestine">
+    Set a content for the event.
   </div>
 
   <br/>
 
-  <input type="button" ng-click="reset(form)" value="Reset"/>
-  <input type="submit" ng-click="$ctrl.save($ctrl.event)" value="Save"/>
+  <input type="submit" value="Save" [disabled]="!newEventForm.form.valid"/>
 </form>

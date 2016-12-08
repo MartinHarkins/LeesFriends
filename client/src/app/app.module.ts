@@ -21,6 +21,7 @@ import {NoContentComponent} from "./components/no-content/no-content.component";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
 import {EventsComponent} from "./components/events/events";
+import {NewEventComponent} from "./components/new-event/new-event";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -45,6 +46,7 @@ type StoreType = {
     HeaderComponent,
     EventsComponent,
     EventItemComponent,
+    NewEventComponent,
     OurMissionComponent,
     NoContentComponent
   ],

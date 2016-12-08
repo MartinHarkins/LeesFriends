@@ -25,7 +25,6 @@ angular.module('leesFriends.directives', [])
     .component('awesomeThings', new ATComponent())
     .component('services', new ServicesComponent())
     .component('serviceItem', new ServiceItemComponent())
-    .component('newEvent', new NewEventComponent())
     .directive('eventItem', downgradeComponent({
       component: EventItemComponent,
       inputs: ['event']

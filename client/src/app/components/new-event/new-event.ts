@@ -1,56 +1,38 @@
 import {Event} from "../../models/event";
+import {Component, EventEmitter, Output} from '@angular/core';
+import {Restangular} from "ng2-restangular";
 
-interface INewEventBindings {
-  event:Event;
+@Component({
+  selector: 'new-event',
+  templateUrl: './new-event.html'
+})
+export class NewEventComponent {
+  @Output() onEventAdded = new EventEmitter<Event>();
 
-  save(event:Event):void;
-}
+  // public tinymceOptions: any;
 
-interface INewEventController extends INewEventBindings {
+  event = new Event("", "", null);
 
-}
+  submitted = false;
 
-class NewEventController implements INewEventController {
-  public tinymceOptions:any;
+  constructor(private restangular: Restangular) {
 
-  public onEventAdded:Function;
-
-  public service:restangular.IService;
-
-  event:Event;
-
-  static $inject = ['Restangular'];
-
-  constructor(public RestangularService:restangular.IService) {
-    this.service = RestangularService;
-
-    this.event = null;
-
-    this.tinymceOptions = {
-      plugins: 'link image code',
-      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-    };
+    // this.tinymceOptions = {
+    //   plugins: 'link image code',
+    //   toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+    // };
   }
 
-  save(newEvent:Event) {
+  save() {
+    this.submitted = true;
 
-    this.service.all('events').getList<restangular.ICollection>().then((eventList:restangular.ICollection) => {
-      eventList.post({event: newEvent}).then(() => this.onEventAdded({$newEvent: newEvent}));
-    });
+    const newEvent = this.event;
+    this.restangular.all('events').getList()
+      .switchMap(events => events.post({event: newEvent}))
+      .subscribe(() => this.onEventAdded.emit(newEvent));
   }
-}
 
-/** @ngInject */
-export class NewEventComponent implements ng.IComponentOptions {
-  bindings:any;
-
-  templateUrl = 'app/components/new-event/new-event.html';
-
-  controller = NewEventController;
-
-  constructor() {
-    this.bindings = {
-      onEventAdded: '&'
-    }
+  get diagnostic(): string {
+    return JSON.stringify(this.event);
   }
 }
