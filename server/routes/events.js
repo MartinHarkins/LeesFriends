@@ -1,31 +1,40 @@
 var express = require('express');
 var util = require('util');
+
 var router = express.Router();
 
-var events = [{
-        title: 'Title 1 up',
-        content: 'Content 1 up',
-        date: new Date()
-    }, {
-        title: 'Title 2 up',
-        content: 'Content 2 up',
-        date: new Date()
-    }]
-    ;
+var EventsRouter = function(app, dataService) {
+    /* GET events listing. */
+    router.get('/', function (req, res, next) {
+        console.log('get events');
+        dataService.getEvents()
+            .then(function onSuccess(docs) {
+                res.json(docs);
+            }, function onError(err) {
+                console.error('Could not get list of events', err);
 
-/* GET events listing. */
-router.get('/', function (req, res, next) {
-    res.json(events);
-});
+                res.status(500).send({error: 'Error getting list of events.'})
+            });
+    });
 
-router.post('/', function(req, res, next) {
-    console.log("posted event:" + req.body.event);
-    var newEvent = req.body.event || undefined;
+    router.post('/', function (req, res, next) {
+        console.log("posted event:" + req.body.event);
+        var newEvent = req.body.event || undefined;
 
-    events.push(newEvent);
+        if (!newEvent) {
+            res.status(400).send({error: 'Event was undefined.'});
+            return;
+        }
 
-    util.inspect('events', events);
-    res.json(newEvent);
-});
+        dataService.addEvent(newEvent)
+            .then(function(event) {
+               res.json(event);
+            }, function(err) {
+                console.error('Error adding event to database', JSON.stringify(err));
+                res.status(500).send({error: 'Error adding event to database.'});
+            });
+    });
 
-module.exports = router;
+    return router;
+};
+module.exports = EventsRouter;
