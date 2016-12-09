@@ -89,7 +89,6 @@ module.exports = function (options) {
     module: {
 
       rules: [
-
         /*
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
          * Replace templateUrl and stylesUrl with require()

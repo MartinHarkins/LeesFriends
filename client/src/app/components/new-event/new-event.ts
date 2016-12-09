@@ -16,11 +16,10 @@ export class NewEventComponent {
   submitted = false;
 
   constructor(private restangular: Restangular) {
-
-    // this.tinymceOptions = {
-    //   plugins: 'link image code',
-    //   toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
-    // };
+    tinymce.init({
+      plugins: 'link image',
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+    });
   }
 
   save() {
@@ -34,5 +33,11 @@ export class NewEventComponent {
 
   get diagnostic(): string {
     return JSON.stringify(this.event);
+  }
+
+  doNothing() {
+    // console.log("content", content);
+    // this.event.content = content;
+    console.log("event", this.event);
   }
 }

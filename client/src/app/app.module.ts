@@ -22,6 +22,7 @@ import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
 import {EventsComponent} from "./components/events/events";
 import {NewEventComponent} from "./components/new-event/new-event";
+import {TinymceEditorDirective} from "./directives/tiny.directive";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -48,7 +49,8 @@ type StoreType = {
     EventItemComponent,
     NewEventComponent,
     OurMissionComponent,
-    NoContentComponent
+    NoContentComponent,
+    TinymceEditorDirective
   ],
   imports: [ // import Angular's modules
     BrowserModule,

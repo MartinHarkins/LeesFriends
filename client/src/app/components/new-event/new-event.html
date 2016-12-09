@@ -1,6 +1,6 @@
 {{diagnostic}}
 
-<form (ngSubmit)="save()" name="form" class="css-form" #newEventForm="ngForm">
+<form (ngSubmit)="save()" name="newEventForm" class="css-form" #newEventForm="ngForm">
   <label for="eTitle">Title:
     <input type="text" [(ngModel)]="event.title" id="eTitle" name="eTitle" required #eTitle="ngModel"/>
   </label>
@@ -18,8 +18,8 @@
   </div>
 
   <label>Content:
-    <input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>
-    <!--<textarea ui-tinymce="$ctrl.tinymceOptions" [[(ngModel)]]="event.content" name="eContent" required #name="ngModel"></textarea>-->
+    <!--<input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>-->
+    <textarea [tinyEditor] [selector]="'eContent'" (ngModelChange)="doNothing()" id="eContent" [(ngModel)]="event.content" name="eContent" #eContent="ngModel"></textarea>
   </label>
   <br/>
   <div [hidden]="eContent.valid || eContent.pristine">
