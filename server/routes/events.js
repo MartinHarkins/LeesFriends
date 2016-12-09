@@ -18,7 +18,6 @@ var EventsRouter = function(app, dataService) {
     });
 
     router.post('/', function (req, res, next) {
-        console.log("posted event:" + req.body.event);
         var newEvent = req.body.event || undefined;
 
         if (!newEvent) {
@@ -33,6 +32,25 @@ var EventsRouter = function(app, dataService) {
                 console.error('Error adding event to database', JSON.stringify(err));
                 res.status(500).send({error: 'Error adding event to database.'});
             });
+    });
+
+    router.put('/:eventId', function(req, res, next) {
+        var event = req.body.event || undefined;
+        var id = req.params.eventId;
+
+        if (!event) {
+            res.status(400).send({error: 'Event was undefined.'});
+            return;
+        }
+
+        dataService.updateEvent(id, event)
+            .then(function(event) {
+                res.json(event);
+            }, function(err) {
+                console.error('Error updating event in dataservice', JSON.stringify(err));
+                res.status(500).send({error: 'Unknown error updating event'});
+            });
+
     });
 
     return router;

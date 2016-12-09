@@ -89,6 +89,17 @@ module.exports = function DataService(app) {
                deferred.resolve(newDoc);
             });
             return deferred.promise;
+        },
+        updateEvent: function(id ,event) {
+            var deferred = Q.defer();
+            db.events.update({_id: id}, event, {}, function(err) {
+                if (err) {
+                    deferred.reject(new Error('Could not update event for id' + id, err));
+                    return;
+                }
+                deferred.resolve(event);
+            });
+            return deferred.promise;
         }
     }
 };
