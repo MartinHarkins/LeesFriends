@@ -63,6 +63,9 @@ type StoreType = {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       });
+      // RestangularProvider.extendModel('events', function(event) {
+      //   event.id = event._id;
+      // });
     })
   ],
   entryComponents: [

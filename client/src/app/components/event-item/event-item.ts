@@ -1,6 +1,6 @@
 import {Event} from "../../models/event";
 
-import {Component, Input} from '@angular/core'
+import {Component, Input, EventEmitter, Output} from '@angular/core'
 
 @Component({
   selector: 'event-item',
@@ -15,6 +15,5 @@ export class EventItemComponent {
 
   ngOnInit() {
     console.log('Event:', this.event);
-
   }
 }

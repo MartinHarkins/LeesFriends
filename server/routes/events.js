@@ -35,13 +35,16 @@ var EventsRouter = function(app, dataService) {
     });
 
     router.put('/:eventId', function(req, res, next) {
-        var event = req.body.event || undefined;
+        var event = req.body || undefined;
         var id = req.params.eventId;
 
         if (!event) {
             res.status(400).send({error: 'Event was undefined.'});
             return;
         }
+
+        console.log('put id' + id);
+        console.log('put event', event);
 
         dataService.updateEvent(id, event)
             .then(function(event) {

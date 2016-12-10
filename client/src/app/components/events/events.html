@@ -3,7 +3,11 @@
     <new-event (onEventAdded)="onNewEvent($newEvent)"></new-event>
   </div>
 
-  <div class="row" *ngFor="let event of events">
-    <event-item [event]="event"></event-item>
+  <div class="row" *ngFor="let eventWrapper of eventWrappers">
+    <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
+    <button *ngIf="!eventWrapper.editing" type="button" (click)="edit(eventWrapper)">Edit</button>
+
+    <new-event *ngIf="eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)"></new-event>
+
   </div>
 </div>

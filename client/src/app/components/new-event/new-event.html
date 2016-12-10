@@ -19,7 +19,7 @@
 
   <label>Content:
     <!--<input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>-->
-    <textarea [tinyEditor] [selector]="'eContent'" (ngModelChange)="doNothing()" id="eContent" [(ngModel)]="event.content" name="eContent" #eContent="ngModel"></textarea>
+    <textarea [tinyEditor] [selector]="'eContent' + (event._id || '')" (ngModelChange)="doNothing()" id="{{'eContent' + (event._id || '')}}" [(ngModel)]="event.content" name="eContent" #eContent="ngModel"></textarea>
   </label>
   <br/>
   <div [hidden]="eContent.valid || eContent.pristine">

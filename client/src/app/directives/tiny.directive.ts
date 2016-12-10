@@ -42,7 +42,7 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
     toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
     toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
     image_advtab: true
-  }
+  };
 
   //ChangeDetectorRef is used to update angular component tree whenver a blur event occurs to trigger all the validations
   constructor(private changeDetectorRef: ChangeDetectorRef){
@@ -58,7 +58,8 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
   //This method is called whenever model gets updated
   writeValue(value: any): void {
     //This check is necessary because, this method gets called before editor gets initialised. Hence undefined/null pointer exceptions gets thrown
-    if(tinymce.get(this.selector)){
+    if(tinymce.get(this.selector) && value !== null){
+      console.log("Setting content", value);
       tinymce.get(this.selector).setContent(value, {format : 'raw'});
     }
   }
@@ -88,7 +89,7 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
       options['selector'] = ".wysiwyg";
     }
 
-    options['height'] = 200;
+    options['height'] = 100;
     options['schema'] = "html5";
     options['theme'] = "modern";
 
@@ -107,7 +108,7 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
       editor.on('PastePostProcess', function (e) {
         that.valueChange();
       });
-    }
+    };
 
     tinymce.init(options);
   }
