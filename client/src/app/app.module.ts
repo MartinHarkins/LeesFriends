@@ -21,13 +21,15 @@ import {NoContentComponent} from "./components/no-content/no-content.component";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
 import {EventsComponent} from "./components/events/events";
-import {NewEventComponent} from "./components/new-event/new-event";
+import {EventEditorComponent} from "./components/event-editor/event-editor";
 import {TinymceEditorDirective} from "./directives/tiny.directive";
+import {EventsService} from "./services/events.service";
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  AppState,
+  EventsService
 ];
 
 type StoreType = {
@@ -47,7 +49,7 @@ type StoreType = {
     HeaderComponent,
     EventsComponent,
     EventItemComponent,
-    NewEventComponent,
+    EventEditorComponent,
     OurMissionComponent,
     NoContentComponent,
     TinymceEditorDirective
@@ -63,9 +65,9 @@ type StoreType = {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       });
-      // RestangularProvider.extendModel('events', function(event) {
-      //   event.id = event._id;
-      // });
+      RestangularProvider.setRestangularFields({
+        id: '_id'
+      });
     })
   ],
   entryComponents: [

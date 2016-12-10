@@ -12,7 +12,7 @@ import {ServicesComponent} from './components/services/services';
 import {ServiceItemComponent} from './components/service-item/service-item';
 import {FadeInDirective} from "./directives/fade-in";
 import {EventItemComponent} from "./components/event-item/event-item";
-import {NewEventComponent} from "./components/new-event/new-event";
+import {EventEditorComponent} from "./components/event-editor/event-editor";
 
 import { downgradeComponent } from '@angular/upgrade/static';
 

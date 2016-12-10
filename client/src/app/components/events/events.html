@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row">
-    <new-event (onEventAdded)="onNewEvent($newEvent)"></new-event>
+    <event-editor (onEventAdded)="onNewEvent($newEvent)"></event-editor>
   </div>
 
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
     <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
     <button *ngIf="!eventWrapper.editing" type="button" (click)="edit(eventWrapper)">Edit</button>
 
-    <new-event *ngIf="eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)"></new-event>
+    <event-editor *ngIf="eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)"></event-editor>
 
   </div>
 </div>

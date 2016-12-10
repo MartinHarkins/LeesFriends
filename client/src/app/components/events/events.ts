@@ -4,6 +4,7 @@ import {Restangular} from "ng2-restangular";
 
 import * as _ from 'lodash'
 import {Observable} from "rxjs";
+import {EventsService} from "../../services/events.service";
 
 class EventWrapper {
   constructor(public event: Event,
@@ -16,9 +17,9 @@ class EventWrapper {
   templateUrl: './events.html'
 })
 export class EventsComponent implements OnInit {
-  public eventWrappers: EventWrapper[];
+  private eventWrappers: EventWrapper[];
 
-  constructor(private restangular: Restangular) {
+  constructor(private service: EventsService) {
   }
 
   ngOnInit() {
@@ -26,7 +27,7 @@ export class EventsComponent implements OnInit {
   }
 
   loadEventList() {
-    this.restangular.all('events').getList()
+    this.service.getEventsByDateDesc()
       .switchMap(eventList =>
         Observable.from<Event>(eventList)
           .map(event => new EventWrapper(event, false))
@@ -42,13 +43,16 @@ export class EventsComponent implements OnInit {
     this.loadEventList();
   }
 
-  onEventUpdated(eventWrapper) {
-    eventWrapper.editing = false;
-
+  private onEventUpdated(eventWrapper) {
+    this.toggleEdit(eventWrapper, false);
   }
 
-  edit(eventWrapper) {
-    eventWrapper.editing = true;
+  private edit(eventWrapper) {
+    this.toggleEdit(eventWrapper, true);
+  }
+
+  private toggleEdit(eventWrapper, editing) {
+    eventWrapper.editing = editing;
   }
 }
 
