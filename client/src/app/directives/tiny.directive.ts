@@ -1,14 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Directive, EventEmitter, forwardRef, Input, Output} from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import {AfterViewInit, Directive, forwardRef, Input} from "@angular/core";
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 
-declare var tinymce: any;
+declare const tinymce: any;
 
 //This is needed to update the tinymce editor when the model gets changed
 const CUSTOM_VALUE_ACCESSOR = {
-  provide:NG_VALUE_ACCESSOR,
+  provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TinymceEditorDirective),
   multi: true
-}
+};
 
 @Directive({
   inputs: ['tinyEditor'],
@@ -16,23 +16,10 @@ const CUSTOM_VALUE_ACCESSOR = {
   providers: [CUSTOM_VALUE_ACCESSOR]
 })
 export class TinymceEditorDirective implements AfterViewInit, ControlValueAccessor {
-  private val : any = "";
+  private val: any = "";
 
   //selector string: Id of the host element
   @Input() selector: string;
-
-  //Getter and setters for NgModel binding
-  @Input()
-  get ngModel(){
-    return this.val;
-  }
-
-  set ngModel(val){
-    this.val = val;
-  }
-
-  //This is used to update the model on view update
-  @Output() ngModelChange = new EventEmitter();
 
   //All the options needed for tinymce editor
   private options = {
@@ -44,48 +31,56 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
     image_advtab: true
   };
 
-  //ChangeDetectorRef is used to update angular component tree whenver a blur event occurs to trigger all the validations
-  constructor(private changeDetectorRef: ChangeDetectorRef){
+  constructor() {
   }
 
   //registerOnChange, registerOnTouched, writeValue are methods need to be implemented for the interface ControlValueAccessor
-  onChange = (_) => {};
-  onTouched = () => {};
+  onChange = (_) => {
+  };
+  onTouched = () => {
+  };
 
-  registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 
   //This method is called whenever model gets updated
   writeValue(value: any): void {
+    this.val = value;
+
     //This check is necessary because, this method gets called before editor gets initialised. Hence undefined/null pointer exceptions gets thrown
-    if(tinymce.get(this.selector) && value !== null){
-      console.log("Setting content", value);
-      tinymce.get(this.selector).setContent(value, {format : 'raw'});
+    const selector = tinymce.get(this.selector);
+    if (selector && value && value !== null) {
+      if (selector.getContent() !== value) {
+        selector.setContent(value, {format: 'raw'});
+      }
     }
   }
 
   //Update the component tree only when blur event happens. Otherwise following bug will occur.
   //Cursor position changes to 0 or the begining of the editor after every event.
-  valueChange(){
-    this.valueOnChange(false);
-  }
+  valueChange() {
+    const currentContent = tinymce.activeEditor.getContent();
 
-  valueOnChange(change:boolean){
-    this.val = tinymce.activeEditor.getContent();
-    this.ngModelChange.emit(this.val);
-    if(change){
-      this.changeDetectorRef.detectChanges();
+    // checking here because we're getting called twice: 'change' event and 'keyup' event
+    if (this.val !== currentContent) {
+      this.val = currentContent;
+      this.onChange(this.val);
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     let that = this;
-    let options : any = this.options;
+    let options: any = this.options;
 
-    if(this.selector){
+    if (this.selector) {
       options['selector'] = '#' + this.selector;
     }
-    else{
+    else {
       options['selector'] = ".wysiwyg";
     }
 
@@ -95,12 +90,10 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
 
     //write the model value to tinymce editor once gets initialised. And track input and change events
     options['init_instance_callback'] = function (editor) {
-      that.writeValue(that.ngModel);
+      that.writeValue(that.val);
+
       editor.on('change', function (e) {
         that.valueChange();
-      });
-      editor.on('blur', function (e) {
-        that.valueOnChange(true);
       });
       editor.on('keyup', function (e) {
         that.valueChange();

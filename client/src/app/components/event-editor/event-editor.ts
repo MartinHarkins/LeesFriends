@@ -1,9 +1,10 @@
 import {Event} from "../../models/event";
-import {Component, EventEmitter, Output, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {Restangular} from "ng2-restangular";
-
-import {Observable} from "rxjs";
+import {Component, EventEmitter, Output, Input, ChangeDetectorRef} from "@angular/core";
 import {EventsService} from "../../services/events.service";
+import {DatePickerOptions, DateModel} from "ng2-datepicker";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'event-editor',
@@ -13,24 +14,100 @@ import {EventsService} from "../../services/events.service";
 export class EventEditorComponent {
   @Output() onEventAdded = new EventEmitter<Event>();
   @Output() onEventUpdated = new EventEmitter<Event>();
-  @Input() event?: Event;
 
+  @Input() event?: Event;
+  dateModel: DateModel;
+
+  eventEditForm: FormGroup;
+
+  datepickerOptions: DatePickerOptions;
   editing = false;
   submitted = false;
 
-  constructor(private service: EventsService) {
+  constructor(private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private service: EventsService) {
   }
 
   ngOnInit() {
+    let d: any;
     if (this.event) {
       this.editing = true;
+      d = moment(this.event.date);
     } else {
       this.event = new Event('', '', new Date());
+      d = moment();
     }
 
+    this.dateModel = new DateModel({
+      day: d.date() + '',
+      month: d.month() + '',
+      year: d.year() + '',
+      momentObj: d,
+      formatted: d.format('MM/DD/YYYY')
+    });
+
+    this.datepickerOptions = new DatePickerOptions({
+      format: 'MM/DD/YYYY'
+    });
+
+    this.buildForm();
   }
 
-  save() {
+  buildForm(): void {
+    this.eventEditForm = this.fb.group({
+      'title': [this.event.title, [Validators.required]],
+      'date': [this.event.date, [Validators.required]],
+      'content': [this.event.content, [Validators.required]]
+    });
+
+    this.eventEditForm.valueChanges.subscribe(data => this.onValueChanged(data));
+
+    this.onValueChanged();
+  }
+
+  onValueChanged(data?: any): void {
+    if (!this.eventEditForm) return;
+    const form = this.eventEditForm;
+
+    for (const field in this.formErrors) {
+      // clear previous error message (if any)
+      this.formErrors[field] = '';
+
+      const control = form.get(field);
+
+      console.log(field, {value: control.value, dirty: control.dirty, valid: control.valid});
+
+      if (control && control.dirty && !control.valid) {
+        const messages = this.validationMessages[field];
+        for (const key in control.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+    }
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  formErrors = {
+    'title': '',
+    'date': '',
+    'content': ''
+  };
+
+  validationMessages = {
+    'title': {
+      'required': 'Name is required.'
+    },
+    'date': {
+      'required': 'Power is required.'
+    },
+    'content': {
+      'required': 'Content is required.'
+    }
+  };
+
+  onSubmit(): void {
+    this.event.date = this.dateModel.momentObj.toDate();
+
     if (!this.editing) {
       this.add(this.event);
     } else {
@@ -38,13 +115,13 @@ export class EventEditorComponent {
     }
   }
 
-  private add(newEvent: Event) {
+  private add(newEvent: Event): void {
     // TODO: handle errors
     this.service.addEvent(newEvent)
       .subscribe(() => this.onEventAdded.emit(newEvent));
   }
 
-  private update(event: Event) {
+  private update(event: Event): void {
     this.service.updateEvent(event)
       .subscribe(updatedEvent => this.onEventUpdated.emit(updatedEvent),
         err => console.error('Error updating event', err));
@@ -56,8 +133,13 @@ export class EventEditorComponent {
   }
 
   doNothing() {
+    this.onValueChanged();
     // console.log("content", content);
     // this.event.content = content;
     console.log("event", this.event);
+
+    this.changeDetectorRef.detectChanges();
+
+
   }
 }

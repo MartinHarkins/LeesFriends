@@ -1,30 +1,32 @@
-<form (ngSubmit)="save()" name="newEventForm" class="css-form" #newEventForm="ngForm" class="event-editor">
-  <label for="eTitle">Title:
-    <input type="text" [(ngModel)]="event.title" id="eTitle" name="eTitle" required #eTitle="ngModel"/>
+<form (ngSubmit)="onSubmit()" [formGroup]="eventEditForm" class="css-form" class="event-editor">
+  <label for="title">Title:
+    <input type="text" formControlName="title" [(ngModel)]="event.title" id="title" required/>
   </label>
   <br/>
-  <div [hidden]="eTitle.valid || eTitle.pristine">
+  <div *ngIf="formErrors.title">
     Set a title.
   </div>
 
-  <label>Date:
-    <ng2-datepicker [(ngModel)]="event.date" id="eDate" name="eDate" required #eDate="ngModel" disabled></ng2-datepicker>
+  <label for="date">Date:
+    <ng2-datepicker [options]="datepickerOptions" formControlName="date" id="date" required [(ngModel)]="dateModel"></ng2-datepicker>
   </label>
   <br/>
-  <div [hidden]="eDate.valid || eDate.pristine">
+  <div [hidden]="!formErrors.date">
     Set a date for the event.
   </div>
 
-  <label>Content:
+  <label for="{{'content' + (event._id || '')}}">Content:
     <!--<input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>-->
-    <textarea [tinyEditor] [selector]="'eContent' + (event._id || '')" (ngModelChange)="doNothing()" id="{{'eContent' + (event._id || '')}}" [(ngModel)]="event.content" name="eContent" #eContent="ngModel"></textarea>
+    <textarea [tinyEditor] [selector]="'content' + (event._id || '')"
+              id="{{'content' + (event._id || '')}}"
+              formControlName="content"
+              [ngModel]="event.content"></textarea>
   </label>
   <br/>
-  <div [hidden]="eContent.valid || eContent.pristine">
+  <div [hidden]="!formErrors.content">
     Set a content for the event.
   </div>
-
   <br/>
 
-  <input type="submit" value="Save" [disabled]="!newEventForm.form.valid"/>
+  <input type="submit" value="Save" [disabled]="eventEditForm.invalid"/>
 </form>

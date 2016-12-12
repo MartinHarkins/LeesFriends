@@ -31,4 +31,9 @@
       font-style: normal;
       content: "\f105"
   }
+
+  /deep/ .datepicker-input {
+    pointer-events: none;
+    background-color: lightgray;
+  }
 }
