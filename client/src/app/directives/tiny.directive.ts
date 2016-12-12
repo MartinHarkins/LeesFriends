@@ -1,5 +1,8 @@
 import {AfterViewInit, Directive, forwardRef, Input} from "@angular/core";
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
+import {DateModel} from "ng2-datepicker";
+
+import * as moment from 'moment';
 
 declare const tinymce: any;
 
@@ -54,7 +57,7 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
 
     //This check is necessary because, this method gets called before editor gets initialised. Hence undefined/null pointer exceptions gets thrown
     const selector = tinymce.get(this.selector);
-    if (selector && value && value !== null) {
+    if (selector && value !== undefined && value !== null) {
       if (selector.getContent() !== value) {
         selector.setContent(value, {format: 'raw'});
       }
@@ -109,7 +112,38 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
     tinymce.init(options);
   }
 
+  /**
+   * Make sure to destroy the relevant editor
+   */
   ngOnDestroy() {
-    tinymce.EditorManager.execCommand('mceRemoveEditor',true, this.selector);
+    tinymce.EditorManager.execCommand('mceRemoveEditor', true, this.selector);
+  }
+
+  /**
+   * Build a {@link DateModel} from a js date object
+   *
+   * @param format
+   * @param date
+   * @returns {DateModel}
+   */
+  static buildDateModel(format: string, date: Date): DateModel {
+    return TinymceEditorDirective.buildDateModelFromMoment(format, moment(date));
+  }
+
+  /**
+   *  Build a date model from a moment date object
+   *
+   * @param format desired format
+   * @param momentDate the moment date
+   * @returns {DateModel}
+   */
+  static buildDateModelFromMoment(format: string, momentDate: any): DateModel {
+    return new DateModel({
+      day: momentDate.date() + '',
+      month: momentDate.month() + '',
+      year: momentDate.year() + '',
+      momentObj: momentDate,
+      formatted: momentDate.format(format)
+    });
   }
 }

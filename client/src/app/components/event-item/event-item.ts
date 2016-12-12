@@ -18,7 +18,7 @@ export class EventItemComponent {
   ngOnInit() {
     console.log('Event:', this.event);
 
-    // TODO: export date format.
+    // TODO: export date format. (create date utils)
     this.formattedDate = moment(this.event.date).format('MM/DD/YYYY');
   }
 }

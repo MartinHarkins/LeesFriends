@@ -1,58 +1,65 @@
-import {Event} from "../../models/event";
-import {Component, EventEmitter, Output, Input, ChangeDetectorRef} from "@angular/core";
-import {EventsService} from "../../services/events.service";
-import {DatePickerOptions, DateModel} from "ng2-datepicker";
+import {Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-import * as moment from "moment";
 import {Subscription} from "rxjs";
+
+import {DatePickerOptions, DateModel} from "ng2-datepicker";
+import * as moment from "moment";
+
+import {Event} from "../../models/event";
+import {EventsService} from "../../services/events.service";
+import {TinymceEditorDirective} from "../../directives/tiny.directive";
 
 @Component({
   selector: 'event-editor',
   templateUrl: 'event-editor.html',
   styleUrls: ['./event-editor.scss']
 })
-export class EventEditorComponent {
+export class EventEditorComponent implements OnInit {
   @Output() onEventAdded = new EventEmitter<Event>();
   @Output() onEventUpdated = new EventEmitter<Event>();
   @Output() onEditCancel = new EventEmitter<void>();
 
   @Input() event?: Event;
-  dateModel: DateModel;
 
   eventEditForm: FormGroup;
 
-  datepickerOptions: DatePickerOptions;
-  editing = false;
-  submitted = false;
+  // Date wrapper used by ng2-datepicker
+  tinyDateModel: DateModel;
 
-  constructor(private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private service: EventsService) {
+  datepickerOptions: DatePickerOptions;
+
+  isEditing = false;
+
+  // TODO: extract
+  DATE_FORMAT = 'MM/DD/YYYY';
+
+  constructor(private fb: FormBuilder,
+              private changeDetectorRef: ChangeDetectorRef,
+              private service: EventsService) {
   }
 
   ngOnInit() {
+    // Initialize date picker
     this.datepickerOptions = new DatePickerOptions({
-      format: 'MM/DD/YYYY'
+      format: this.DATE_FORMAT
     });
 
     this.reset();
   }
 
+  /**
+   * Reset the form
+   */
   reset() {
-    let d: any;
+    // If we have an existing `event`, toggle edit state.
     if (this.event) {
-      this.editing = true;
-      d = moment(this.event.date);
+      this.isEditing = true;
     } else {
+      this.isEditing = false;
       this.event = new Event('', '', new Date());
-      d = moment();
     }
 
-    this.dateModel = new DateModel({
-      day: d.date() + '',
-      month: d.month() + '',
-      year: d.year() + '',
-      momentObj: d,
-      formatted: d.format('MM/DD/YYYY')
-    });
+    this.tinyDateModel = TinymceEditorDirective.buildDateModel(this.DATE_FORMAT, this.event.date);
 
     this.buildForm();
   }
@@ -93,6 +100,12 @@ export class EventEditorComponent {
     }
 
     console.log('detectChanges...');
+    // Purposefully redetecting changes after the `onValueChanged` is called.
+    // Reason:
+    //  when the tinymce editor removes itself,
+    //  the form considers it a value change,
+    //  and `onValueChanged` is called at a time when the actual editor is already destroyed.
+    //  > Crash
     this.changeDetectorRef.detectChanges();
   }
 
@@ -104,26 +117,46 @@ export class EventEditorComponent {
 
   validationMessages = {
     'title': {
-      'required': 'Name is required.'
+      'required': 'Set a title for the event.'
     },
     'date': {
-      'required': 'Power is required.'
+      'required': 'Set a date for the event.'
     },
     'content': {
-      'required': 'Content is required.'
+      'required': 'Set a content for the event.'
     }
   };
 
+  /**
+   * Called when the form is submitted
+   */
   onSubmit(): void {
-    this.event.date = this.dateModel.momentObj.toDate();
+    // Update event model
+    this.event.date = this.tinyDateModel.momentObj.toDate();
 
-    if (!this.editing) {
+    if (!this.isEditing) {
       this.add(this.event);
     } else {
       this.update(this.event);
     }
   }
 
+  /**
+   * Called when the use cancels
+   */
+  onCancel(): void {
+    // Needed to prevent onValueChanged() to be called anymore.
+    // `this.changeDetectorRef.detectChanges();` crashes the dom if tinymce is destroyed when it's called.
+    this.valueChangeSubscription.unsubscribe();
+
+    this.onEditCancel.emit();
+  }
+
+  /**
+   * Send new event to backend
+   *
+   * @param newEvent the new event model
+   */
   private add(newEvent: Event): void {
     const that = this;
     // TODO: handle errors
@@ -131,26 +164,21 @@ export class EventEditorComponent {
       .subscribe(() => {
         this.onEventAdded.emit(newEvent);
 
+        // Clear the form
         that.event = null;
         that.reset();
       });
   }
 
+  /**
+   * Send the updated event
+   *
+   * @param event the updated event
+   */
   private update(event: Event): void {
+    // TODO: handle errors properly
     this.service.updateEvent(event)
       .subscribe(updatedEvent => this.onEventUpdated.emit(updatedEvent),
         err => console.error('Error updating event', err));
-  }
-
-  get diagnostic(): string {
-    return JSON.stringify(this.event);
-  }
-
-  onCancel() {
-    // Needed to prevent onValueChanged() to be called anymore.
-    // `this.changeDetectorRef.detectChanges();` crashes the dom if tinymce is destroyed when it's called.
-    this.valueChangeSubscription.unsubscribe();
-
-    this.onEditCancel.emit();
   }
 }
