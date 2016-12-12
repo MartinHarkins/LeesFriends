@@ -29,6 +29,14 @@ export class EventEditorComponent {
   }
 
   ngOnInit() {
+    this.datepickerOptions = new DatePickerOptions({
+      format: 'MM/DD/YYYY'
+    });
+
+    this.reset();
+  }
+
+  reset() {
     let d: any;
     if (this.event) {
       this.editing = true;
@@ -46,14 +54,12 @@ export class EventEditorComponent {
       formatted: d.format('MM/DD/YYYY')
     });
 
-    this.datepickerOptions = new DatePickerOptions({
-      format: 'MM/DD/YYYY'
-    });
-
     this.buildForm();
   }
 
+  // Needed to stop callbacks coming upon destroy.
   valueChangeSubscription: Subscription;
+
   buildForm(): void {
     this.eventEditForm = this.fb.group({
       'title': [this.event.title, [Validators.required]],
@@ -119,9 +125,15 @@ export class EventEditorComponent {
   }
 
   private add(newEvent: Event): void {
+    const that = this;
     // TODO: handle errors
     this.service.addEvent(newEvent)
-      .subscribe(() => this.onEventAdded.emit(newEvent));
+      .subscribe(() => {
+        this.onEventAdded.emit(newEvent);
+
+        that.event = null;
+        that.reset();
+      });
   }
 
   private update(event: Event): void {
