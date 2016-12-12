@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <event-editor (onEventAdded)="onNewEvent($newEvent)"></event-editor>
+    <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
   </div>
 
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
