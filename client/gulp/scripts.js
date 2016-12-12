@@ -12,11 +12,33 @@ var $ = require('gulp-load-plugins')();
 
 function webpackWrapper(watch, test, callback) {
   var webpackOptions = {
-    resolve: { extensions: ['', '.ts'] },
+    resolve: {
+	    extensions: ['', '.ts']//,
+	    //alias: { rxjs: 'rxjs' }
+    },
     watch: watch,
     module: {
-      preLoaders: [{ test: /\.ts$/, exclude: /node_modules/, loader: 'tslint-loader'}],
-      loaders: [{ test: /\.ts$/, exclude: /node_modules/, loaders: ['ng-annotate', 'awesome-typescript-loader']}]
+      preLoaders: [{ test: /\.ts$/, exclude: /node_modules/, loader: 'tslint-loader'},       { test: /\.js$/, loader: "source-map-loader", exclude: [ /node_modules\/rxjs/ ] }],
+      // loaders: [{ test: /\.ts$/, exclude: /node_modules/, loaders: ['ng-annotate', 'awesome-typescript-loader']}]
+      rules: [
+
+        /*
+         * Typescript loader support for .ts and Angular 2 async routes via .async.ts
+         * Replace templateUrl and stylesUrl with require()
+         *
+         * See: https://github.com/s-panferov/awesome-typescript-loader
+         * See: https://github.com/TheLarkInn/angular2-template-loader
+         */
+        {
+          test: /\.ts$/,
+          use: [
+            'awesome-typescript-loader',
+            'angular2-template-loader',
+            'angular-router-loader'
+          ],
+          exclude: [/\.(spec|e2e)\.ts$/]
+        }
+      ]
     },
     output: { filename: 'index.module.js' }
   };

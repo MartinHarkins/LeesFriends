@@ -1,23 +1,8 @@
-interface IHeaderController {
-  getVariable():any;
-}
+import {Component} from "@angular/core";
 
-class HeaderController implements IHeaderController {
-  constructor() {
-  }
-
-  getVariable():string {
-    return 'Hello!';
-  }
-}
-
-/** @ngInject */
-export class HeaderComponent implements ng.IComponentOptions {
-  templateUrl = 'app/components/header/header.html';
-
-  controller = HeaderController;
-
-  constructor() {
-
-  }
-}
+@Component({
+  selector: 'header',
+  templateUrl: './header.html',
+  styleUrls: ['./header.scss']
+})
+export class HeaderComponent {}

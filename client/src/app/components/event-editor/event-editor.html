@@ -1,0 +1,33 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="eventEditForm" class="css-form" class="event-editor">
+  <label for="title">Title:
+    <input type="text" formControlName="title" [(ngModel)]="event.title" id="title" required/>
+  </label>
+  <br/>
+  <div *ngIf="formErrors.title">
+    {{formErrors.title}}
+  </div>
+
+  <label for="date">Date:
+    <ng2-datepicker [options]="datepickerOptions" formControlName="date" id="date" required
+                    [(ngModel)]="tinyDateModel"></ng2-datepicker>
+  </label>
+  <br/>
+  <div [hidden]="!formErrors.date">
+    {{formErrors.date}}
+  </div>
+
+  <label for="{{'content' + (event._id || '')}}">Content:
+    <textarea [tinyEditor] [selector]="'content' + (event._id || '')"
+              id="{{'content' + (event._id || '')}}"
+              formControlName="content"
+              [(ngModel)]="event.content"></textarea>
+  </label>
+  <br/>
+  <div [hidden]="!formErrors.content">
+    {{formErrors.content}}
+  </div>
+  <br/>
+
+  <input type="submit" value="Save" [disabled]="eventEditForm.invalid"/>
+  <input type="button" value="Cancel" (click)="onCancel()" [hidden]="!isEditing"/>
+</form>

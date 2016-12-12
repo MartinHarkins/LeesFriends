@@ -1,38 +1,24 @@
 import {Event} from "../../models/event";
+import {Component, Input} from "@angular/core";
 
-interface IEventBindings {
-  event: Event;
-}
+import * as moment from 'moment';
 
-interface IEventItemController extends IEventBindings{
-  getVariable():any;
-}
+@Component({
+  selector: 'event-item',
+  templateUrl: './event-item.html'
+})
+export class EventItemComponent {
+  @Input() event: Event;
 
-class EventItemController implements IEventItemController {
-  public event:Event;
-
-  constructor($sce: ng.ISCEService) {
-    console.log('Event:', this.event);
-
-    this.event.content = $sce.trustAsHtml(this.event.content);
-  }
-
-  getVariable():string {
-    return 'Hello!';
-  }
-}
-
-/** @ngInject */
-export class EventItemComponent implements ng.IComponentOptions {
-  bindings:any;
-
-  templateUrl = 'app/components/event-item/event-item.html';
-
-  controller = EventItemController;
+  formattedDate: string;
 
   constructor() {
-    this.bindings = {
-      event: '<'
-    }
+  }
+
+  ngOnInit() {
+    console.log('Event:', this.event);
+
+    // TODO: export date format. (create date utils)
+    this.formattedDate = moment(this.event.date).format('MM/DD/YYYY');
   }
 }

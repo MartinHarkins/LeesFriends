@@ -1,9 +1,13 @@
 <div class="container">
   <div class="row">
-    <new-event on-event-added="$ctrl.onNewEvent($newEvent)"></new-event>
+    <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
   </div>
 
-  <div class="row" ng-repeat="evtObj in $ctrl.events | orderBy: date:true">
-    <event-item event="evtObj"></event-item>
+  <div class="row" *ngFor="let eventWrapper of eventWrappers">
+    <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
+    <button *ngIf="!eventWrapper.editing" type="button" (click)="edit(eventWrapper)">Edit</button>
+
+    <event-editor *ngIf="eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
+
   </div>
 </div>
