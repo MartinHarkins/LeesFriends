@@ -3,8 +3,8 @@ import {Component, EventEmitter, Output, Input, ChangeDetectorRef} from "@angula
 import {EventsService} from "../../services/events.service";
 import {DatePickerOptions, DateModel} from "ng2-datepicker";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-
-import * as moment from 'moment';
+import * as moment from "moment";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'event-editor',
@@ -14,6 +14,7 @@ import * as moment from 'moment';
 export class EventEditorComponent {
   @Output() onEventAdded = new EventEmitter<Event>();
   @Output() onEventUpdated = new EventEmitter<Event>();
+  @Output() onEditCancel = new EventEmitter<void>();
 
   @Input() event?: Event;
   dateModel: DateModel;
@@ -52,6 +53,7 @@ export class EventEditorComponent {
     this.buildForm();
   }
 
+  valueChangeSubscription: Subscription;
   buildForm(): void {
     this.eventEditForm = this.fb.group({
       'title': [this.event.title, [Validators.required]],
@@ -59,7 +61,7 @@ export class EventEditorComponent {
       'content': [this.event.content, [Validators.required]]
     });
 
-    this.eventEditForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.valueChangeSubscription = this.eventEditForm.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged();
   }
@@ -84,6 +86,7 @@ export class EventEditorComponent {
       }
     }
 
+    console.log('detectChanges...');
     this.changeDetectorRef.detectChanges();
   }
 
@@ -125,21 +128,17 @@ export class EventEditorComponent {
     this.service.updateEvent(event)
       .subscribe(updatedEvent => this.onEventUpdated.emit(updatedEvent),
         err => console.error('Error updating event', err));
-
   }
 
   get diagnostic(): string {
     return JSON.stringify(this.event);
   }
 
-  doNothing() {
-    this.onValueChanged();
-    // console.log("content", content);
-    // this.event.content = content;
-    console.log("event", this.event);
+  onCancel() {
+    // Needed to prevent onValueChanged() to be called anymore.
+    // `this.changeDetectorRef.detectChanges();` crashes the dom if tinymce is destroyed when it's called.
+    this.valueChangeSubscription.unsubscribe();
 
-    this.changeDetectorRef.detectChanges();
-
-
+    this.onEditCancel.emit();
   }
 }

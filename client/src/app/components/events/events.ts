@@ -47,6 +47,10 @@ export class EventsComponent implements OnInit {
     this.toggleEdit(eventWrapper, false);
   }
 
+  private onEditEventCancelled(eventWrapper) {
+    this.toggleEdit(eventWrapper, false);
+  }
+
   private edit(eventWrapper) {
     this.toggleEdit(eventWrapper, true);
   }

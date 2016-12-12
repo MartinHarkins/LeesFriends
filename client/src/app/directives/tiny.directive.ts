@@ -93,16 +93,23 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
       that.writeValue(that.val);
 
       editor.on('change', function (e) {
+        console.log('testch');
         that.valueChange();
       });
       editor.on('keyup', function (e) {
+        console.log('testke');
         that.valueChange();
       });
       editor.on('PastePostProcess', function (e) {
+        console.log('testpp');
         that.valueChange();
       });
     };
 
     tinymce.init(options);
+  }
+
+  ngOnDestroy() {
+    tinymce.EditorManager.execCommand('mceRemoveEditor',true, this.selector);
   }
 }

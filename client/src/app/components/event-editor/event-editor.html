@@ -16,11 +16,10 @@
   </div>
 
   <label for="{{'content' + (event._id || '')}}">Content:
-    <!--<input type="text" [(ngModel)]="event.content" name="eContent" required #eContent="ngModel"/>-->
     <textarea [tinyEditor] [selector]="'content' + (event._id || '')"
               id="{{'content' + (event._id || '')}}"
               formControlName="content"
-              [ngModel]="event.content"></textarea>
+              [(ngModel)]="event.content"></textarea>
   </label>
   <br/>
   <div [hidden]="!formErrors.content">
@@ -29,4 +28,5 @@
   <br/>
 
   <input type="submit" value="Save" [disabled]="eventEditForm.invalid"/>
+  <input type="button" value="Cancel" (click)="onCancel()" [hidden]="!editing"/>
 </form>
