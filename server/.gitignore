@@ -6,3 +6,5 @@ db/*
 
 # Ignore tscache
 .tscache/*
+
+nohup.out

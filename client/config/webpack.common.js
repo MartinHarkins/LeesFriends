@@ -57,8 +57,8 @@ module.exports = function (options) {
     entry: {
 
       'polyfills': './src/polyfills.browser.ts',
-      'vendor':    './src/vendor.browser.ts',
-      'main':      './src/main.browser.ts'
+      'vendor': './src/vendor.browser.ts',
+      'main': './src/main.browser.ts'
 
     },
 
@@ -106,7 +106,22 @@ module.exports = function (options) {
           ],
           exclude: [/\.(spec|e2e)\.ts$/]
         },
-
+        {
+          test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/font-woff"
+        }, {
+          test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/font-woff"
+        }, {
+          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/octet-stream"
+        }, {
+          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "file"
+        }, {
+          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=image/svg+xml"
+        },
         /*
          * Json loader support for *.json files.
          *
@@ -131,7 +146,11 @@ module.exports = function (options) {
          */
         {
           test: /\.scss$/,
-          exclude: /node_modules/,
+          // exclude: /node_modules/,
+          include: [
+            helpers.root('src'),
+            helpers.root('node_modules/font-awesome')
+          ],
           loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
         },
 
@@ -213,8 +232,8 @@ module.exports = function (options) {
        * See: https://www.npmjs.com/package/copy-webpack-plugin
        */
       new CopyWebpackPlugin([
-        { from: 'src/assets', to: 'assets' },
-        { from: 'src/meta'}
+        {from: 'src/assets', to: 'assets'},
+        {from: 'src/meta'}
       ]),
 
 

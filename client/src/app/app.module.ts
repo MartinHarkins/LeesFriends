@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { RestangularModule } from 'ng2-restangular';
+import { DatePickerModule } from 'ng2-datepicker';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -58,6 +59,7 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    DatePickerModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     RestangularModule.forRoot((RestangularProvider) => {
       RestangularProvider.setBaseUrl("http://localhost:8080/");

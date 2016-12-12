@@ -1,0 +1,34 @@
+@import '../../globals';
+
+.event-editor {
+  /deep/ .datepicker-input-icon, /deep/ .ion-ios-arrow-back, /deep/ .ion-ios-arrow-forward {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /deep/ .datepicker-input-icon:before {
+    font-style: normal;
+    content: "\f073";
+  }
+
+  /deep/ .ion-ios-arrow-back {
+    margin-left: 0 !important;
+  }
+
+  /deep/ .ion-ios-arrow-back:before {
+      font-style: normal;
+      content: "\f104"
+
+  }
+
+  /deep/ .ion-ios-arrow-forward {
+    margin-right: 20px !important;
+  }
+  /deep/ .ion-ios-arrow-forward:before {
+      font-style: normal;
+      content: "\f105"
+  }
+}

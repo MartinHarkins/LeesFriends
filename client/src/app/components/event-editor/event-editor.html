@@ -1,4 +1,4 @@
-<form (ngSubmit)="save()" name="newEventForm" class="css-form" #newEventForm="ngForm">
+<form (ngSubmit)="save()" name="newEventForm" class="css-form" #newEventForm="ngForm" class="event-editor">
   <label for="eTitle">Title:
     <input type="text" [(ngModel)]="event.title" id="eTitle" name="eTitle" required #eTitle="ngModel"/>
   </label>
@@ -7,8 +7,8 @@
     Set a title.
   </div>
 
-  <label for="eDate">Date:
-    <input type="text" [(ngModel)]="event.date" id="eDate" name="eDate" required #eDate="ngModel"/>
+  <label>Date:
+    <ng2-datepicker [(ngModel)]="event.date" id="eDate" name="eDate" required #eDate="ngModel" disabled></ng2-datepicker>
   </label>
   <br/>
   <div [hidden]="eDate.valid || eDate.pristine">
