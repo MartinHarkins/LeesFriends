@@ -1,23 +1,24 @@
-import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule, PreloadAllModules } from '@angular/router';
-import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
-import { RestangularModule } from 'ng2-restangular';
-import { DatePickerModule } from 'ng2-datepicker';
+import {NgModule, ApplicationRef} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {RouterModule, PreloadAllModules} from '@angular/router';
+import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
+import {RestangularModule} from 'ng2-restangular';
+import {DatePickerModule} from 'ng2-datepicker';
+import {Ng2PageScrollModule} from 'ng2-page-scroll/ng2-page-scroll';
 
 /*
  * Platform and Environment providers/directives/pipes
  */
-import { ENV_PROVIDERS } from './environment';
-import { ROUTES } from './app.routes';
+import {ENV_PROVIDERS} from './environment';
+import {ROUTES} from './app.routes';
 // App is our top level component
-import { AppComponent } from './app.component';
-import { APP_RESOLVER_PROVIDERS } from './app.resolver';
-import { AppState, InternalStateType } from './app.service';
+import {AppComponent} from './app.component';
+import {APP_RESOLVER_PROVIDERS} from './app.resolver';
+import {AppState, InternalStateType} from './app.service';
 
-import { HomeComponent } from './components/home';
+import {HomeComponent} from './components/home';
 import {EventItemComponent} from "./components/event-item/event-item";
 import {NoContentComponent} from "./components/no-content/no-content.component";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
@@ -30,6 +31,7 @@ import {HistoryComponent} from "./components/history/history";
 import {ServicesComponent} from "./components/services/services";
 import {ServiceItemComponent} from "./components/service-item/service-item";
 import {AwardsComponent} from "./components/awards/awards";
+import {FaqComponent} from "./components/faq/faq";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -48,19 +50,20 @@ type StoreType = {
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
     HistoryComponent,
     AwardsComponent,
+    OurMissionComponent,
+    FaqComponent,
     ServicesComponent,
     ServiceItemComponent,
     EventsComponent,
     EventItemComponent,
     EventEditorComponent,
-    OurMissionComponent,
     NoContentComponent,
     TinymceEditorDirective
   ],
@@ -70,7 +73,8 @@ type StoreType = {
     ReactiveFormsModule,
     HttpModule,
     DatePickerModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    Ng2PageScrollModule.forRoot(),
+    RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
     RestangularModule.forRoot((RestangularProvider) => {
       // TODO: should be grabbed from environment specific config file.
       RestangularProvider.setBaseUrl("http://localhost:8080/");
@@ -84,16 +88,14 @@ type StoreType = {
       });
     })
   ],
-  entryComponents: [
-    EventItemComponent
-  ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS
   ]
 })
 export class AppModule {
-  constructor(public appRef: ApplicationRef, public appState: AppState) {}
+  constructor(public appRef: ApplicationRef, public appState: AppState) {
+  }
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
@@ -119,7 +121,7 @@ export class AppModule {
     // recreate root elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // save input values
-    store.restoreInputValues  = createInputTransfer();
+    store.restoreInputValues = createInputTransfer();
     // remove styles
     removeNgStyles();
   }

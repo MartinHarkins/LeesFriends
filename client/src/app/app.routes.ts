@@ -5,6 +5,8 @@ import {EventsComponent} from "./components/events/events";
 import {HistoryComponent} from "./components/history/history";
 import {ServicesComponent} from "./components/services/services";
 import {AwardsComponent} from "./components/awards/awards";
+import {OurMissionComponent} from "./components/our-mission/our-mission";
+import {FaqComponent} from "./components/faq/faq";
 
 
 export const ROUTES: Routes = [
@@ -13,6 +15,8 @@ export const ROUTES: Routes = [
   {path: 'events', component: EventsComponent},
   {path: 'history', component: HistoryComponent},
   {path: 'awards', component: AwardsComponent},
+  {path: 'our-mission', component: OurMissionComponent},
+  {path: 'faq', component: FaqComponent},
   {path: 'services', component: ServicesComponent},
   {path: '**', component: NoContentComponent},
 ];

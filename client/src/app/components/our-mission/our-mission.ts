@@ -5,5 +5,4 @@ import {Component} from "@angular/core";
   templateUrl: './our-mission.html'
 })
 export class OurMissionComponent {
-  constructor() {}
 }
