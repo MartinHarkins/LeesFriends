@@ -149,7 +149,8 @@ module.exports = function (options) {
           // exclude: /node_modules/,
           include: [
             helpers.root('src'),
-            helpers.root('node_modules/font-awesome')
+            helpers.root('node_modules/font-awesome'),
+            helpers.root('node_modules/bootstrap')
           ],
           loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
         },

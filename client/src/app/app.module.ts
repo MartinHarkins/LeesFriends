@@ -27,6 +27,8 @@ import {EventEditorComponent} from "./components/event-editor/event-editor";
 import {TinymceEditorDirective} from "./directives/tiny.directive";
 import {EventsService} from "./services/events.service";
 import {HistoryComponent} from "./components/history/history";
+import {ServicesComponent} from "./components/services/services";
+import {ServiceItemComponent} from "./components/service-item/service-item";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -51,6 +53,8 @@ type StoreType = {
     HomeComponent,
     HeaderComponent,
     HistoryComponent,
+    ServicesComponent,
+    ServiceItemComponent,
     EventsComponent,
     EventItemComponent,
     EventEditorComponent,

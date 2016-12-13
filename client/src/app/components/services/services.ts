@@ -1,14 +1,19 @@
+import {Component, OnInit} from '@angular/core'
 import {Service} from "../../models/service";
-interface IServicesController {
 
-}
-
-class ServicesController implements IServicesController {
-  public transportationService:Service;
-  public oneOnOneService:Service;
-  public basicsService:Service;
+@Component({
+  selector: 'services',
+  templateUrl: './services.html'
+})
+export class ServicesComponent implements OnInit {
+  transportationService: Service;
+  oneOnOneService: Service;
+  basicsService: Service;
 
   constructor() {
+  }
+
+  ngOnInit() {
     this.transportationService = {
       url: 'assets/images/services/transportation.jpg',
       title: 'Transportation',
@@ -26,12 +31,4 @@ class ServicesController implements IServicesController {
     };
     console.log('created transportationService');
   }
-}
-
-export class ServicesComponent implements ng.IComponentOptions {
-  restrict = 'E';
-
-  templateUrl = 'app/components/services/services.html';
-
-  controller = ServicesController;
 }
