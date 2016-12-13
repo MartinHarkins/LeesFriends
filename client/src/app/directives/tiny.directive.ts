@@ -1,8 +1,7 @@
 import {AfterViewInit, Directive, forwardRef, Input} from "@angular/core";
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 import {DateModel} from "ng2-datepicker";
-
-import * as moment from 'moment';
+import * as moment from "moment";
 
 declare const tinymce: any;
 
@@ -29,8 +28,7 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
     plugins: [
       'link image code'
     ],
-    toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-    toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
     image_advtab: true
   };
 

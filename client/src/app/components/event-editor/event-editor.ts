@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit} from "@angular/core";
+import {Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit, ElementRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 
@@ -35,7 +35,8 @@ export class EventEditorComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private changeDetectorRef: ChangeDetectorRef,
-              private service: EventsService) {
+              private service: EventsService,
+              private elementRef: ElementRef) {
   }
 
   ngOnInit() {
@@ -45,6 +46,17 @@ export class EventEditorComponent implements OnInit {
     });
 
     this.reset();
+  }
+
+  ngAfterViewInit() {
+    // enable on of date field to open picker
+    const hostElem = this.elementRef.nativeElement;
+
+    const dateInput = hostElem.querySelector('.datepicker-input');
+    const dateIcon = hostElem.querySelector('.datepicker-input-icon');
+
+    dateInput.addEventListener('click', () => dateIcon.click());
+    dateInput.addEventListener('keypress', event => event.preventDefault());
   }
 
   /**

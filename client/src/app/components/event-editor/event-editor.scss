@@ -33,7 +33,21 @@
   }
 
   /deep/ .datepicker-input {
-    pointer-events: none;
-    background-color: lightgray;
+    border-bottom: none !important;
+  }
+
+  .mce-container.mce-panel {
+    border-radius: 5px;
+  }
+  .mce-btn-group:not(:first-child) {
+    border-left: none;
+  }
+
+  .btn {
+    background-color: white;
+  }
+
+  label {
+    font-weight: 700;
   }
 }
