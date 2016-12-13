@@ -29,6 +29,7 @@ import {EventsService} from "./services/events.service";
 import {HistoryComponent} from "./components/history/history";
 import {ServicesComponent} from "./components/services/services";
 import {ServiceItemComponent} from "./components/service-item/service-item";
+import {AwardsComponent} from "./components/awards/awards";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -53,6 +54,7 @@ type StoreType = {
     HomeComponent,
     HeaderComponent,
     HistoryComponent,
+    AwardsComponent,
     ServicesComponent,
     ServiceItemComponent,
     EventsComponent,
