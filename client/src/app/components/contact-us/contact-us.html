@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <h1>
+      Contact Us:
+    </h1>
+    <p>
+      If you would like to request services or volunteer with Lee's Friends, please feel free to contact us using the
+      form below. You may also contact us by calling our office at <a href="tel:17574407501">1-757-440-7501</a>.
+    </p>
+    <p>
+      We are open Monday - Friday from 9:30am to 2:00pm.
+    </p>
+    <p>
+      <strong>All services are free of charge</strong>
+    </p>
+  </div>
+
+  <div class="row">
+    <sebm-google-map [latitude]="coords.lat" [longitude]="coords.lng" [zoom]="14">
+        <sebm-google-map-info-window [latitude]="coords.lat" [longitude]="coords.lng" [disableAutoPan]="true" [isOpen]="true">
+          <div style="overflow: auto;">Lee's Friends
+            7400 Hampton Boulevard, Room 201
+            Norfolk, VA 23503</div>
+        </sebm-google-map-info-window>
+    </sebm-google-map>
+  </div>
+</div>

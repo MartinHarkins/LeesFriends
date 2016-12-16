@@ -8,6 +8,8 @@ import {RestangularModule} from 'ng2-restangular';
 import {DatePickerModule} from 'ng2-datepicker';
 import {Ng2PageScrollModule} from 'ng2-page-scroll/ng2-page-scroll';
 
+import { AgmCoreModule } from 'angular2-google-maps/core';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -32,6 +34,7 @@ import {ServicesComponent} from "./components/services/services";
 import {ServiceItemComponent} from "./components/service-item/service-item";
 import {AwardsComponent} from "./components/awards/awards";
 import {FaqComponent} from "./components/faq/faq";
+import {ContactUsComponent} from "./components/contact-us/contact-us";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -61,6 +64,7 @@ type StoreType = {
     FaqComponent,
     ServicesComponent,
     ServiceItemComponent,
+    ContactUsComponent,
     EventsComponent,
     EventItemComponent,
     EventEditorComponent,
@@ -74,6 +78,7 @@ type StoreType = {
     HttpModule,
     DatePickerModule,
     Ng2PageScrollModule.forRoot(),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo'}),
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
     RestangularModule.forRoot((RestangularProvider) => {
       // TODO: should be grabbed from environment specific config file.

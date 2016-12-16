@@ -19,6 +19,7 @@ import {Component} from "@angular/core";
           <li><a [routerLink]=" './awards' "><h2>Awards</h2></a></li>
           <li><a [routerLink]=" './about-us' "><h2>About Us</h2></a></li>
           <li><a [routerLink]=" './faq' "><h2>FAQ</h2></a></li>
+          <li><a [routerLink]=" './contact-us' "><h2>Contact Us</h2></a></li>
         </ul>
       </div>
     `,

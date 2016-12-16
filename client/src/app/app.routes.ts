@@ -7,6 +7,7 @@ import {ServicesComponent} from "./components/services/services";
 import {AwardsComponent} from "./components/awards/awards";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {FaqComponent} from "./components/faq/faq";
+import {ContactUsComponent} from "./components/contact-us/contact-us";
 
 
 export const ROUTES: Routes = [
@@ -18,5 +19,6 @@ export const ROUTES: Routes = [
   {path: 'our-mission', component: OurMissionComponent},
   {path: 'faq', component: FaqComponent},
   {path: 'services', component: ServicesComponent},
+  {path: 'contact-us', component: ContactUsComponent},
   {path: '**', component: NoContentComponent},
 ];
