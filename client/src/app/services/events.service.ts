@@ -3,6 +3,7 @@ import {Restangular} from "ng2-restangular";
 import {Observable} from "rxjs";
 
 import {Event} from '../models/event'
+import * as _ from 'lodash';
 
 /**
  * Service used to interact with the `/events` api
@@ -17,10 +18,13 @@ export class EventsService {
    *
    * @returns {Observable<Event[]>}
    */
-  public getEventsByDateDesc(): Observable<Event[]> {
+  public getEventsByDateDesc(opt?: {includeDrafts: boolean}): Observable<Event[]> {
+    const query = {
+      includeDrafts: opt ? opt.includeDrafts : false
+    }
     // TODO: handle error
     // TODO: needs to send date sorting as a parameter.
-    return this.restangular.all('events').getList();
+    return this.restangular.all('events').getList(query);
   }
 
   /**
@@ -48,7 +52,7 @@ export class EventsService {
         for (let i = 0; i < events.length; i++) {
           const event = events[i];
           if (event._id == updatedEvent._id) {
-            event.content = updatedEvent.content;
+            _.assignIn(event, updatedEvent);
             return event.put();
           }
         }

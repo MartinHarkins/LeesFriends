@@ -1,25 +1,26 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="eventEditForm" class="event-editor">
+<form (ngSubmit)="onSaveDraft()" [formGroup]="eventEditForm" class="event-editor">
   <div class="form-inline">
     <div class="form-group">
       <label for="title">Title:</label>
       <input type="text" class="form-control" formControlName="title" [(ngModel)]="event.title" id="title" required/>
-      <div *ngIf="formErrors.title">
-        {{formErrors.title}}
-      </div>
     </div>
 
     <div class="form-group">
       <label for="date">Date:</label>
       <ng2-datepicker class="form-control" [options]="datepickerOptions" formControlName="date" id="date" required
                       [(ngModel)]="tinyDateModel"></ng2-datepicker>
-      <div [hidden]="!formErrors.date">
-        {{formErrors.date}}
-      </div>
     </div>
-    <input type="submit" class="btn btn-default" value="Save" [disabled]="eventEditForm.invalid"/>
+    <input type="submit" class="btn btn-primary" value="Save draft" [disabled]="eventEditForm.invalid"/>
+    <input type="button" class="btn btn-primary" value="Publish" (click)="onPublish()" [disabled]="eventEditForm.invalid"/>
     <input type="button" class="btn btn-default" value="Cancel" (click)="onCancel()" [hidden]="!isEditing"/>
   </div>
-  <div class="form-group">
+  <div *ngIf="formErrors.title" class="text-info error">
+    {{formErrors.title}}
+  </div>
+  <div [hidden]="!formErrors.date" class="text-info error">
+    {{formErrors.date}}
+  </div>
+  <div class="form-group margin-top-sm">
     <label for="{{'content' + (event._id || '')}}">Content:</label>
     <textarea class="form-control tiny-mce"
               [tinyEditor] [selector]="'content' + (event._id || '')"
@@ -27,8 +28,7 @@
               formControlName="content"
               [(ngModel)]="event.content"></textarea>
   </div>
-  <br/>
-  <div [hidden]="!formErrors.content">
+  <div [hidden]="!formErrors.content" class="text-info error">
     {{formErrors.content}}
   </div>
   <br/>

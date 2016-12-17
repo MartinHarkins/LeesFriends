@@ -8,6 +8,7 @@ import * as moment from "moment";
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
 import {TinymceEditorDirective} from "../../directives/tiny.directive";
+import * as _ from 'lodash'
 
 @Component({
   selector: 'event-editor',
@@ -142,9 +143,26 @@ export class EventEditorComponent implements OnInit {
   /**
    * Called when the form is submitted
    */
-  onSubmit(): void {
+  onSaveDraft(): void {
     // Update event model
-    this.event.date = this.tinyDateModel.momentObj.toDate();
+    _.assignIn(this.event, {
+      date: this.tinyDateModel.momentObj.toDate(),
+      published: false
+    });
+
+    if (!this.isEditing) {
+      this.add(this.event);
+    } else {
+      this.update(this.event);
+    }
+  }
+
+  onPublish(): void {
+    // Update event model
+    _.assignIn(this.event, {
+      date: this.tinyDateModel.momentObj.toDate(),
+      published: true
+    });
 
     if (!this.isEditing) {
       this.add(this.event);

@@ -35,13 +35,14 @@ class EventWrapper {
     `],
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
-    <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
     
-    <div *ngIf="editable && !eventWrapper.editing">
+    <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
         <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
-        <button class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
+        <button *ngIf="eventWrapper.event.published" class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
         <button class="btn btn-danger" type="button" (click)="deleteEvent(eventWrapper)">Delete</button>
     </div>
+    
+    <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
 
     <event-editor *ngIf="editable && eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
     <hr/>
@@ -74,7 +75,7 @@ export class EventListComponent implements OnInit {
   public reloadList() {
     // Get dates in the order of decreasing dates.
     // Angular 2 doc recommends doing sorting away from template.
-    this.service.getEventsByDateDesc()
+    this.service.getEventsByDateDesc(this.editable ? {includeDrafts: true} : undefined)
       .switchMap((eventList: Event[]) => {
         this.allEvents = eventList;
 
@@ -158,7 +159,9 @@ export class EventListComponent implements OnInit {
   }
 
   private unpublish(eventWrapper) {
-
+    _.assignIn(eventWrapper.event, {published: false});
+    this.service.updateEvent(eventWrapper.event)
+      .subscribe((event: Event) => eventWrapper.event = event );
   }
 
   /**

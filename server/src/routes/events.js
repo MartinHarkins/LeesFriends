@@ -5,11 +5,18 @@ var EventsRouter = (function () {
     }
     EventsRouter.create = function (dataService) {
         var router = express.Router();
-        console.log("Setting up routes.");
-        /* GET events listing. */
+        console.log("Setting up event routes.");
+        /**
+         * GET events listing.
+         */
         router.get('/', function (req, res, next) {
-            console.log("howdy");
-            dataService.getEvents()
+            var options = {
+                includeDrafts: false
+            };
+            if (req.query.includeDrafts == 'true') {
+                options.includeDrafts = true;
+            }
+            dataService.getEvents(options)
                 .subscribe(function (events) { return res.json(events); }, function (err) {
                 console.error('Could not get list of events', err);
                 res.status(500).send({ error: 'Error getting list of events.' });

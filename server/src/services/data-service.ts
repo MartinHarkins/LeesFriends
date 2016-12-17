@@ -56,11 +56,13 @@ export class DataService {
                 eventsStore.insert([{
                     title: 'Title 1 up',
                     content: 'Content 1 up',
-                    date: new Date()
+                    date: new Date(),
+                    published: true,
                 }, {
                     title: 'Title 2 up',
                     content: 'Content 2 up',
-                    date: new Date()
+                    date: new Date(),
+                    published: false
                 }], function (err, newDocs) {
                     if (err) {
                         console.error('Error adding docs to database', JSON.stringify(err));
@@ -72,14 +74,22 @@ export class DataService {
         });
     }
 
-    getEvents(opt?): Rx.Observable<Event[]> {
+    getEvents(opt?: {includeDrafts: boolean}): Rx.Observable<Event[]> {
         const subject = new Rx.AsyncSubject<Event[]>();
 
         let options = opt || {
                 includeDrafts: false
             };
 
-        this.db.events.find<Event>({}).sort({date: -1}).exec(function (err, docs) {
+        let filters: any;
+        filters = {};
+        if (!options.includeDrafts) {
+            filters = {
+                published: true
+            };
+        }
+
+        this.db.events.find<Event>(filters).sort({date: -1}).exec(function (err, docs) {
             if (err) {
                 console.log('Could not get list of events', err);
 
@@ -113,6 +123,7 @@ export class DataService {
         if (!event) {
             return Rx.Observable.throw(new Error('Event cannot be empty', event));
         }
+        console.log('event being updated', JSON.stringify(event));
 
         const subject = new Rx.AsyncSubject<Event>();
         this.db.events.update({_id: id}, event, {}, function (err) {

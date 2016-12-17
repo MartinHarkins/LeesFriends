@@ -12,11 +12,20 @@ export class EventsRouter {
     public static create(dataService: DataService): Router {
         const router = express.Router();
 
-        console.log("Setting up routes.");
-        /* GET events listing. */
+        console.log("Setting up event routes.");
+
+        /**
+         * GET events listing.
+         */
         router.get('/', (req: Request, res: Response, next: NextFunction) => {
-            console.log("howdy");
-            dataService.getEvents()
+            let options = {
+                includeDrafts: false
+            };
+
+            if (req.query.includeDrafts == 'true') {
+                options.includeDrafts = true
+            }
+            dataService.getEvents(options)
                 .subscribe(
                     (events: Event[]) => res.json(events),
                     err => {

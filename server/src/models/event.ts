@@ -1,9 +1,11 @@
 export class Event {
-  constructor(
-    public title: string,
-    public content: string,
-    public date: Date) {
-  }
+    public _id?: string;
+    public published = false;
 
-  public _id?: string;
+    constructor(public title: string,
+                public content: string,
+                public date: Date,
+                published?: boolean) {
+        this.published = published || false;
+    }
 }
