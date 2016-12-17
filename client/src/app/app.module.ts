@@ -5,10 +5,13 @@ import {HttpModule} from '@angular/http';
 import {RouterModule, PreloadAllModules} from '@angular/router';
 import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
 import {RestangularModule} from 'ng2-restangular';
+
+// UI
+import {ModalModule} from 'angular2-modal';
+import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
 import {DatePickerModule} from 'ng2-datepicker';
 import {Ng2PageScrollModule} from 'ng2-page-scroll/ng2-page-scroll';
-
-import { AgmCoreModule } from 'angular2-google-maps/core';
+import {AgmCoreModule} from 'angular2-google-maps/core';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -36,6 +39,7 @@ import {AwardsComponent} from "./components/awards/awards";
 import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
 import {EventListComponent} from "./components/event-list/event-list";
+import {ConfirmDeleteEventModalComponent} from "./components/event-list/confirm-delete.modal";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -69,6 +73,7 @@ type StoreType = {
     EventsComponent,
     EventListComponent,
     EventItemComponent,
+    ConfirmDeleteEventModalComponent,
     EventEditorComponent,
     NoContentComponent,
     TinymceEditorDirective
@@ -79,8 +84,10 @@ type StoreType = {
     ReactiveFormsModule,
     HttpModule,
     DatePickerModule,
+    ModalModule.forRoot([ConfirmDeleteEventModalComponent]),
+    BootstrapModalModule,
     Ng2PageScrollModule.forRoot(),
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo'}),
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo'}),
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
     RestangularModule.forRoot((RestangularProvider) => {
       // TODO: should be grabbed from environment specific config file.

@@ -56,4 +56,25 @@ export class EventsService {
         return Observable.throw(new Error('Could not find matching event'));
       });
   }
+
+  /**
+   * Update an event
+   *
+   * @param updatedEvent the event to be updated
+   * @returns {Observable<Event>} the updated event
+   */
+  public deleteEvent(updatedEvent: Event): Observable<Event> {
+    // TODO: handle error
+    return this.restangular.all('events').getList()
+      .switchMap(events => {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
+          if (event._id == updatedEvent._id) {
+            return event.remove();
+          }
+        }
+
+        return Observable.throw(new Error('Could not find matching event'));
+      });
+  }
 }

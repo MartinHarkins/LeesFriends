@@ -1,8 +1,15 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, ViewContainerRef} from "@angular/core";
 import {Observable} from "rxjs";
 
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
+
+import * as _ from "lodash";
+import {ConfirmDeleteEventModalComponent, EventDeleteAction} from "./confirm-delete.modal";
+
+import { overlayConfigFactory } from "angular2-modal";
+import {Modal} from 'angular2-modal/plugins/bootstrap';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 /**
  * A wrapper for the {@link Event} components.
@@ -14,7 +21,7 @@ class EventWrapper {
 }
 @Component({
   selector: 'event-list',
-  styles: [ `
+  styles: [`
     .row:last-child hr {
         display:none;
     }    
@@ -29,7 +36,12 @@ class EventWrapper {
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
     <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
-    <button *ngIf="editable && !eventWrapper.editing" class="btn btn-default" type="button" (click)="edit(eventWrapper)">Edit</button>
+    
+    <div *ngIf="editable && !eventWrapper.editing">
+        <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
+        <button class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
+        <button class="btn btn-danger" type="button" (click)="deleteEvent(eventWrapper)">Delete</button>
+    </div>
 
     <event-editor *ngIf="editable && eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
     <hr/>
@@ -47,7 +59,8 @@ export class EventListComponent implements OnInit {
   private eventWrappers: EventWrapper[];
   private allEvents: Event[];
 
-  constructor(private service: EventsService) {
+  constructor(private service: EventsService, vcRef: ViewContainerRef, public modal: Modal) {
+    modal.overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -111,6 +124,36 @@ export class EventListComponent implements OnInit {
    */
   private edit(eventWrapper) {
     this.toggleEdit(eventWrapper, true);
+  }
+
+  private deleteEvent(eventWrapper) {
+    this.modal.open(ConfirmDeleteEventModalComponent, overlayConfigFactory({event: eventWrapper.event}, BSModalContext))
+      .then((dialogRef) => dialogRef.result)
+      .then((action: EventDeleteAction) => {
+        if (!action) {
+          return;
+        }
+
+        switch(action) {
+          case EventDeleteAction.DELETE:
+            this.service.deleteEvent(eventWrapper.event)
+              .subscribe(
+                () => _.remove(this.eventWrappers, eventWrapper),
+                (err) => console.debug("Could not remove event", err));
+
+            break;
+          case EventDeleteAction.UNPUBLISH:
+            console.log("unpublish");
+            break;
+          case EventDeleteAction.CANCEL:
+          default:
+            break;
+        }
+      });
+  }
+
+  private unpublish(eventWrapper) {
+
   }
 
   /**
