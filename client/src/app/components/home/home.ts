@@ -11,10 +11,7 @@ import {Component} from "@angular/core";
         <our-mission></our-mission>
       </div>
       <div class="col-lg-5">
-        <div class="margin-top-xs">
-            <h3>Events</h3>
-        </div>
-        <div class="event-list-container margin-top-md">
+        <div class="event-list-container">
           <event-list [count]="4"></event-list>
         </div>
       </div>
