@@ -24,7 +24,7 @@ $color-body3: #0c1e10;
 
 @font-face {
   font-family: Gunny;
-  src: url(../assets/fonts/gnyrwn971.ttf) format('truetype');
+  src: url('../assets/fonts/gnyrwn971.ttf');
 }
 
 @font-face {
@@ -52,4 +52,18 @@ $color-body3: #0c1e10;
   .font-size-#{$name} {
     font-size: $value;
   }
+}
+
+
+h1 {
+  font-family: Gunny, sans-serif;
+  font-size: 60px;
+}
+h2 {
+  font-family: Gunny, sans-serif;
+  font-size: 50px;
+}
+h3 {
+  font-family: Gunny, sans-serif;
+  font-size: 40px;
 }

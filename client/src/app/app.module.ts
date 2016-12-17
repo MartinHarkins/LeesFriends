@@ -35,6 +35,7 @@ import {ServiceItemComponent} from "./components/service-item/service-item";
 import {AwardsComponent} from "./components/awards/awards";
 import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
+import {EventListComponent} from "./components/event-list/event-list";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -66,6 +67,7 @@ type StoreType = {
     ServiceItemComponent,
     ContactUsComponent,
     EventsComponent,
+    EventListComponent,
     EventItemComponent,
     EventEditorComponent,
     NoContentComponent,

@@ -3,7 +3,7 @@ import {Component} from "@angular/core";
 @Component({
   selector: 'header',
   template: `
-      <div class="container-fluid header">
+      <div class="container-fluid header margin-bottom-md">
         <ul class="menu">
           <li><a [routerLink]=" './services' "><h2>Services</h2></a></li>
           <li><a [routerLink]=" './our-mission' "><h2>Our Mission</h2></a></li>
