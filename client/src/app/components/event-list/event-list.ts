@@ -128,12 +128,17 @@ export class EventListComponent implements OnInit {
 
   private deleteEvent(eventWrapper) {
     this.modal.open(ConfirmDeleteEventModalComponent, overlayConfigFactory({event: eventWrapper.event}, BSModalContext))
-      .then((dialogRef) => dialogRef.result)
+      .then((dialogRef) => {
+      console.log('test');
+        if (dialogRef.result) {
+          return dialogRef.result;
+        }
+        throw new Error('No result');
+      })
       .then((action: EventDeleteAction) => {
         if (!action) {
           return;
         }
-
         switch(action) {
           case EventDeleteAction.DELETE:
             this.service.deleteEvent(eventWrapper.event)
@@ -149,7 +154,7 @@ export class EventListComponent implements OnInit {
           default:
             break;
         }
-      });
+      }, (err: any) => console.debug('Could not retrieve result.', err));
   }
 
   private unpublish(eventWrapper) {

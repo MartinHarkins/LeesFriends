@@ -1,0 +1,11 @@
+@import '../../globals.scss';
+
+.container .unpublish {
+  border: $color-light-gray solid 1px;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.buttons {
+  margin: 10px;
+}
