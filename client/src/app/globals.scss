@@ -19,6 +19,8 @@ $color-header: white;
 $color-font: #10301f;
 $color-font-dark: #d8c862;
 $color-font-dark-gray: #1e1e1e;
+$color-light-gray: #e2ece2;
+$color-light-background: #f9faf9;
 $color-body: white;
 $color-body2: #c1edcc;
 $color-body3: #0c1e10;
@@ -67,6 +69,14 @@ h2 {
 h3 {
   font-family: 'Work Sans', sans-serif;
   font-size: 30px;
+}
+h4 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 25px;
+}
+h5 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 20px;
 }
 
 body {

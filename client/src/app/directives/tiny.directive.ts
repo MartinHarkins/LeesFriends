@@ -29,7 +29,14 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
       'link image code'
     ],
     toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-    image_advtab: true
+    image_advtab: true,
+    // Specify custom formats to fix alignment issues.
+    'formats' : {
+      'alignleft' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {"align":  'left'}, styles: {textAlign: 'left'}},
+      'aligncenter' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', attributes: {"align":  'center'}, styles: {display: 'block', margin: '0px auto', textAlign: 'center'}},
+      'alignright' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {"align":  'right'}, styles: {textAlign: 'right'}},
+      'alignfull' : {'selector' : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table', attributes: {"align":  'justify'}, styles: {textAlign: 'justify'}}
+    }
   };
 
   constructor() {

@@ -5,7 +5,36 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'event-item',
-  templateUrl: './event-item.html'
+  styles: [`
+    .event-item {
+        padding: 10px;
+        padding-bottom: 5px;
+    }
+    
+    // Styles needed to correct tinymce alignment
+    /deep/ .content img[align="center"] {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+    }
+    /deep/ .content *[align="left"] {
+        text-align: left;
+    }
+    /deep/ .content *[align="center"] {
+        text-align: center;
+    }
+    /deep/ .content *[align="right"] {
+        text-align: right;
+    }
+    /deep/ .content *[align="justify"] {
+        text-align: justify;
+    }
+`],
+  template: `
+<div class="event-item">
+  <h5>{{event.title}} - {{formattedDate}}</h5>
+  <div class="content margin-top-sm" [innerHTML]="event.content"></div>
+</div>`
 })
 export class EventItemComponent {
   @Input() event: Event;
