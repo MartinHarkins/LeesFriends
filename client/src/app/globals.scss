@@ -10,15 +10,16 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 $margins: (xs: 0.5rem, sm: 1rem, md: 1.5rem, lg: 2rem, xl: 2.5rem);
 $font-sizes: (xs: 10px, sm: 15px, md: 20px, lg: 30px, xl: 40px);
 
-$default-font-family: "Baskerville", serif;
+$default-font-family: 'Work Sans', sans-serif;
 
 /* Coolors Exported Palette - coolors.co/10301f-eddd68-53a05b-c1edcc-0c1e10 */
 
 /* RGB */
-$color-header: #10301f;
-$color-font: #eddd68;
+$color-header: white;
+$color-font: #10301f;
 $color-font-dark: #d8c862;
-$color-body: #53a05b;
+$color-font-dark-gray: #1e1e1e;
+$color-body: white;
 $color-body2: #c1edcc;
 $color-body3: #0c1e10;
 
@@ -56,14 +57,18 @@ $color-body3: #0c1e10;
 
 
 h1 {
-  font-family: Gunny, sans-serif;
-  font-size: 60px;
-}
-h2 {
-  font-family: Gunny, sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-size: 50px;
 }
-h3 {
-  font-family: Gunny, sans-serif;
+h2 {
+  font-family: 'Work Sans', sans-serif;
   font-size: 40px;
+}
+h3 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 30px;
+}
+
+body {
+  font-family: 'Work Sans', sans-serif;
 }

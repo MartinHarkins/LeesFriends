@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
+
 /**
  * A wrapper for the {@link Event} components.
  */
@@ -13,25 +14,44 @@ class EventWrapper {
 }
 @Component({
   selector: 'event-list',
+  styles: [ `
+    .row:last-child hr {
+        display:none;
+    }    
+    .more a {
+        width: 100%;
+        display: block;
+        cursor: pointer;
+        margin: -15px;
+        padding: 15px;
+    }
+    `],
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
     <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
     <button *ngIf="editable && !eventWrapper.editing" class="btn btn-default" type="button" (click)="edit(eventWrapper)">Edit</button>
 
     <event-editor *ngIf="editable && eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
+    <hr/>
   </div>
-`
+  <div *ngIf="hasMore" class="more">
+    <a (click)="loadMore()"><strong>More...</strong></a> 
+  </div>`
 })
 export class EventListComponent implements OnInit {
   @Input() editable?: boolean;
   @Input() count?: number;
 
+  private hasMore: boolean;
+
   private eventWrappers: EventWrapper[];
+  private allEvents: Event[];
 
   constructor(private service: EventsService) {
   }
 
   ngOnInit() {
+    this.hasMore = false;
     this.reloadList();
   }
 
@@ -43,21 +63,45 @@ export class EventListComponent implements OnInit {
     // Angular 2 doc recommends doing sorting away from template.
     this.service.getEventsByDateDesc()
       .switchMap((eventList: Event[]) => {
-        // break up event list and wrap each item. then build list up again
-        let obs = Observable.from<Event>(eventList)
-        // Only take [count] elements
-        if (this.count) {
-          obs = obs.take(this.count);
-        }
-        return obs
-          .map(event => new EventWrapper(event, false))
-          .toArray()
+        this.allEvents = eventList;
+
+        return this.wrapEvents(eventList);
       })
       .subscribe((wrappedEvents: EventWrapper[]) => {
         this.eventWrappers = wrappedEvents;
       }, (error) => {
         console.log('Error getting list of events', error)
       });
+  }
+
+  private wrapEvents(events: Event[]): Observable<EventWrapper[]> {
+    // break up event list and wrap each item. then build list up again
+    let obs = Observable.from<Event>(events);
+    // Only take [count] elements
+    if (this.count) {
+      this.hasMore = events.length > this.count;
+      obs = obs.take(this.count);
+    }
+    return obs
+      .map(event => new EventWrapper(event, false))
+      .toArray();
+  }
+
+  private loadMore(): void {
+    const visibleCount = this.eventWrappers.length;
+
+    // If all the events have already been loaded, reset hasMore flag
+    if (visibleCount >= this.allEvents.length) {
+      this.hasMore = false;
+      return;
+    }
+
+    const eventsToLoad = this.allEvents.slice(visibleCount, visibleCount + this.count);
+    this.wrapEvents(eventsToLoad)
+      .switchMap((wrappedEvents: EventWrapper[]) => Observable.from(wrappedEvents))
+      .subscribe((wrappedEvent: EventWrapper) => {
+        this.eventWrappers.push(wrappedEvent);
+      })
   }
 
   /**

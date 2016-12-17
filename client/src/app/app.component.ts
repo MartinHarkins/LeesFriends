@@ -22,7 +22,7 @@ import {AppState} from './app.service';
       <router-outlet></router-outlet>
     </main>
 
-    <div class="footer">
+    <div class="footer container">
       <div class="row margin-top-lg">
         <div class="col-md-4"></div>
         <div class="col-md-4  text-center font-size-md">

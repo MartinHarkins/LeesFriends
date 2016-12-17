@@ -2,9 +2,10 @@
 
 .header {
   background-color: $color-header;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 30px;
   text-align: center;
+
+  border-bottom: 1px $color-font solid;
 
   color: $color-font;
   a {
@@ -35,5 +36,9 @@
     padding: 10px;
     margin-left: 20px;
     margin-right: 20px;
+  }
+
+  .more {
+    padding-right: 15px;
   }
 }
