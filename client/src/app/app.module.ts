@@ -1,52 +1,39 @@
-import {NgModule, ApplicationRef} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
-import {RouterModule, PreloadAllModules} from '@angular/router';
-import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
-import {RestangularModule} from 'ng2-restangular';
-
+import {NgModule, ApplicationRef} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {RouterModule, PreloadAllModules} from "@angular/router";
+import {removeNgStyles, createNewHosts, createInputTransfer} from "@angularclass/hmr";
+import {RestangularModule} from "ng2-restangular";
 // UI
-import {ModalModule} from 'angular2-modal';
-import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
-import {DatePickerModule} from 'ng2-datepicker';
-import {Ng2PageScrollModule} from 'ng2-page-scroll/ng2-page-scroll';
-import {AgmCoreModule} from 'angular2-google-maps/core';
-
+import {Ng2PageScrollModule} from "ng2-page-scroll/ng2-page-scroll";
+import {AgmCoreModule} from "angular2-google-maps/core";
 /*
  * Platform and Environment providers/directives/pipes
  */
-import {ENV_PROVIDERS} from './environment';
-import {ROUTES} from './app.routes';
+import {ENV_PROVIDERS} from "./environment";
+import {ROUTES} from "./app.routes";
 // App is our top level component
-import {AppComponent} from './app.component';
-import {APP_RESOLVER_PROVIDERS} from './app.resolver';
-import {AppState, InternalStateType} from './app.service';
-
-import {HomeComponent} from './components/home';
-import {EventItemComponent} from "./components/event-item/event-item";
+import {AppComponent} from "./app.component";
+import {APP_RESOLVER_PROVIDERS} from "./app.resolver";
+import {AppState, InternalStateType} from "./app.service";
+import {HomeComponent} from "./components/home";
 import {NoContentComponent} from "./components/no-content/no-content.component";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
-import {EventsComponent} from "./components/events/events";
-import {EventEditorComponent} from "./components/event-editor/event-editor";
-import {TinymceEditorDirective} from "./directives/tiny.directive";
-import {EventsService} from "./services/events.service";
 import {HistoryComponent} from "./components/history/history";
 import {ServicesComponent} from "./components/services/services";
 import {ServiceItemComponent} from "./components/service-item/service-item";
 import {AwardsComponent} from "./components/awards/awards";
 import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
-import {EventListComponent} from "./components/event-list/event-list";
-import {ConfirmDeleteEventModalComponent} from "./components/event-list/confirm-delete.modal";
-import {AdminComponent} from "./components/admin/admin.component";
+import {AdminModule} from "./components/admin/admin.module";
+import {EventsModule} from "./components/events/events.module";
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState,
-  EventsService
+  AppState
 ];
 
 type StoreType = {
@@ -71,23 +58,15 @@ type StoreType = {
     ServicesComponent,
     ServiceItemComponent,
     ContactUsComponent,
-    EventsComponent,
-    EventListComponent,
-    EventItemComponent,
-    ConfirmDeleteEventModalComponent,
-    EventEditorComponent,
-    AdminComponent,
-    NoContentComponent,
-    TinymceEditorDirective
+    NoContentComponent
   ],
   imports: [ // import Angular's modules
+    AdminModule,
+    EventsModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    DatePickerModule,
-    ModalModule.forRoot([ConfirmDeleteEventModalComponent]),
-    BootstrapModalModule,
     Ng2PageScrollModule.forRoot(),
     AgmCoreModule.forRoot({apiKey: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo'}),
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
