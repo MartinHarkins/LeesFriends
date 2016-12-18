@@ -32,7 +32,7 @@ import * as moment from 'moment';
 `],
   template: `
 <div class="event-item">
-  <h5>{{event.title}} - {{formattedDate}}</h5>
+  <h5><span *ngIf="!event.published" class="text-warning">DRAFT - </span>{{event.title}} - {{formattedDate}}</h5>
   <div class="content margin-top-sm" [innerHTML]="event.content"></div>
 </div>`
 })

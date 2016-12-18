@@ -7,9 +7,9 @@ import {EventsService} from "../../services/events.service";
 import * as _ from "lodash";
 import {ConfirmDeleteEventModalComponent, EventDeleteAction} from "./confirm-delete.modal";
 
-import { overlayConfigFactory } from "angular2-modal";
+import {overlayConfigFactory} from "angular2-modal";
 import {Modal} from 'angular2-modal/plugins/bootstrap';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
 
 /**
  * A wrapper for the {@link Event} components.
@@ -21,21 +21,9 @@ class EventWrapper {
 }
 @Component({
   selector: 'event-list',
-  styles: [`
-    .row:last-child hr {
-        display:none;
-    }    
-    .more a {
-        width: 100%;
-        display: block;
-        cursor: pointer;
-        margin: -15px;
-        padding: 15px;
-    }
-    `],
+  styleUrls: [ 'event-list.scss'],
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
-    
     <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
         <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
         <button *ngIf="eventWrapper.event.published" class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
@@ -43,7 +31,7 @@ class EventWrapper {
     </div>
     
     <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
-
+    
     <event-editor *ngIf="editable && eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
     <hr/>
   </div>
@@ -130,7 +118,7 @@ export class EventListComponent implements OnInit {
   private deleteEvent(eventWrapper) {
     this.modal.open(ConfirmDeleteEventModalComponent, overlayConfigFactory({event: eventWrapper.event}, BSModalContext))
       .then((dialogRef) => {
-      console.log('test');
+        console.log('test');
         if (dialogRef.result) {
           return dialogRef.result;
         }
@@ -140,7 +128,7 @@ export class EventListComponent implements OnInit {
         if (!action) {
           return;
         }
-        switch(action) {
+        switch (action) {
           case EventDeleteAction.DELETE:
             this.service.deleteEvent(eventWrapper.event)
               .subscribe(
@@ -161,7 +149,7 @@ export class EventListComponent implements OnInit {
   private unpublish(eventWrapper) {
     _.assignIn(eventWrapper.event, {published: false});
     this.service.updateEvent(eventWrapper.event)
-      .subscribe((event: Event) => eventWrapper.event = event );
+      .subscribe((event: Event) => eventWrapper.event = event);
   }
 
   /**
