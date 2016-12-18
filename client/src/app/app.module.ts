@@ -40,6 +40,7 @@ import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
 import {EventListComponent} from "./components/event-list/event-list";
 import {ConfirmDeleteEventModalComponent} from "./components/event-list/confirm-delete.modal";
+import {AdminComponent} from "./components/admin/admin.component";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -75,6 +76,7 @@ type StoreType = {
     EventItemComponent,
     ConfirmDeleteEventModalComponent,
     EventEditorComponent,
+    AdminComponent,
     NoContentComponent,
     TinymceEditorDirective
   ],
