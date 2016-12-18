@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewContainerRef} from "@angular/core";
+import {Component, OnInit, Input, ViewContainerRef, QueryList, ViewChildren} from "@angular/core";
 import {Observable} from "rxjs";
 
 import {Event} from "../../models/event";
@@ -10,6 +10,8 @@ import {ConfirmDeleteEventModalComponent, EventDeleteAction} from "./confirm-del
 import {overlayConfigFactory} from "angular2-modal";
 import {Modal} from 'angular2-modal/plugins/bootstrap';
 import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
+import {HasChanges} from "../../core/has-changes.interface";
+import {EventEditorComponent} from "../event-editor/event-editor";
 
 /**
  * A wrapper for the {@link Event} components.
@@ -39,9 +41,12 @@ class EventWrapper {
     <a (click)="loadMore()"><strong>More...</strong></a> 
   </div>`
 })
-export class EventListComponent implements OnInit {
+export class EventListComponent implements OnInit, HasChanges {
   @Input() editable?: boolean;
   @Input() count?: number;
+
+  @ViewChildren(EventEditorComponent)
+  private eventEditors: QueryList<EventEditorComponent>;
 
   private hasMore: boolean;
 
@@ -170,5 +175,9 @@ export class EventListComponent implements OnInit {
 
   private toggleEdit(eventWrapper, editing) {
     eventWrapper.editing = editing;
+  }
+
+  hasChanges(): boolean {
+    return this.eventEditors.some((eventEditor: EventEditorComponent) => eventEditor.hasChanges());
   }
 }

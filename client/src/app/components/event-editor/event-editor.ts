@@ -1,26 +1,26 @@
 import {Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit, ElementRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
-
 import {DatePickerOptions, DateModel} from "ng2-datepicker";
-import * as moment from "moment";
-
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
 import {TinymceEditorDirective} from "../../directives/tiny.directive";
-import * as _ from 'lodash'
+import * as _ from "lodash";
+import {HasChanges} from "../../core/has-changes.interface";
 
 @Component({
   selector: 'event-editor',
   templateUrl: 'event-editor.html',
   styleUrls: ['./event-editor.scss']
 })
-export class EventEditorComponent implements OnInit {
+export class EventEditorComponent implements OnInit, HasChanges {
   @Output() onEventAdded = new EventEmitter<Event>();
   @Output() onEventUpdated = new EventEmitter<Event>();
   @Output() onEditCancel = new EventEmitter<void>();
 
   @Input() event?: Event;
+
+  private originalEvent: Event;
 
   eventEditForm: FormGroup;
 
@@ -72,6 +72,9 @@ export class EventEditorComponent implements OnInit {
       this.event = new Event('', '', new Date());
     }
 
+    // Clone object in order to check for changes later.
+    this.originalEvent = Event.clone(this.event);
+
     this.tinyDateModel = TinymceEditorDirective.buildDateModel(this.DATE_FORMAT, this.event.date);
 
     this.buildForm();
@@ -102,8 +105,6 @@ export class EventEditorComponent implements OnInit {
 
       const control = form.get(field);
 
-      console.log(field, {value: control.value, dirty: control.dirty, valid: control.valid});
-
       if (control && control.dirty && !control.valid) {
         const messages = this.validationMessages[field];
         for (const key in control.errors) {
@@ -112,7 +113,6 @@ export class EventEditorComponent implements OnInit {
       }
     }
 
-    console.log('detectChanges...');
     // Purposefully redetecting changes after the `onValueChanged` is called.
     // Reason:
     //  when the tinymce editor removes itself,
@@ -210,5 +210,12 @@ export class EventEditorComponent implements OnInit {
     this.service.updateEvent(event)
       .subscribe(updatedEvent => this.onEventUpdated.emit(updatedEvent),
         err => console.error('Error updating event', err));
+  }
+
+  hasChanges(): boolean {
+    return !(_.isEqual(this.originalEvent.title, this.event.title)
+      && _.isEqual(this.originalEvent.date, this.event.date)
+      && _.isEqual(this.originalEvent.content, this.event.title));
+
   }
 }

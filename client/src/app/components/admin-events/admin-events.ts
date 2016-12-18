@@ -1,5 +1,9 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {EventListComponent} from "../event-list/event-list";
+import {Observable} from "rxjs";
+import {Modal} from "angular2-modal/plugins/bootstrap/modal";
+import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
+import {EventEditorComponent} from "../event-editor/event-editor";
 
 @Component({
   selector: 'admin-events',
@@ -11,11 +15,14 @@ import {EventListComponent} from "../event-list/event-list";
   <event-list [editable]="true"></event-list>
 </div>`
 })
-export class AdminEventsComponent implements OnInit {
+export class AdminEventsComponent implements OnInit, CanDeactivateGuard {
   @ViewChild(EventListComponent)
   private eventList: EventListComponent;
+  @ViewChild(EventEditorComponent)
+  private eventEditor: EventEditorComponent;
 
-  constructor() {
+  constructor(vcRef: ViewContainerRef, public modal: Modal) {
+    modal.overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -28,5 +35,22 @@ export class AdminEventsComponent implements OnInit {
    */
   onNewEvent(event) {
     this.eventList.reloadList();
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.eventEditor.hasChanges()
+      || this.eventList.hasChanges()) {
+      return this.modal.confirm()
+        .size('sm')
+        .body('Discard Changes?')
+        .open()
+        .then(dialogRef => dialogRef.result)
+        .catch(err => {
+          // An error is thrown when the user cancels the dialog.
+          // That's because the dialog returns `undefined`
+          console.debug('Error returning from dialog.', err)
+        })
+    }
+    return true;
   }
 }
