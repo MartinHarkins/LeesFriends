@@ -7,6 +7,8 @@ import {UsersService} from "../../services/users.service";
 import {EventsModule} from "../events/events.module";
 import {AdminEventsComponent} from "../admin-events/admin-events";
 import {AdminWelcomeComponent} from "./admin.welcome";
+import {AuthGuard} from '../core/auth-guard.service'
+import {AuthService} from "../core/auth.service";
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import {AdminWelcomeComponent} from "./admin.welcome";
     EventsModule
   ],
   providers: [
-    UsersService
+    UsersService,
+    AuthGuard,
+    AuthService
   ]
 })
 export class AdminModule{}

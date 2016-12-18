@@ -3,6 +3,7 @@ import {AdminComponent} from "./admin.component";
 import {RouterModule} from "@angular/router";
 import {AdminEventsComponent} from "../admin-events/admin-events";
 import {AdminWelcomeComponent} from "./admin.welcome";
+import {AuthGuard} from "../core/auth-guard.service";
 
 @NgModule({
   imports: [ // import Angular's modules
@@ -10,6 +11,7 @@ import {AdminWelcomeComponent} from "./admin.welcome";
       {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [AuthGuard],
         children: [
           {
             path: '',

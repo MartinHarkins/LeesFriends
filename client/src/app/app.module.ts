@@ -29,6 +29,7 @@ import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
 import {AdminModule} from "./components/admin/admin.module";
 import {EventsModule} from "./components/events/events.module";
+import {LoginComponent} from "./components/login/login.component";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -49,6 +50,7 @@ type StoreType = {
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
+    LoginComponent,
     HomeComponent,
     HeaderComponent,
     HistoryComponent,
