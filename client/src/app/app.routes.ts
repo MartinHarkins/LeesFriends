@@ -8,6 +8,7 @@ import {AwardsComponent} from "./components/awards/awards";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
+import {AdminComponent} from "./components/admin/admin.component";
 
 
 export const ROUTES: Routes = [

@@ -1,33 +1,19 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {EventListComponent} from "../event-list/event-list";
+import {Component} from "@angular/core";
 
 @Component({
   selector: 'admin',
   template: `
-<div class="container">
-  <div class="row">
-    <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
-  </div>
-  <event-list [editable]="true"></event-list>
+<div class="container-fluid">
+    <div class="col-lg-1">
+        <a [routerLink]="['events']"><h2>Events</h2></a>
+    </div>
+    <div class="col-lg-11">
+        <router-outlet></router-outlet>
+    </div>
 </div>
 `
 })
-export class AdminComponent implements OnInit {
-  @ViewChild(EventListComponent)
-  private eventList: EventListComponent;
-
+export class AdminComponent {
   constructor() {
-  }
-
-  ngOnInit() {
-  }
-
-  /**
-   * Called when a new event has been added
-   *
-   * @param event the event that was added.
-   */
-  onNewEvent(event) {
-    this.eventList.reloadList();
   }
 }
