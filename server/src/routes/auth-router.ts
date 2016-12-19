@@ -24,11 +24,15 @@ export class AuthRouter {
             }
 
             dataService.isValidCredentials(username, password)
-                .subscribe(
-                    user => {
-                        res.status(200).json({
-                            username: user.username
-                        });
+                .subscribe(responseWrapper => {
+                        if (responseWrapper.isSuccessful()) {
+                            res.status(200).json({
+                                username: responseWrapper.response.username
+                            });
+                        } else {
+                            console.log('Error getting user info', responseWrapper.error);
+                            res.status(404).json({error: 'Invalid login/password'});
+                        }
                     },
                     err => {
                         console.log('Error logging in', JSON.stringify(err));

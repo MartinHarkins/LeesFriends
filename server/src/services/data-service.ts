@@ -1,13 +1,15 @@
 import * as DataStore from 'nedb';
 import * as express from 'express';
 
-import * as Rx from '@reactivex/rxjs';
 import {Event} from "../models/event";
 import {Error} from "../common/error";
 
 import * as bcrypt from 'bcrypt-nodejs';
 import {EnvConfig} from "../core/env-config";
 import {User} from "../models/user";
+
+import {Observable, Subscriber, AsyncSubject} from "rxjs/Rx";
+import {ResponseWrapper} from "../core/response-wrapper";
 
 class DB {
     constructor(public events: DataStore, public users: DataStore) {
@@ -109,8 +111,8 @@ export class DataService {
         return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.bCryptSalt);
     }
 
-    getEvents(opt?: {includeDrafts: boolean}): Rx.Observable<Event[]> {
-        const subject = new Rx.AsyncSubject<Event[]>();
+    getEvents(opt?: {includeDrafts: boolean}): Observable<Event[]> {
+        const subject = new AsyncSubject<Event[]>();
 
         let options = opt || {
                 includeDrafts: false
@@ -137,12 +139,12 @@ export class DataService {
         return subject;
     }
 
-    addEvent(event: Event): Rx.Observable<Event> {
+    addEvent(event: Event): Observable<Event> {
         if (!event) {
-            return Rx.Observable.throw(new Error('Event cannot be empty', event));
+            return Observable.throw(new Error('Event cannot be empty', event));
         }
 
-        const subject = new Rx.AsyncSubject<Event>();
+        const subject = new AsyncSubject<Event>();
         this.db.events.insert<Event>(event, function (err, newDoc) {
             if (err) {
                 throw new Error('Could not add event', err.message);
@@ -154,13 +156,13 @@ export class DataService {
         return subject;
     }
 
-    updateEvent(id: string, event: Event): Rx.Observable<Event> {
+    updateEvent(id: string, event: Event): Observable<Event> {
         if (!event) {
-            return Rx.Observable.throw(new Error('Event cannot be empty', event));
+            return Observable.throw(new Error('Event cannot be empty', event));
         }
         console.log('event being updated', JSON.stringify(event));
 
-        const subject = new Rx.AsyncSubject<Event>();
+        const subject = new AsyncSubject<Event>();
         this.db.events.update({_id: id}, event, {}, function (err) {
             if (err) {
                 throw new Error('Could not update event for id' + id, err);
@@ -172,28 +174,33 @@ export class DataService {
         return subject;
     }
 
-    isValidCredentials(username: string, password: string): Rx.Observable<User> {
-        const subject = new Rx.AsyncSubject<User>();
+    isValidCredentials(username: string, password: string): Observable<ResponseWrapper<User>> {
+        return Observable.create((subscriber: Subscriber<ResponseWrapper<User>>) => {
+            console.log('username', username);
+            this.db.users.findOne<User>({
+                username: username,
+                password: this.hashPassword(password)
+            }, (err, user: User) => {
+                if (err) {
+                    console.log('Could not get list of events', err);
+                    subscriber.next(ResponseWrapper.error<User>(new Error('Could not match user', err)));
+                    subscriber.complete();
+                    return;
+                }
 
-        console.log('username', username);
-        this.db.users.findOne<User>({
-            username: username,
-            password: this.hashPassword(password)
-        }, (err, user: User) => {
-            if (err) {
-                console.log('Could not get list of events', err);
+                if (user == null) {
+                    subscriber.next(ResponseWrapper.error<User>(new Error('User not found.')));
+                    subscriber.complete();
+                    return;
+                }
 
-                throw new Error('Could not match user', err);
-            }
-
-            if (user == null) {
-                throw new Error('User not found');
-            }
-
-            subject.next(user);
-            subject.complete();
+                subscriber.next(ResponseWrapper.success<User>(user));
+                subscriber.complete();
+            });
+        }).catch(e => {
+            console.log(JSON.stringify(e));
+            return Observable.from(null);
         });
 
-        return subject;
     }
 }

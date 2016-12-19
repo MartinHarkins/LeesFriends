@@ -17,7 +17,7 @@ import {DataService} from "./services/data-service";
 import {HttpError} from "./common/http-error";
 import {IndexRouter} from "./routes/index";
 import {EnvConfig} from "./core/env-config";
-import {AuthRouter} from "./routes/auth";
+import {AuthRouter} from "./routes/auth-router";
 
 
 /**
