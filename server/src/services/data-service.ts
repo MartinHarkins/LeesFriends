@@ -111,8 +111,8 @@ export class DataService {
         return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.bCryptSalt);
     }
 
-    getEvents(opt?: {includeDrafts: boolean}): Observable<Event[]> {
-        const subject = new AsyncSubject<Event[]>();
+    getEvents(opt?: {includeDrafts: boolean}): Observable<ResponseWrapper<Event[]>> {
+        const subject = new AsyncSubject<ResponseWrapper<Event[]>>();
 
         let options = opt || {
                 includeDrafts: false
@@ -126,81 +126,82 @@ export class DataService {
             };
         }
 
-        this.db.events.find<Event>(filters).sort({date: -1}).exec(function (err, docs) {
+        this.db.events.find<Event>(filters).sort({date: -1}).exec(function (err, events) {
             if (err) {
                 console.log('Could not get list of events', err);
 
-                throw new Error('Could not get list of events', err);
+                subject.next(ResponseWrapper.error<Event[]>(new Error('Could not get list of events', err)));
+                subject.complete();
+                return;
             }
-            subject.next(docs);
+            subject.next(ResponseWrapper.success(events));
             subject.complete();
         });
 
         return subject;
     }
 
-    addEvent(event: Event): Observable<Event> {
+    addEvent(event: Event): Observable<ResponseWrapper<Event>> {
         if (!event) {
-            return Observable.throw(new Error('Event cannot be empty', event));
+            return Observable.of(ResponseWrapper.error<Event>(new Error('Event cannot be empty', event)));
         }
 
-        const subject = new AsyncSubject<Event>();
-        this.db.events.insert<Event>(event, function (err, newDoc) {
+        const subject = new AsyncSubject<ResponseWrapper<Event>>();
+        this.db.events.insert<Event>(event, (err, newEvent) => {
             if (err) {
-                throw new Error('Could not add event', err.message);
+                return Observable.of(ResponseWrapper.error<Event>(new Error('Could not add event', err.message)));
             }
 
-            subject.next(newDoc);
+            subject.next(ResponseWrapper.success(newEvent));
             subject.complete();
         });
         return subject;
     }
 
-    updateEvent(id: string, event: Event): Observable<Event> {
+    updateEvent(id: string, event: Event): Observable<ResponseWrapper<Event>> {
         if (!event) {
-            return Observable.throw(new Error('Event cannot be empty', event));
+            return Observable.of(ResponseWrapper.error<Event>(new Error('Event cannot be empty', event)));
         }
         console.log('event being updated', JSON.stringify(event));
 
-        const subject = new AsyncSubject<Event>();
+        const subject = new AsyncSubject<ResponseWrapper<Event>>();
         this.db.events.update({_id: id}, event, {}, function (err) {
             if (err) {
-                throw new Error('Could not update event for id' + id, err);
+                subject.next(ResponseWrapper.error<Event>(new Error('Could not update event for id' + id)));
+                subject.complete();
+                return;
             }
 
-            subject.next(event);
+            subject.next(ResponseWrapper.success(event));
             subject.complete();
         });
         return subject;
     }
 
     isValidCredentials(username: string, password: string): Observable<ResponseWrapper<User>> {
-        return Observable.create((subscriber: Subscriber<ResponseWrapper<User>>) => {
-            console.log('username', username);
-            this.db.users.findOne<User>({
-                username: username,
-                password: this.hashPassword(password)
-            }, (err, user: User) => {
-                if (err) {
-                    console.log('Could not get list of events', err);
-                    subscriber.next(ResponseWrapper.error<User>(new Error('Could not match user', err)));
-                    subscriber.complete();
-                    return;
-                }
+        const subject = new AsyncSubject<ResponseWrapper<User>>();
+            
+        console.log('username', username);
+        this.db.users.findOne<User>({
+            username: username,
+            password: this.hashPassword(password)
+        }, (err, user: User) => {
+            if (err) {
+                console.log('Could not get list of events', err);
+                subject.next(ResponseWrapper.error<User>(new Error('Could not match user', err)));
+                subject.complete();
+                return;
+            }
 
-                if (user == null) {
-                    subscriber.next(ResponseWrapper.error<User>(new Error('User not found.')));
-                    subscriber.complete();
-                    return;
-                }
+            if (user == null) {
+                subject.next(ResponseWrapper.error<User>(new Error('User not found.')));
+                subject.complete();
+                return;
+            }
 
-                subscriber.next(ResponseWrapper.success<User>(user));
-                subscriber.complete();
-            });
-        }).catch(e => {
-            console.log(JSON.stringify(e));
-            return Observable.from(null);
+            subject.next(ResponseWrapper.success<User>(user));
+            subject.complete();
         });
-
+        return subject;
     }
 }

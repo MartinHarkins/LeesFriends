@@ -4,6 +4,7 @@ import {NextFunction, Request, Response, Router} from "express";
 
 import {DataService} from "../services/data-service";
 import {Event} from "../models/event";
+import {ResponseWrapper} from "../core/response-wrapper";
 
 export class EventsRouter {
     private constructor() {
@@ -26,8 +27,13 @@ export class EventsRouter {
                 options.includeDrafts = true
             }
             dataService.getEvents(options)
-                .subscribe(
-                    (events: Event[]) => res.json(events),
+                .subscribe((responseWrapper: ResponseWrapper<Event[]>) => {
+                        if (responseWrapper.isSuccessful()) {
+                            res.status(200).json(responseWrapper.response);
+                        } else {
+                            res.status(404).json({error: 'Error getting the list of events'});
+                        }
+                    },
                     err => {
                         console.error('Could not get list of events', err);
 
@@ -44,12 +50,18 @@ export class EventsRouter {
             }
 
             dataService.addEvent(newEvent)
-                .subscribe(
-                    event => res.json(event),
+                .subscribe((responseWrapper: ResponseWrapper<Event>) => {
+                        if (responseWrapper.isSuccessful()) {
+                            res.status(200).json(responseWrapper.response);
+                        } else {
+                            res.status(404).json({error: 'Error adding the event'});
+                        }
+                    },
                     err => {
                         console.error('Error adding event to database', JSON.stringify(err));
                         res.status(500).send({error: 'Error adding event to database.'});
-                    });
+                    }
+                );
         });
 
         router.put('/:eventId', (req: Request, res: Response, next: NextFunction) => {
@@ -65,8 +77,13 @@ export class EventsRouter {
             console.log('put event', event);
 
             dataService.updateEvent(id, event)
-                .subscribe(
-                    event => res.json(event),
+                .subscribe((responseWrapper: ResponseWrapper<Event>) => {
+                        if (responseWrapper.isSuccessful()) {
+                            res.status(200).json(responseWrapper.response);
+                        } else {
+                            res.status(404).json({error: 'Error updating the event'});
+                        }
+                    },
                     (err) => {
                         console.error('Error updating event in dataservice', JSON.stringify(err));
                         res.status(500).send({error: 'Unknown error updating event'});
