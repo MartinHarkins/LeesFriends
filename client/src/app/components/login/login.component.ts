@@ -1,39 +1,98 @@
-import { Component }   from '@angular/core';
-import { Router }      from '@angular/router';
-import { AuthService } from '../../core/auth.service';
+import {Component, OnInit}   from '@angular/core';
+import {Router}      from '@angular/router';
+import {AuthService} from '../../core/auth.service';
+import {Observable} from "rxjs";
 
 @Component({
+  styles: [` 
+.message {
+    margin-left: 1em;
+    display: inline-block;
+}
+`],
   template: `
-    <h2>LOGIN</h2>
-    <p>{{message}}</p>
-    <p>
-      <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
-      <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
-    </p>`
+<div class="container">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+      <div class="row">
+          <form (ngSubmit)="login()" #loginForm="ngForm">
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" [(ngModel)]="username" id="username" name="username" required #usernameInput="ngModel"/>
+                
+                <div [hidden]="usernameInput.valid || usernameInput.pristine" class="text-danger">
+                  Username is required.
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" [(ngModel)]="password" id="password" name="password" required #passwordInput="ngModel"/>
+                
+                <div [hidden]="passwordInput.valid || passwordInput.pristine" class="text-danger">
+                  Password is required.
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-default" [disabled]="!loginForm.form.valid">Login</button>
+              <div class="message">{{message}}</div>
+          </form>
+      </div>
+    </div>
+    <div class="col-lg-3"></div>
+</div>`
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   message: string;
+  private username: string;
+  private password: string;
+
   constructor(public authService: AuthService, public router: Router) {
-    this.setMessage();
   }
-  setMessage() {
-    this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
+
+  ngOnInit() {
+    if (this.authService.isLoggedIn) {
+      // Get the redirect URL from our auth service
+      // If no redirect has been set, use the default
+      let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin';
+      // Redirect the user
+      this.router.navigate([redirect]);
+      return;
+    }
   }
+
   login() {
-    this.message = 'Trying to log in ...';
-    this.authService.login().subscribe(() => {
-      this.setMessage();
-      if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin';
-        // Redirect the user
-        this.router.navigate([redirect]);
-      }
-    });
+    this.message = 'Logging in ...';
+
+    LoginComponent.ensureMinDuration<boolean>(this.authService.login(this.username, this.password), 1000)
+      .subscribe(isSuccessful => {
+        if (!isSuccessful) {
+          this.message = 'Failed to log in.';
+        }
+
+        if (this.authService.isLoggedIn) {
+          // Get the redirect URL from our auth service
+          // If no redirect has been set, use the default
+          let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin';
+          // Redirect the user
+          this.router.navigate([redirect]);
+        }
+      }, (err) => {
+        this.message = 'Failed to log in.';
+        console.error('Could not log in', err);
+      });
   }
-  logout() {
-    this.authService.logout();
-    this.setMessage();
+
+  /**
+   * Delay the output of a source observable
+   * <p>
+   *     This is to prevent events occurring too fast, causing glitch looking changes in the UI (too fast for human to see)
+   * </p>
+   * @param obs the source observable
+   * @param minDuration the duration in milliseconds
+   * @returns {Observable<T>} an observable emitting the same output as the source
+   */
+  public static ensureMinDuration<T>(obs: Observable<T>, minDuration: number): Observable<T> {
+    return Observable.zip(obs, Observable.timer(minDuration))
+      .map(vals => vals[0]);
   }
 }
