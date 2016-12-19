@@ -11,6 +11,8 @@ var events_1 = require("./routes/events");
 var data_service_1 = require("./services/data-service");
 var http_error_1 = require("./common/http-error");
 var index_1 = require("./routes/index");
+var env_config_1 = require("./core/env-config");
+var auth_1 = require("./routes/auth");
 /**
  * The server.
  *
@@ -26,7 +28,8 @@ var Server = (function () {
     function Server() {
         //create expressjs application
         this.app = express();
-        this.dataService = new data_service_1.DataService(this.app);
+        this.envConfig = new env_config_1.EnvConfig();
+        this.dataService = new data_service_1.DataService(this.app, this.envConfig);
         //configure application
         this.config();
         //add routes
@@ -68,6 +71,7 @@ var Server = (function () {
         // Don't do anything there but it's needed to provide routing to the next api point.
         this.app.use('/', index_1.IndexRouter.create());
         this.app.use('/events', events_1.EventsRouter.create(this.dataService));
+        this.app.use('/auth', auth_1.AuthRouter.create(this.dataService));
     };
     /**
      * Configure application

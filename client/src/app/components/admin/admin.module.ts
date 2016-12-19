@@ -1,6 +1,7 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {CookieService} from "angular2-cookie/core"
 import {AdminRoutingModule} from "./admin-router.module";
 import {AdminComponent} from "./admin.component";
 import {UsersService} from "../../services/users.service";
@@ -27,7 +28,8 @@ import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
     UsersService,
     AuthGuard,
     AuthService,
-    CanDeactivateGuard
+    CanDeactivateGuard,
+    CookieService
   ]
 })
 export class AdminModule{}

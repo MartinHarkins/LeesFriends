@@ -5,23 +5,30 @@ import * as Rx from '@reactivex/rxjs';
 import {Event} from "../models/event";
 import {Error} from "../common/error";
 
+import * as bcrypt from 'bcrypt-nodejs';
+import {EnvConfig} from "../core/env-config";
+import {User} from "../models/user";
+
 class DB {
-    constructor(public events: DataStore) {
+    constructor(public events: DataStore, public users: DataStore) {
     }
 }
 
 export class DataService {
     private db: DB;
 
-    constructor(private app: express.Application) {
+    constructor(private app: express.Application, private envConfig: EnvConfig) {
         const that = this;
         const dbDir = this.getDbDirectory();
 
         const eventsStore = new DataStore({
             filename: dbDir + 'events.db'
         });
+        const usersStore = new DataStore({
+            filename: dbDir + 'users.db'
+        });
 
-        this.db = new DB(eventsStore);
+        this.db = new DB(eventsStore, usersStore);
 
         eventsStore.loadDatabase(function (err) {
             if (err) {
@@ -30,6 +37,14 @@ export class DataService {
             }
 
             that.initEvents(eventsStore);
+        });
+        usersStore.loadDatabase((err) => {
+            if (err) {
+                console.error('Error loading database', JSON.stringify(err));
+                return;
+            }
+
+            that.initUsers(usersStore);
         });
 
     }
@@ -72,6 +87,26 @@ export class DataService {
                 })
             }
         });
+    }
+
+    private initUsers(usersStore: DataStore) {
+        const that = this;
+        usersStore.count({}, function (err, count) {
+            if (err) {
+                console.error('Error getting user count', JSON.stringify(err));
+                return;
+            }
+
+            if (count == 0) {
+                usersStore.insert<User>(new User(
+                    that.envConfig.defaultAdminAccount.username,
+                    that.hashPassword(that.envConfig.defaultAdminAccount.username)));
+            }
+        });
+    }
+
+    public hashPassword(password: string): string {
+        return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.bCryptSalt);
     }
 
     getEvents(opt?: {includeDrafts: boolean}): Rx.Observable<Event[]> {
@@ -134,6 +169,31 @@ export class DataService {
             subject.next(event);
             subject.complete();
         });
+        return subject;
+    }
+
+    isValidCredentials(username: string, password: string): Rx.Observable<User> {
+        const subject = new Rx.AsyncSubject<User>();
+
+        console.log('username', username);
+        this.db.users.findOne<User>({
+            username: username,
+            password: this.hashPassword(password)
+        }, (err, user: User) => {
+            if (err) {
+                console.log('Could not get list of events', err);
+
+                throw new Error('Could not match user', err);
+            }
+
+            if (user == null) {
+                throw new Error('User not found');
+            }
+
+            subject.next(user);
+            subject.complete();
+        });
+
         return subject;
     }
 }

@@ -11,3 +11,5 @@ dist/*
 .tscache/*
 
 nohup.out
+
+tscommand-*

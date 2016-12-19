@@ -16,6 +16,8 @@ import {EventsRouter} from "./routes/events";
 import {DataService} from "./services/data-service";
 import {HttpError} from "./common/http-error";
 import {IndexRouter} from "./routes/index";
+import {EnvConfig} from "./core/env-config";
+import {AuthRouter} from "./routes/auth";
 
 
 /**
@@ -25,6 +27,7 @@ import {IndexRouter} from "./routes/index";
  */
 export class Server {
 
+    private envConfig: EnvConfig;
     private app: express.Application;
     private dataService: DataService;
 
@@ -50,7 +53,9 @@ export class Server {
         //create expressjs application
         this.app = express();
 
-        this.dataService = new DataService(this.app);
+        this.envConfig = new EnvConfig();
+
+        this.dataService = new DataService(this.app, this.envConfig);
 
         //configure application
         this.config();
@@ -90,6 +95,7 @@ export class Server {
         this.app.use('/', IndexRouter.create());
 
         this.app.use('/events', EventsRouter.create(this.dataService));
+        this.app.use('/auth', AuthRouter.create(this.dataService));
     }
 
     /**
