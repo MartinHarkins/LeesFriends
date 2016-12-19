@@ -35,8 +35,17 @@ export class EventsService {
    */
   public addEvent(newEvent: Event): Observable<Event> {
     // TODO: handle error
-    return this.restangular.all('events').getList()
+    return this.getAllRestangularizedEvents()
       .switchMap(events => events.post({event: newEvent}));
+  }
+
+  /**
+   * Get's all the events including drafts.
+   *
+   * @returns {any}
+   */
+  private getAllRestangularizedEvents() {
+    return this.restangular.all('events').getList({includeDrafts: true});
   }
 
   /**
@@ -47,7 +56,7 @@ export class EventsService {
    */
   public updateEvent(updatedEvent: Event): Observable<Event> {
     // TODO: handle error
-    return this.restangular.all('events').getList()
+    return this.getAllRestangularizedEvents()
       .switchMap(events => {
         for (let i = 0; i < events.length; i++) {
           const event = events[i];
@@ -69,7 +78,7 @@ export class EventsService {
    */
   public deleteEvent(updatedEvent: Event): Observable<Event> {
     // TODO: handle error
-    return this.restangular.all('events').getList()
+    return this.getAllRestangularizedEvents()
       .switchMap(events => {
         for (let i = 0; i < events.length; i++) {
           const event = events[i];

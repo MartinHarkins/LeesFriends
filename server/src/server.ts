@@ -12,12 +12,12 @@ import * as helmet from 'helmet';
 
 import * as favicon from 'serve-favicon';
 
-import {EventsRouter} from "./routes/events";
+import {EventsRouter} from "./routes/events.router";
 import {DataService} from "./services/data-service";
 import {HttpError} from "./common/http-error";
 import {IndexRouter} from "./routes/index";
 import {EnvConfig} from "./core/env-config";
-import {AuthRouter} from "./routes/auth-router";
+import {AuthRouter} from "./routes/auth.router";
 
 
 /**

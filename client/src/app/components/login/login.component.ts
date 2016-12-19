@@ -2,6 +2,7 @@ import {Component, OnInit}   from '@angular/core';
 import {Router}      from '@angular/router';
 import {AuthService} from '../../core/auth.service';
 import {Observable} from "rxjs";
+import {RxUtils} from "../../core/utils/RxUtils";
 
 @Component({
   styles: [` 
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.message = 'Logging in ...';
 
-    LoginComponent.ensureMinDuration<boolean>(this.authService.login(this.username, this.password), 1000)
+    RxUtils.ensureMinDuration<boolean>(this.authService.login(this.username, this.password), 1000)
       .subscribe(isSuccessful => {
         if (!isSuccessful) {
           this.message = 'Failed to log in.';
@@ -80,19 +81,5 @@ export class LoginComponent implements OnInit {
         this.message = 'Failed to log in.';
         console.error('Could not log in', err);
       });
-  }
-
-  /**
-   * Delay the output of a source observable
-   * <p>
-   *     This is to prevent events occurring too fast, causing glitch looking changes in the UI (too fast for human to see)
-   * </p>
-   * @param obs the source observable
-   * @param minDuration the duration in milliseconds
-   * @returns {Observable<T>} an observable emitting the same output as the source
-   */
-  public static ensureMinDuration<T>(obs: Observable<T>, minDuration: number): Observable<T> {
-    return Observable.zip(obs, Observable.timer(minDuration))
-      .map(vals => vals[0]);
   }
 }

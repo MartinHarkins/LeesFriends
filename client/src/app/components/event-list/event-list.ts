@@ -12,23 +12,28 @@ import {Modal} from 'angular2-modal/plugins/bootstrap';
 import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
 import {HasChanges} from "../../core/has-changes.interface";
 import {EventEditorComponent} from "../event-editor/event-editor";
+import {RxUtils} from "../../core/utils/RxUtils";
 
 /**
  * A wrapper for the {@link Event} components.
  */
 class EventWrapper {
+  public message: string;
+
   constructor(public event: Event,
               public editing?: boolean) {
   }
 }
 @Component({
   selector: 'event-list',
-  styleUrls: [ 'event-list.scss'],
+  styleUrls: ['event-list.scss'],
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
     <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
+        <div class="message">{{eventWrapper.message}}</div>
         <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
         <button *ngIf="eventWrapper.event.published" class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
+        <button *ngIf="!eventWrapper.event.published" class="btn btn-info" type="button" (click)="publish(eventWrapper)">Publish</button>
         <button class="btn btn-danger" type="button" (click)="deleteEvent(eventWrapper)">Delete</button>
     </div>
     
@@ -135,14 +140,18 @@ export class EventListComponent implements OnInit, HasChanges {
         }
         switch (action) {
           case EventDeleteAction.DELETE:
+            eventWrapper.message = 'Deleting event ...';
             this.service.deleteEvent(eventWrapper.event)
               .subscribe(
                 () => _.remove(this.eventWrappers, eventWrapper),
-                (err) => console.debug("Could not remove event", err));
+                (err) => {
+                  console.debug("Could not remove event", err);
+                  eventWrapper.message = 'Sorry, could not delete the event. Please contact administrator.'
+                });
 
             break;
           case EventDeleteAction.UNPUBLISH:
-            console.log("unpublish");
+            this.unpublish(eventWrapper);
             break;
           case EventDeleteAction.CANCEL:
           default:
@@ -152,9 +161,37 @@ export class EventListComponent implements OnInit, HasChanges {
   }
 
   private unpublish(eventWrapper) {
-    _.assignIn(eventWrapper.event, {published: false});
-    this.service.updateEvent(eventWrapper.event)
-      .subscribe((event: Event) => eventWrapper.event = event);
+    const event = Event.clone(eventWrapper.event);
+    event.published = false;
+
+    eventWrapper.message = 'Unpublishing event ...';
+
+    RxUtils.ensureMinDuration(this.service.updateEvent(event), 1000)
+      .subscribe((event: Event) => {
+          eventWrapper.event = event;
+          eventWrapper.message = '';
+        },
+        err => {
+          console.error('Could not unpublish event', err);
+          eventWrapper.message = 'Sorry, could not unpublish the event. Please edit event or contact administrator.';
+        });
+  }
+
+  private publish(eventWrapper) {
+    const event = Event.clone(eventWrapper.event);
+    event.published = true;
+
+    eventWrapper.message = 'Publishing event ...';
+
+    RxUtils.ensureMinDuration(this.service.updateEvent(event), 1000)
+      .subscribe((event: Event) => {
+          eventWrapper.event = event;
+          eventWrapper.message = '';
+        },
+        err => {
+          console.error('Could not publish event', err);
+          eventWrapper.message = 'Sorry, could not publish the event. Please edit event or contact administrator.';
+        });
   }
 
   /**

@@ -7,6 +7,7 @@ import {EventsService} from "../../services/events.service";
 import {TinymceEditorDirective} from "../../directives/tiny.directive";
 import * as _ from "lodash";
 import {HasChanges} from "../../core/has-changes.interface";
+import {RxUtils} from "../../core/utils/RxUtils";
 
 @Component({
   selector: 'event-editor',
@@ -26,8 +27,9 @@ export class EventEditorComponent implements OnInit, HasChanges {
 
   // Date wrapper used by ng2-datepicker
   tinyDateModel: DateModel;
-
   datepickerOptions: DatePickerOptions;
+
+  private message: string;
 
   isEditing = false;
 
@@ -189,14 +191,24 @@ export class EventEditorComponent implements OnInit, HasChanges {
    */
   private add(newEvent: Event): void {
     const that = this;
+
+    if (newEvent.published) {
+      this.message = 'Saving draft ...';
+    } else {
+      this.message = 'Publishing event ...';
+    }
+
     // TODO: handle errors
-    this.service.addEvent(newEvent)
+    RxUtils.ensureMinDuration(this.service.addEvent(newEvent), 1000)
       .subscribe(() => {
         this.onEventAdded.emit(newEvent);
 
         // Clear the form
         that.event = null;
         that.reset();
+      }, err => {
+        console.error('Error adding event', err);
+        this.message = 'Sorry, we could not save the event.';
       });
   }
 
@@ -206,16 +218,21 @@ export class EventEditorComponent implements OnInit, HasChanges {
    * @param event the updated event
    */
   private update(event: Event): void {
+    this.message = 'Updating event ...';
+
     // TODO: handle errors properly
-    this.service.updateEvent(event)
+    RxUtils.ensureMinDuration(this.service.updateEvent(event), 1000)
       .subscribe(updatedEvent => this.onEventUpdated.emit(updatedEvent),
-        err => console.error('Error updating event', err));
+        err => {
+          console.error('Error updating event', err);
+          this.message = 'Sorry, we could not update the event.';
+        });
   }
 
   hasChanges(): boolean {
     return !(_.isEqual(this.originalEvent.title, this.event.title)
-      && _.isEqual(this.originalEvent.date, this.event.date)
-      && _.isEqual(this.originalEvent.content, this.event.title));
+    && _.isEqual(this.originalEvent.date, this.event.date)
+    && _.isEqual(this.originalEvent.content, this.event.title));
 
   }
 }

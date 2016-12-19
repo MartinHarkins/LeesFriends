@@ -20,6 +20,9 @@
   <div [hidden]="!formErrors.date" class="text-info error">
     {{formErrors.date}}
   </div>
+  <div class="message">
+    {{message}}
+  </div>
   <div class="form-group margin-top-sm">
     <label for="{{'content' + (event._id || '')}}">Content:</label>
     <textarea class="form-control tiny-mce"

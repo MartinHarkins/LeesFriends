@@ -34,7 +34,7 @@ export class AuthService {
   redirectUrl: string;
 
   constructor(private cookieService: CookieService, private restangular: Restangular) {
-    this.cookieService.removeAll();
+    // this.cookieService.removeAll();
     const authUserInfo = this.cookieService.getObject(AuthCookieKeys.USER.toString());
     if (authUserInfo) {
       this.isLoggedIn = true;
