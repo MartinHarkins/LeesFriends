@@ -11,7 +11,7 @@ import {Component} from "@angular/core";
   <div class="row margin-top-lg">
     <div class="image-container">
       <img
-        class="animate-show" fade-in
+        class="animate-show" [fadeIn]
         src="assets/images/leepic_border_fuzzy2.jpg" alt="Lee Harkins"
         title="Lee's Portrait"/>
     </div>
