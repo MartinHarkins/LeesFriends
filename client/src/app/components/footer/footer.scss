@@ -1,0 +1,18 @@
+@import '../../globals';
+
+.free-of-charge {
+  border-bottom: 1px solid $color-font;
+  text-align: center;
+}
+
+.center-block {
+  float: none;
+}
+
+.address-phone > div {
+  display: inline-block;
+}
+
+.phone {
+  margin-left: 1em;
+}

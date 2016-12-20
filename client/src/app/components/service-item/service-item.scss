@@ -1,5 +1,14 @@
+@import '../../globals';
+
 .service-item {
   .image-container {
-    border: 1px solid black;
+    height:245px;
+    max-width: 100%;
+    //border: 1px solid $color-font;
+  }
+
+  img {
+    max-width:100%;
+    max-height:100%;
   }
 }

@@ -8,6 +8,7 @@ $navbar-inverse-link-color: #5AADBB;
 $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 
 $margins: (xs: 0.5rem, sm: 1rem, md: 1.5rem, lg: 2rem, xl: 2.5rem);
+$paddings: (xs: 0.5rem, sm: 1rem, md: 1.5rem, lg: 2rem, xl: 2.5rem);
 $font-sizes: (xs: 10px, sm: 15px, md: 20px, lg: 30px, xl: 40px);
 
 $default-font-family: 'Work Sans', sans-serif;
@@ -44,6 +45,16 @@ $color-body3: #0c1e10;
 
   .margin-bottom-#{$name} {
     margin-bottom: $value;
+  }
+}
+
+@each $name, $value in $paddings {
+  .padding-top-#{$name} {
+    padding-top: $value;
+  }
+
+  .padding-bottom-#{$name} {
+    padding-bottom: $value;
   }
 }
 
