@@ -4,12 +4,13 @@ import * as jwt from 'jsonwebtoken';
 import {NextFunction, Request, Response, Router} from "express";
 
 import {DataService} from "../services/data-service";
+import {JwtService} from "../core/jwt.service";
 
 export class AuthRouter {
     private constructor() {
     }
 
-    public static create(dataService: DataService): Router {
+    public static create(jwtService: JwtService, dataService: DataService): Router {
         const router = express.Router();
 
         console.log("Setting up auth routes.");
@@ -28,9 +29,7 @@ export class AuthRouter {
                         if (responseWrapper.isSuccessful()) {
                             // if user is found and password is right
                             // create a token
-                            const token = jwt.sign(responseWrapper.response, 'testsecret', {
-                                expiresIn: 24 * 60 * 60 * 1000 // expires in 24 hours
-                            });
+                            const token = jwtService.newToken(responseWrapper.response);
 
                             res.status(200).json({
                                 token: token

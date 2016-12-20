@@ -6,51 +6,23 @@ import {NextFunction, Request, Response, Router} from "express";
 import {DataService} from "../services/data-service";
 import {Event} from "../models/event";
 import {ResponseWrapper} from "../core/response-wrapper";
-
-interface JwtRequest extends Request {
-    decoded: string;
-}
+import {JwtService} from "../core/jwt.service";
 
 export class EventsRouter {
     private constructor() {
     }
 
-    public static create(dataService: DataService): Router {
+    public static create(jwtService: JwtService, dataService: DataService): Router {
         const router = express.Router();
 
         console.log("Setting up event routes.");
 
-        router.use((req: JwtRequest, res: Response, next: NextFunction) => {
-            console.log("Checking token...");
-
-            // check header or url parameters or post parameters for token
-            const token = req.body.token || req.query.token || req.headers['x-access-token'];
-            if (token) {
-                jwt.verify(token, 'testsecret', (err, decoded) => {
-                    if (err) {
-                        return res.status(401).send({error: 'Failed to authenticate token.'});
-                    } else {
-                        // if everything is good, save to request for use in other routes
-                        req.decoded = decoded;
-                        next();
-                    }
-                });
-            } else {
-
-                // if there is no token
-                // return an error
-                return res.status(403).send({
-                    error: 'No token provided.'
-                });
-
-            }
-
-        });
+        jwtService.guard(router);
 
         /**
          * GET events listing.
          */
-        router.get('/', (req: JwtRequest, res: Response, next: NextFunction) => {
+        router.get('/', (req: Request, res: Response, next: NextFunction) => {
             console.log("getting events...");
 
             let options = {

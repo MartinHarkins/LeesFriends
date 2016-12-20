@@ -1,5 +1,8 @@
 {
-    "BCRYPT_SALT": "$2a$10$3wBSxSSUbn7fj/9TvcOgcO",
+    "keys": {
+        "BCRYPT_SALT": "$2a$10$3wBSxSSUbn7fj/9TvcOgcO",
+        "JWT_SECRET": "jwt_dev_secret"
+    },
     "defaultAdminAccount": {
         "username": "devaccount",
         "password": "devpassword"

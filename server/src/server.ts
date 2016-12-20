@@ -19,6 +19,7 @@ import {IndexRouter} from "./routes/index";
 import {EnvConfig} from "./core/env-config";
 import {AuthRouter} from "./routes/auth.router";
 import {PublicRouter} from "./routes/public.router";
+import {JwtService} from "./core/jwt.service";
 
 
 /**
@@ -28,8 +29,9 @@ import {PublicRouter} from "./routes/public.router";
  */
 export class Server {
 
-    private envConfig: EnvConfig;
     private app: express.Application;
+    private envConfig: EnvConfig;
+    private jwtService: JwtService;
     private dataService: DataService;
 
     /**
@@ -55,6 +57,8 @@ export class Server {
         this.app = express();
 
         this.envConfig = new EnvConfig();
+
+        this.jwtService = new JwtService(this.envConfig);
 
         this.dataService = new DataService(this.app, this.envConfig);
 
@@ -97,8 +101,8 @@ export class Server {
 
         this.app.use('/api/public', PublicRouter.create(this.dataService));
 
-        this.app.use('/api/events', EventsRouter.create(this.dataService));
-        this.app.use('/api/authenticate', AuthRouter.create(this.dataService));
+        this.app.use('/api/authenticate', AuthRouter.create(this.jwtService, this.dataService));
+        this.app.use('/api/events', EventsRouter.create(this.jwtService, this.dataService));
     }
 
     /**

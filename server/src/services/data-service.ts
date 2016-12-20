@@ -108,7 +108,7 @@ export class DataService {
     }
 
     public hashPassword(password: string): string {
-        return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.bCryptSalt);
+        return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.keys.bCryptSalt);
     }
 
     getEvents(opt?: {includeDrafts: boolean}): Observable<ResponseWrapper<Event[]>> {
