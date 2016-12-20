@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<boolean> {
-    return this.restangular.all('auth').customPOST({ username: username, password: password}, 'login')
+    return this.restangular.all('authenticate').customPOST({ username: username, password: password})
       .map(user => {
         this.cookieService.putObject(AuthCookieKeys.USER.toString(), new AuthUserInfo('aUserbane', 'aBearer'));
         this.isLoggedIn = true;

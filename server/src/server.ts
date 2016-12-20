@@ -92,10 +92,10 @@ export class Server {
      */
     public api() {
         // Don't do anything there but it's needed to provide routing to the next api point.
-        this.app.use('/', IndexRouter.create());
+        this.app.use('/api/', IndexRouter.create());
 
-        this.app.use('/events', EventsRouter.create(this.dataService));
-        this.app.use('/auth', AuthRouter.create(this.dataService));
+        this.app.use('/api/events', EventsRouter.create(this.dataService));
+        this.app.use('/api/authenticate', AuthRouter.create(this.dataService));
     }
 
     /**

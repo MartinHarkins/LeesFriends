@@ -74,7 +74,7 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
     RestangularModule.forRoot((RestangularProvider) => {
       // TODO: should be grabbed from environment specific config file.
-      RestangularProvider.setBaseUrl("http://localhost:8080/");
+      RestangularProvider.setBaseUrl("http://localhost:8080/api/");
       RestangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'

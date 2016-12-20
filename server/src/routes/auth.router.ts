@@ -14,7 +14,7 @@ export class AuthRouter {
 
         console.log("Setting up auth routes.");
 
-        router.post('/login', (req: Request, res: Response, next: NextFunction) => {
+        router.post('/', (req: Request, res: Response, next: NextFunction) => {
             const username = req.body.username || undefined;
             const password = req.body.password || undefined;
 
