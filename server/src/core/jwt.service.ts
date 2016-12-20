@@ -19,7 +19,9 @@ export class JwtService {
     public newToken(user: User): string {
         // if user is found and password is right
         // create a token
-        return jwt.sign(user, this.getSecret(), {
+        return jwt.sign({
+            username: user.username
+        }, this.getSecret(), {
             expiresIn: 24 * 60 * 60 * 1000 // expires in 24 hours
         });
     }
