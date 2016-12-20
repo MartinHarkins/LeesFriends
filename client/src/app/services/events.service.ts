@@ -1,16 +1,15 @@
-import {Injectable} from "@angular/core";
-import {Restangular} from "ng2-restangular";
+import {Injectable, Inject, OpaqueToken} from "@angular/core";
 import {Observable} from "rxjs";
+import {Event} from "../models/event";
+import * as _ from "lodash";
 
-import {Event} from '../models/event'
-import * as _ from 'lodash';
-
+export const AUTH_RESTANGULAR = new OpaqueToken('AuthRestangular');
 /**
  * Service used to interact with the `/events` api
  */
 @Injectable()
 export class EventsService {
-  constructor(private restangular: Restangular) {
+  constructor(@Inject(AUTH_RESTANGULAR) public restangular) {
   }
 
   /**
@@ -21,7 +20,8 @@ export class EventsService {
   public getEventsByDateDesc(opt?: {includeDrafts: boolean}): Observable<Event[]> {
     const query = {
       includeDrafts: opt ? opt.includeDrafts : false
-    }
+    };
+
     // TODO: handle error
     // TODO: needs to send date sorting as a parameter.
     return this.restangular.all('events').getList(query);

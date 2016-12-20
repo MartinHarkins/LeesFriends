@@ -18,6 +18,7 @@ class AuthCookieKeys extends Enum<string>
 {
   // values
   static USER = new AuthCookieKeys("USER");
+  static TOKEN = new AuthCookieKeys("JWT_TOKEN");
 }
 
 class AuthUserInfo {
@@ -35,7 +36,7 @@ export class AuthService {
 
   constructor(private cookieService: CookieService, private restangular: Restangular) {
     // this.cookieService.removeAll();
-    const authUserInfo = this.cookieService.getObject(AuthCookieKeys.USER.toString());
+    const authUserInfo = this.cookieService.get(AuthCookieKeys.TOKEN.toString());
     if (authUserInfo) {
       this.isLoggedIn = true;
     }
@@ -43,8 +44,8 @@ export class AuthService {
 
   login(username: string, password: string): Observable<boolean> {
     return this.restangular.all('authenticate').customPOST({ username: username, password: password})
-      .map(user => {
-        this.cookieService.putObject(AuthCookieKeys.USER.toString(), new AuthUserInfo('aUserbane', 'aBearer'));
+      .map(response => {
+        this.cookieService.put(AuthCookieKeys.TOKEN.toString(), response.token);
         this.isLoggedIn = true;
         return Observable.of(true);
       })
@@ -55,7 +56,11 @@ export class AuthService {
   }
 
   logout(): void {
-    this.cookieService.remove(AuthCookieKeys.USER.toString());
+    this.cookieService.remove(AuthCookieKeys.TOKEN.toString());
     this.isLoggedIn = false;
+  }
+
+  public getToken(): string {
+    return this.cookieService.get(AuthCookieKeys.TOKEN.toString());
   }
 }

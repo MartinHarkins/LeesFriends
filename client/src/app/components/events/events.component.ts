@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {EventListComponent} from "../event-list/event-list";
+import {EventListEditableComponent} from "../event-list/event-list-editable";
 
 @Component({
   selector: 'events',

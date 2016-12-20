@@ -3,7 +3,7 @@ import {AdminComponent} from "./admin.component";
 import {RouterModule} from "@angular/router";
 import {AdminEventsComponent} from "../admin-events/admin-events";
 import {AdminWelcomeComponent} from "./admin.welcome";
-import {AuthGuard} from "../../core/auth-guard.service";
+import {AuthGuard} from "../../core/auth/auth-guard.service";
 import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
 
 @NgModule({

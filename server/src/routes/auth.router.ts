@@ -1,9 +1,9 @@
 import * as express from 'express';
+import * as jwt from 'jsonwebtoken';
 
 import {NextFunction, Request, Response, Router} from "express";
 
 import {DataService} from "../services/data-service";
-import {Event} from "../models/event";
 
 export class AuthRouter {
     private constructor() {
@@ -26,8 +26,14 @@ export class AuthRouter {
             dataService.isValidCredentials(username, password)
                 .subscribe(responseWrapper => {
                         if (responseWrapper.isSuccessful()) {
+                            // if user is found and password is right
+                            // create a token
+                            const token = jwt.sign(responseWrapper.response, 'testsecret', {
+                                expiresIn: 24 * 60 * 60 * 1000 // expires in 24 hours
+                            });
+
                             res.status(200).json({
-                                username: responseWrapper.response.username
+                                token: token
                             });
                         } else {
                             console.log('Error getting user info', responseWrapper.error);

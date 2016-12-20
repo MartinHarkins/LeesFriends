@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
-import {EventListComponent} from "../event-list/event-list";
+import {EventListEditableComponent} from "../event-list/event-list-editable";
 import {Observable} from "rxjs";
 import {Modal} from "angular2-modal/plugins/bootstrap/modal";
 import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
@@ -12,12 +12,12 @@ import {EventEditorComponent} from "../event-editor/event-editor";
   <div class="row">
     <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
   </div>
-  <event-list [editable]="true"></event-list>
+  <event-list-editable [editable]="true"></event-list-editable>
 </div>`
 })
 export class AdminEventsComponent implements OnInit, CanDeactivateGuard {
-  @ViewChild(EventListComponent)
-  private eventList: EventListComponent;
+  @ViewChild(EventListEditableComponent)
+  private eventList: EventListEditableComponent;
   @ViewChild(EventEditorComponent)
   private eventEditor: EventEditorComponent;
 

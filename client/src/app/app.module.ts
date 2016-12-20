@@ -30,6 +30,8 @@ import {ContactUsComponent} from "./components/contact-us/contact-us";
 import {AdminModule} from "./components/admin/admin.module";
 import {EventsModule} from "./components/events/events.module";
 import {LoginComponent} from "./components/login/login.component";
+import {PublicService} from "./services/public.service";
+import {EventsComponent} from "./components/events/events";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -56,6 +58,7 @@ type StoreType = {
     HistoryComponent,
     AwardsComponent,
     OurMissionComponent,
+    EventsComponent,
     FaqComponent,
     ServicesComponent,
     ServiceItemComponent,
@@ -87,7 +90,8 @@ type StoreType = {
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    PublicService
   ]
 })
 export class AppModule {

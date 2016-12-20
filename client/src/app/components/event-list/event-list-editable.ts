@@ -25,7 +25,7 @@ class EventWrapper {
   }
 }
 @Component({
-  selector: 'event-list',
+  selector: 'event-list-editable',
   styleUrls: ['event-list.scss'],
   template: `
   <div class="row" *ngFor="let eventWrapper of eventWrappers">
@@ -46,7 +46,7 @@ class EventWrapper {
     <a (click)="loadMore()"><strong>More...</strong></a> 
   </div>`
 })
-export class EventListComponent implements OnInit, HasChanges {
+export class EventListEditableComponent implements OnInit, HasChanges {
   @Input() editable?: boolean;
   @Input() count?: number;
 

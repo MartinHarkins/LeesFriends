@@ -18,6 +18,7 @@ import {HttpError} from "./common/http-error";
 import {IndexRouter} from "./routes/index";
 import {EnvConfig} from "./core/env-config";
 import {AuthRouter} from "./routes/auth.router";
+import {PublicRouter} from "./routes/public.router";
 
 
 /**
@@ -93,6 +94,8 @@ export class Server {
     public api() {
         // Don't do anything there but it's needed to provide routing to the next api point.
         this.app.use('/api/', IndexRouter.create());
+
+        this.app.use('/api/public', PublicRouter.create(this.dataService));
 
         this.app.use('/api/events', EventsRouter.create(this.dataService));
         this.app.use('/api/authenticate', AuthRouter.create(this.dataService));
