@@ -24,7 +24,7 @@ import {Component} from "@angular/core";
         </div>  
         <div class="row">
             <div class="pull-right more">
-                <a [routerLink]=" './contact-us' "><h3>Contact Us</h3></a>
+                <a [routerLink]=" './contact-us' ">Contact Us</a>
             </div>
         </div>
       </div>

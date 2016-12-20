@@ -33,6 +33,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {PublicService} from "./services/public.service";
 import {EventsComponent} from "./components/events/events.component";
 import {FadeInDirective} from "./directives/fade-in";
+import {FooterComponent} from "./components/footer/footer";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -56,6 +57,7 @@ type StoreType = {
     LoginComponent,
     HomeComponent,
     HeaderComponent,
+    FooterComponent,
     HistoryComponent,
     AwardsComponent,
     OurMissionComponent,
