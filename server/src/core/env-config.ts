@@ -1,7 +1,7 @@
 import fs = require('fs');
 
 export class EnvConfig {
-    public keys: {bCryptSalt: string, jwtSecret: string}
+    public keys: {bCryptSalt: string, jwtSecret: string};
     public defaultAdminAccount: {username: string, password: string};
 
     constructor() {
