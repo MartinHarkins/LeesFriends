@@ -28,8 +28,8 @@ class EventWrapper {
     <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
         <div class="message">{{eventWrapper.message}}</div>
         <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
-        <button *ngIf="eventWrapper.event.published" class="btn btn-info" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
-        <button *ngIf="!eventWrapper.event.published" class="btn btn-info" type="button" (click)="publish(eventWrapper)">Publish</button>
+        <button *ngIf="eventWrapper.event.published" class="btn btn-warning" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
+        <button *ngIf="!eventWrapper.event.published" class="btn btn-success" type="button" (click)="publish(eventWrapper)">Publish</button>
         <button class="btn btn-danger" type="button" (click)="deleteEvent(eventWrapper)">Delete</button>
     </div>
     

@@ -32,6 +32,7 @@ import {EventsModule} from "./components/events/events.module";
 import {LoginComponent} from "./components/login/login.component";
 import {PublicService} from "./services/public.service";
 import {EventsComponent} from "./components/events/events.component";
+import {FadeInDirective} from "./directives/fade-in";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -63,7 +64,8 @@ type StoreType = {
     ServicesComponent,
     ServiceItemComponent,
     ContactUsComponent,
-    NoContentComponent
+    NoContentComponent,
+    FadeInDirective
   ],
   imports: [ // import Angular's modules
     AdminModule,

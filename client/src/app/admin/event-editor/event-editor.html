@@ -11,7 +11,7 @@
                       [(ngModel)]="tinyDateModel"></ng2-datepicker>
     </div>
     <input type="submit" class="btn btn-primary" value="Save draft" [disabled]="eventEditForm.invalid"/>
-    <input type="button" class="btn btn-primary" value="Publish" (click)="onPublish()" [disabled]="eventEditForm.invalid"/>
+    <input type="button" class="btn btn-success" value="Publish" (click)="onPublish()" [disabled]="eventEditForm.invalid"/>
     <input type="button" class="btn btn-default" value="Cancel" (click)="onCancel()" [hidden]="!isEditing"/>
   </div>
   <div *ngIf="formErrors.title" class="text-info error">

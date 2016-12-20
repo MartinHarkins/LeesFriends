@@ -7,6 +7,9 @@ import {PublicService} from "../../services/public.service";
   selector: 'event-list',
   styleUrls: ['event-list.scss'],
   template: `
+  <div *ngIf="message" class="message">
+    {{ message }}
+  </div>
   <div class="row" *ngFor="let event of visibleEvents">
     <event-item [event]="event"></event-item>
     <hr/>
@@ -23,11 +26,14 @@ export class EventListComponent implements OnInit {
   private visibleEvents: Event[];
   private allEvents: Event[];
 
+  private message: string;
+
   constructor(private service: PublicService) {
   }
 
   ngOnInit() {
     this.hasMore = false;
+    this.message = 'Events ...';
     this.reloadList();
   }
 
@@ -45,8 +51,17 @@ export class EventListComponent implements OnInit {
       })
       .subscribe((events: Event[]) => {
         this.visibleEvents = events;
+
+        if (this.visibleEvents.length == 0) {
+          this.message = "Sorry, we couldn't load the list of events";
+        } else {
+          this.message = '';
+        }
       }, (error) => {
-        console.log('Error getting list of events', error)
+        console.log('Error getting list of events', error);
+        if (this.visibleEvents.length == 0) {
+          this.message = "Sorry, we couldn't load the list of events";
+        }
       });
   }
 
