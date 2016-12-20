@@ -1,17 +1,13 @@
 import {Component, OnInit, Input, ViewContainerRef, QueryList, ViewChildren} from "@angular/core";
 import {Observable} from "rxjs";
-
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
-
 import * as _ from "lodash";
 import {ConfirmDeleteEventModalComponent, EventDeleteAction} from "./confirm-delete.modal";
-
 import {overlayConfigFactory} from "angular2-modal";
-import {Modal} from 'angular2-modal/plugins/bootstrap';
-import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
+import {Modal, BSModalContext} from "angular2-modal/plugins/bootstrap";
 import {HasChanges} from "../../core/has-changes.interface";
-import {EventEditorComponent} from "../event-editor/event-editor";
+import {EventEditorComponent} from "../../admin/event-editor/event-editor.component";
 import {RxUtils} from "../../core/utils/RxUtils";
 
 /**

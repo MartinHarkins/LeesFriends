@@ -1,9 +1,8 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, ViewEncapsulation} from '@angular/core';
-
-import {AppState} from './app.service';
+import {Component, ViewEncapsulation} from "@angular/core";
+import {AppState} from "./app.service";
 
 /*
  * App Component

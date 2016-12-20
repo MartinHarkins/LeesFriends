@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
-import {EventListEditableComponent} from "../event-list/event-list-editable";
 import {Observable} from "rxjs";
 import {Modal} from "angular2-modal/plugins/bootstrap/modal";
+import {EventEditorComponent} from "../event-editor/event-editor.component";
 import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
-import {EventEditorComponent} from "../event-editor/event-editor";
+import {EventListEditableComponent} from "../../components/event-list/event-list-editable.component";
 
 @Component({
   selector: 'admin-events',

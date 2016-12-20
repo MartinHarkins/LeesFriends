@@ -1,11 +1,9 @@
-import {Injectable} from '@angular/core';
-
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
-
-import {CookieService} from 'angular2-cookie/core';
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/do";
+import "rxjs/add/operator/delay";
+import {CookieService} from "angular2-cookie/core";
 import {Restangular} from "ng2-restangular";
 
 export class Enum<T> {

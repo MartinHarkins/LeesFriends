@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Restangular} from "ng2-restangular";
 import {Observable} from "rxjs";
-
-import {Event} from '../models/event'
+import {Event} from "../models/event";
 
 /**
  * Service used to interact with the public api

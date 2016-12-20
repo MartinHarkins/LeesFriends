@@ -1,0 +1,38 @@
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {AdminRoutingModule} from "./admin-router.module";
+import {AdminComponent} from "./admin.component";
+import {UsersService} from "../services/users.service";
+import {EventsModule} from "../components/events/events.module";
+import {AdminEventsComponent} from "./events/events.component";
+import {AdminWelcomeComponent} from "./admin.welcome";
+import {Restangular} from "ng2-restangular";
+import {AuthModule} from "../core/auth/auth.module";
+import {AuthService} from "../core/auth/auth.service";
+import {AuthRestangularFactory, AuthRestangular} from "../core/auth/auth-restangular.service";
+
+@NgModule({
+  declarations: [
+    AdminComponent,
+    AdminEventsComponent,
+    AdminWelcomeComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AuthModule,
+    EventsModule,
+    AdminRoutingModule
+  ],
+  providers: [
+    UsersService,
+    {
+      provide: AuthRestangular,
+      useFactory: AuthRestangularFactory,
+      deps: [Restangular, AuthService]
+    }
+  ]
+})
+export class AdminModule {
+}

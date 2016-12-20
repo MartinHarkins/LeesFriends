@@ -27,11 +27,11 @@ import {ServiceItemComponent} from "./components/service-item/service-item";
 import {AwardsComponent} from "./components/awards/awards";
 import {FaqComponent} from "./components/faq/faq";
 import {ContactUsComponent} from "./components/contact-us/contact-us";
-import {AdminModule} from "./components/admin/admin.module";
+import {AdminModule} from "./admin/admin.module";
 import {EventsModule} from "./components/events/events.module";
 import {LoginComponent} from "./components/login/login.component";
 import {PublicService} from "./services/public.service";
-import {EventsComponent} from "./components/events/events";
+import {EventsComponent} from "./components/events/events.component";
 
 // Application wide providers
 const APP_PROVIDERS = [

@@ -12,7 +12,7 @@ import {RxUtils} from "../../core/utils/RxUtils";
 @Component({
   selector: 'event-editor',
   templateUrl: 'event-editor.html',
-  styleUrls: ['./event-editor.scss']
+  styleUrls: ['event-editor.scss']
 })
 export class EventEditorComponent implements OnInit, HasChanges {
   @Output() onEventAdded = new EventEmitter<Event>();

@@ -1,7 +1,5 @@
-import {Component} from '@angular/core';
-
-import {DialogRef, ModalComponent} from 'angular2-modal';
-import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
+import {Component} from "@angular/core";
+import {DialogRef, ModalComponent} from "angular2-modal";
 
 export class ConfirmDeleteEventModalComponentData {
   public event: Event;

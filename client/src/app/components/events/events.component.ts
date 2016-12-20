@@ -1,5 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {EventListEditableComponent} from "../event-list/event-list-editable";
+import {Component} from "@angular/core";
 
 @Component({
   selector: 'events',

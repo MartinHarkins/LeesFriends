@@ -1,7 +1,6 @@
 import {Event} from "../../models/event";
 import {Component, Input} from "@angular/core";
-
-import * as moment from 'moment';
+import * as moment from "moment";
 
 @Component({
   selector: 'event-item',
