@@ -45,3 +45,23 @@ dataSources.xml
 *.js.map
 encodings.xml
 typescript-compiler.xml
+
+# Coming from server/
+node_modules/
+npm-debug.log
+
+# Ignore DBs
+db/*
+
+# Ignore js files in source
+src/**/*.js
+
+# Ignore output
+dist/*
+
+# Ignore tscache
+.tscache/*
+
+nohup.out
+
+tscommand-*
