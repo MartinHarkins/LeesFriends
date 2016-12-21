@@ -14,6 +14,12 @@ module.exports = function (grunt) {
                     {
                         src: "./config/dev.config.json",
                         dest: "./dist/config/config.json"
+                    },
+                    {
+                        expand: true,
+                        cwd: "./client/dist",
+                        src: ["**"],
+                        dest: "./dist/client"
                     }
                 ]
             },

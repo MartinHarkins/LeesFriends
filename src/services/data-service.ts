@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt-nodejs';
 import {EnvConfig} from "../core/env-config";
 import {User} from "../models/user";
 
-import {Observable, Subscriber, AsyncSubject} from "rxjs/Rx";
+import {Observable, Subscriber, AsyncSubject} from "rxjs";
 import {ResponseWrapper} from "../core/response-wrapper";
 
 class DB {
@@ -59,6 +59,7 @@ export class DataService {
         } else {
             dbEnv = 'prod';
         }
+        console.log('env:', dbEnv);
         return 'db/' + dbEnv + '/';
     }
 
