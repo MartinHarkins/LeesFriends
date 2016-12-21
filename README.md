@@ -6,10 +6,9 @@
 
 ##Setup
 1. `cd {project_root}/`
-2. `cd client/`
-3. `npm install`
-4. `cd ../server`
-5. `npm install`
+2. `npm install`
+3. `cd ../client`
+4. `npm install`
 
 ## Client code
 Can be found in `client/` directory.
@@ -22,7 +21,7 @@ Can be found in `client/` directory.
 > For more commands see package.json > scripts: {...}
 
 ## Server code
-Can be found in `server/`
+Can be found in `{project_root}`
 
 `Node + express` server  
 `Typescript 2.0.10` for language  
