@@ -34,6 +34,32 @@ module.exports = function (grunt) {
                     {
                         src: "./config/prod.config.json",
                         dest: "./dist/config/config.json"
+                    },
+                    {
+                        expand: true,
+                        cwd: "./client/dist",
+                        src: ["**"],
+                        dest: "./dist/client"
+                    }
+                ]
+            },
+            staging: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: "./src/public",
+                        src: ["**"],
+                        dest: "./dist/public"
+                    },
+                    {
+                        src: "./config/staging.config.json",
+                        dest: "./dist/config/config.json"
+                    },
+                    {
+                        expand: true,
+                        cwd: "./client/dist",
+                        src: ["**"],
+                        dest: "./dist/client"
                     }
                 ]
             }
@@ -68,6 +94,19 @@ module.exports = function (grunt) {
 
     grunt.registerTask("default", [
         "copy:dev",
+        "ts"
+    ]);
+
+    grunt.registerTask("dev", [
+        "copy:dev",
+        "ts"
+    ]);
+    grunt.registerTask("staging", [
+        "copy:staging",
+        "ts"
+    ]);
+    grunt.registerTask("prod", [
+        "copy:prod",
         "ts"
     ]);
 

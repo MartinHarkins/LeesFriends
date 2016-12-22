@@ -3,9 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "node ./bin/www",
     "dev": "NODE_ENV=development nodemon ./bin/www",
-    "grunt": "grunt",
-    "start": "node ./bin/www"
+    "grunt:dev": "grunt dev",
+    "grunt:staging": "grunt staging",
+    "grunt:prod": "grunt prod",
+    "client:staging": "cd client/ && npm run build:prod && cd ..",
+    "client:prod": "cd client/ && npm run build:prod & cd ..",
+    "build:staging": "npm run client:staging && npm run grunt:staging",
+    "build:prod": "npm run client:prod && npm run grunt:prod",
+    "deploy:staging": "npm run build:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info",
+    "deploy:prod": "npm run build:prod && gcloud app deploy --project=lees-friends --verbosity=info"
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "0.0.30",
@@ -20,6 +28,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.2.1",
     "lodash": "^4.17.2",
+    "mongodb": "^2.2.16",
     "morgan": "^1.7.0",
     "nedb": "^1.8.0",
     "q": "^1.4.1",

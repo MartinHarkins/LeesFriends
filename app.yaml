@@ -1,2 +1,11 @@
 env: flex
 runtime: nodejs
+
+skip_files:
+ - ^config$
+ - ^node_modules$
+ - ^.tscache$
+ - ^client$
+ - ^db$
+ - ^src$
+ - ^views$
