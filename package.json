@@ -5,15 +5,19 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "NODE_ENV=development nodemon ./bin/www",
+    "clean:dist": "npm run rimraf -- dist",
     "grunt:dev": "grunt dev",
     "grunt:staging": "grunt staging",
     "grunt:prod": "grunt prod",
-    "client:staging": "cd client/ && npm run build:prod && cd ..",
+    "client:staging": "cd client/ && npm run build:staging && cd ..",
     "client:prod": "cd client/ && npm run build:prod & cd ..",
     "build:staging": "npm run client:staging && npm run grunt:staging",
     "build:prod": "npm run client:prod && npm run grunt:prod",
-    "deploy:staging": "npm run build:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info --quiet",
-    "deploy:prod": "npm run build:prod && gcloud app deploy --project=lees-friends --verbosity=info"
+    "deploy:staging": "npm run clean:dist && npm run build:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info --quiet",
+    "deploy:prod": "npm run clean:dist && npm run build:prod && gcloud app deploy --project=lees-friends --verbosity=info",
+    "deploy:staging:noclient": "npm run grunt:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info --quiet --stop-previous-version",
+    "deploy:prod:noclient": "npm run grunt:prod && gcloud app deploy --project=lees-friends --verbosity=info",
+    "rimraf": "rimraf"
   },
   "dependencies": {
     "@types/bcrypt-nodejs": "0.0.30",
@@ -49,6 +53,7 @@
     "grunt-ts": "^6.0.0-beta.3",
     "method-override": "^2.3.7",
     "nodemon": "^1.11.0",
+    "rimraf": "^2.5.4",
     "typescript": "^2.0.10"
   }
 }
