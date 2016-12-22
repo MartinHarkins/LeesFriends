@@ -1,4 +1,3 @@
-import * as DataStore from 'nedb';
 import * as express from 'express';
 
 import {Event} from "../models/event";
@@ -10,68 +9,54 @@ import {User} from "../models/user";
 
 import {Observable, Subscriber, AsyncSubject} from "rxjs";
 import {ResponseWrapper} from "../core/response-wrapper";
+import {Db, MongoClient, Collection, MongoError} from "mongodb";
 
-class DB {
-    constructor(public events: DataStore, public users: DataStore) {
+class Collections {
+    constructor(public events: Collection, public users: Collection) {
     }
 }
 
 export class DataService {
-    private db: DB;
+    private collections: Collections;
 
     constructor(private app: express.Application, private envConfig: EnvConfig) {
         const that = this;
-        const dbDir = this.getDbDirectory();
 
-        const eventsStore = new DataStore({
-            filename: dbDir + 'events.db'
-        });
-        const usersStore = new DataStore({
-            filename: dbDir + 'users.db'
-        });
+        // local dev environment doesn't require the use of a user.
+        const auth = this.envConfig.mongo.user ?
+        this.envConfig.mongo.user + ':' + this.envConfig.mongo.password + '@' : '';
 
-        this.db = new DB(eventsStore, usersStore);
+        const uri = 'mongodb://' +
+            auth +
+            this.envConfig.mongo.host + ':' +
+            this.envConfig.mongo.port + '/' +
+            this.envConfig.mongo.database;
+        console.log('uri', uri);
 
-        eventsStore.loadDatabase(function (err) {
+        MongoClient.connect(uri, (err: MongoError, db: Db) => {
             if (err) {
-                console.error('Error loading database', JSON.stringify(err));
-                return;
+                throw err;
             }
 
-            that.initEvents(eventsStore);
-        });
-        usersStore.loadDatabase((err) => {
-            if (err) {
-                console.error('Error loading database', JSON.stringify(err));
-                return;
-            }
+            that.collections = new Collections(
+                db.collection('events'),
+                db.collection('users'));
 
-            that.initUsers(usersStore);
-        });
+            that.initEvents(that.collections.events);
 
+            that.initUsers(that.collections.users);
+        });
     }
 
-
-    private getDbDirectory() {
-        let dbEnv = 'prod/';
-        if (this.app.get('env') === 'development') {
-            dbEnv = 'dev';
-        } else {
-            dbEnv = 'prod';
-        }
-        console.log('env:', dbEnv);
-        return 'db/' + dbEnv + '/';
-    }
-
-    private initEvents(eventsStore: DataStore) {
-        eventsStore.count({}, function (err, count) {
+    private initEvents(eventsStore: Collection) {
+        eventsStore.count({}, (err: MongoError, count: number) => {
             if (err) {
                 console.error('Error getting event count', JSON.stringify(err));
                 return;
             }
 
             if (count == 0) {
-                eventsStore.insert([{
+                eventsStore.insertMany([{
                     title: 'Title 1 up',
                     content: 'Content 1 up',
                     date: new Date(),
@@ -92,24 +77,24 @@ export class DataService {
         });
     }
 
-    private initUsers(usersStore: DataStore) {
+    private initUsers(usersStore: Collection) {
         const that = this;
-        usersStore.count({}, function (err, count) {
+        usersStore.count({}, (err: MongoError, count: number) => {
             if (err) {
                 console.error('Error getting user count', JSON.stringify(err));
                 return;
             }
 
             if (count == 0) {
-                usersStore.insert<User>(new User(
+                usersStore.insertOne(new User(
                     that.envConfig.defaultAdminAccount.username,
                     that.hashPassword(that.envConfig.defaultAdminAccount.username)));
             }
         });
     }
 
-    public hashPassword(password: string): string {
-        return bcrypt.hashSync(this.envConfig.defaultAdminAccount.username, this.envConfig.keys.bCryptSalt);
+    private hashPassword(password: string): string {
+        return bcrypt.hashSync(password, this.envConfig.keys.bCryptSalt);
     }
 
     getEvents(opt?: {includeDrafts: boolean}): Observable<ResponseWrapper<Event[]>> {
@@ -127,17 +112,17 @@ export class DataService {
             };
         }
 
-        this.db.events.find<Event>(filters).sort({date: -1}).exec(function (err, events) {
-            if (err) {
+        this.collections.events.find(filters).sort({date: -1})
+            .toArray()
+            .then((events: Event[]) => {
+                subject.next(ResponseWrapper.success(events));
+                subject.complete();
+            }, (err: MongoError) => {
                 console.log('Could not get list of events', err);
 
                 subject.next(ResponseWrapper.error<Event[]>(new Error('Could not get list of events', err)));
                 subject.complete();
-                return;
-            }
-            subject.next(ResponseWrapper.success(events));
-            subject.complete();
-        });
+            });
 
         return subject;
     }
@@ -148,7 +133,7 @@ export class DataService {
         }
 
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
-        this.db.events.insert<Event>(event, (err, newEvent) => {
+        this.collections.events.insertOne(event, (err: MongoError, newEvent: Event) => {
             if (err) {
                 return Observable.of(ResponseWrapper.error<Event>(new Error('Could not add event', err.message)));
             }
@@ -166,7 +151,7 @@ export class DataService {
         console.log('event being updated', JSON.stringify(event));
 
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
-        this.db.events.update({_id: id}, event, {}, function (err) {
+        this.collections.events.updateOne({_id: id}, event, {}, function (err: MongoError) {
             if (err) {
                 subject.next(ResponseWrapper.error<Event>(new Error('Could not update event for id' + id)));
                 subject.complete();
@@ -181,28 +166,32 @@ export class DataService {
 
     isValidCredentials(username: string, password: string): Observable<ResponseWrapper<User>> {
         const subject = new AsyncSubject<ResponseWrapper<User>>();
-            
+
         console.log('username', username);
-        this.db.users.findOne<User>({
+
+        this.collections.users.find({
             username: username,
             password: this.hashPassword(password)
-        }, (err, user: User) => {
-            if (err) {
-                console.log('Could not get list of events', err);
-                subject.next(ResponseWrapper.error<User>(new Error('Could not match user', err)));
-                subject.complete();
-                return;
-            }
+        })
+            .limit(1)
+            .next()
+            .then((user: User) => {
+                    if (user == null) {
+                        subject.next(ResponseWrapper.error<User>(new Error('User not found.')));
+                        subject.complete();
+                        return;
+                    }
 
-            if (user == null) {
-                subject.next(ResponseWrapper.error<User>(new Error('User not found.')));
-                subject.complete();
-                return;
-            }
+                    subject.next(ResponseWrapper.success<User>(user));
+                    subject.complete();
+                },
+                (err: MongoError) => {
+                    console.log('Could not get list of events', err);
+                    subject.next(ResponseWrapper.error<User>(new Error('Could not match user', err)));
+                    subject.complete();
+                    return;
 
-            subject.next(ResponseWrapper.success<User>(user));
-            subject.complete();
-        });
+                });
         return subject;
     }
 }
