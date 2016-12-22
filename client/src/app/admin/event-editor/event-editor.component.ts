@@ -192,7 +192,7 @@ export class EventEditorComponent implements OnInit, HasChanges {
   private add(newEvent: Event): void {
     const that = this;
 
-    if (newEvent.published) {
+    if (!newEvent.published) {
       this.message = 'Saving draft ...';
     } else {
       this.message = 'Publishing event ...';
