@@ -10,8 +10,6 @@
     "mongo": {
         "host": "127.0.0.1",
         "port": "27017",
-        "database": "lees-friends-dev",
-        "user": "devuser",
-        "password": "devpwd"
+        "database": "lees-friends-dev"
     }
 }
