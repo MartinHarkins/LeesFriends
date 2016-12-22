@@ -8,6 +8,10 @@ switch (process.env.NODE_ENV) {
   case 'production':
     module.exports = require('./config/webpack.prod')({env: 'production'});
     break;
+  case 'stg':
+  case 'staging':
+    module.exports = require('./config/webpack.staging')({env: 'staging'});
+    break;
   case 'test':
   case 'testing':
     module.exports = require('./config/webpack.test')({env: 'test'});

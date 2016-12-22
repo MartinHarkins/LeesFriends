@@ -21,6 +21,8 @@ const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
+  API_URL: 'http://localhost:8080/api',
+  GOOGLE_MAP_API_KEY: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo',
   host: HOST,
   port: PORT,
   ENV: ENV,
@@ -97,6 +99,8 @@ module.exports = function (options) {
        */
       // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
       new DefinePlugin({
+        'GOOGLE_MAP_API_KEY': JSON.stringify(METADATA.GOOGLE_MAP_API_KEY),
+        'API_URL': JSON.stringify(METADATA.API_URL),
         'ENV': JSON.stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
         'process.env': {

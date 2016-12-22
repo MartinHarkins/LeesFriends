@@ -77,11 +77,11 @@ type StoreType = {
     ReactiveFormsModule,
     HttpModule,
     Ng2PageScrollModule.forRoot(),
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo'}),
+    AgmCoreModule.forRoot({apiKey: GOOGLE_MAP_API_KEY}),
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
     RestangularModule.forRoot((RestangularProvider) => {
-      // TODO: should be grabbed from environment specific config file.
-      RestangularProvider.setBaseUrl("http://localhost:8080/api/");
+      // API_URL is declared in /config/webpack.{env}.js
+      RestangularProvider.setBaseUrl(API_URL);
       RestangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'

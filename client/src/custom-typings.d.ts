@@ -60,6 +60,8 @@ declare module 'modern-lru' {
 declare var ENV: string;
 declare var HMR: boolean;
 declare var System: SystemJS;
+declare var API_URL: string;
+declare var GOOGLE_MAP_API_KEY: string;
 
 interface SystemJS {
   import: (path?: string) => Promise<any>;
