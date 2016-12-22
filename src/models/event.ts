@@ -1,5 +1,7 @@
+import {ObjectID} from "mongodb";
+
 export class Event {
-    public _id?: string;
+    public _id?: string | ObjectID;
     public published = false;
 
     constructor(public title: string,

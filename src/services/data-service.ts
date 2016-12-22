@@ -9,7 +9,7 @@ import {User} from "../models/user";
 
 import {Observable, Subscriber, AsyncSubject} from "rxjs";
 import {ResponseWrapper} from "../core/response-wrapper";
-import {Db, MongoClient, Collection, MongoError} from "mongodb";
+import {Db, MongoClient, Collection, MongoError, UpdateWriteOpResult, ObjectID} from "mongodb";
 
 class Collections {
     constructor(public events: Collection, public users: Collection) {
@@ -31,7 +31,6 @@ export class DataService {
             this.envConfig.mongo.host + ':' +
             this.envConfig.mongo.port + '/' +
             this.envConfig.mongo.database;
-        console.log('uri', uri);
 
         MongoClient.connect(uri, (err: MongoError, db: Db) => {
             if (err) {
@@ -88,7 +87,7 @@ export class DataService {
             if (count == 0) {
                 usersStore.insertOne(new User(
                     that.envConfig.defaultAdminAccount.username,
-                    that.hashPassword(that.envConfig.defaultAdminAccount.username)));
+                    that.hashPassword(that.envConfig.defaultAdminAccount.password)));
             }
         });
     }
@@ -148,11 +147,21 @@ export class DataService {
         if (!event) {
             return Observable.of(ResponseWrapper.error<Event>(new Error('Event cannot be empty', event)));
         }
-        console.log('event being updated', JSON.stringify(event));
+
+        // TODO: find a better mechanism, this is hacky
+        event._id = new ObjectID(event._id.toString());
 
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
-        this.collections.events.updateOne({_id: id}, event, {}, function (err: MongoError) {
+        this.collections.events.updateOne({_id: event._id}, event, (err: MongoError, res: UpdateWriteOpResult) => {
+            console.log(JSON.stringify(res));
+            if (res && res.result.n == 0) {
+                console.log('Could not update event', res);
+                subject.next(ResponseWrapper.error<Event>(new Error('Could not update event for id' + id)));
+                subject.complete();
+                return;
+            }
             if (err) {
+                console.log('Error updating event', err);
                 subject.next(ResponseWrapper.error<Event>(new Error('Could not update event for id' + id)));
                 subject.complete();
                 return;
@@ -166,8 +175,6 @@ export class DataService {
 
     isValidCredentials(username: string, password: string): Observable<ResponseWrapper<User>> {
         const subject = new AsyncSubject<ResponseWrapper<User>>();
-
-        console.log('username', username);
 
         this.collections.users.find({
             username: username,
