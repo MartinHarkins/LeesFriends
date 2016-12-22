@@ -1,7 +1,0 @@
-{
-    "BCRYPT_SALT": "PROD SALT",
-    "defaultAdminAccount": {
-        "username": "admin",
-        "password": "erifi421kdo121"
-    }
-}

@@ -65,3 +65,6 @@ dist/*
 nohup.out
 
 tscommand-*
+
+# Ignore production config files
+config/prod.config.json
