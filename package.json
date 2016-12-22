@@ -12,7 +12,7 @@
     "client:prod": "cd client/ && npm run build:prod & cd ..",
     "build:staging": "npm run client:staging && npm run grunt:staging",
     "build:prod": "npm run client:prod && npm run grunt:prod",
-    "deploy:staging": "npm run build:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info",
+    "deploy:staging": "npm run build:staging && gcloud app deploy --project=lees-friends-staging --verbosity=info --quiet",
     "deploy:prod": "npm run build:prod && gcloud app deploy --project=lees-friends --verbosity=info"
   },
   "dependencies": {
