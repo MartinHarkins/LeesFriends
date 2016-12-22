@@ -36,6 +36,8 @@ config/secrets.yml
 workspace.xml
 dataSources.ids
 dataSources.xml
+.idea/
+.idea/jsLibraryMappings.xml
 .idea/runConfigurations/Development__LeesFriends.xml
 .idea/runConfigurations/Production__LeesFriends.xml
 .idea/runConfigurations/spec__LeesFriends.xml

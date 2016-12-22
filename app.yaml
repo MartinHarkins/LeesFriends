@@ -2,6 +2,7 @@ env: flex
 runtime: nodejs
 
 skip_files:
+ - ^.idea$
  - ^config$
  - ^node_modules$
  - ^.tscache$
