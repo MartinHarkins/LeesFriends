@@ -68,3 +68,5 @@ tscommand-*
 
 # Ignore production config files
 config/prod.config.json
+config/staging.config.json
+
