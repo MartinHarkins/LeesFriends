@@ -6,9 +6,6 @@ import {Component} from "@angular/core";
   template: `
 <div class="container">
   <div class="row">
-    <h3 class="subtitle">Helping People Live with Cancer</h3>
-  </div>
-  <div class="row margin-top-lg">
     <div class="image-container">
       <img
         class="animate-show" [fadeIn]

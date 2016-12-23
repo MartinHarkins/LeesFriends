@@ -15,6 +15,7 @@ import {Component} from "@angular/core";
                   Lee's Friends
                 </h1>
               </a>
+              <h3 class="subtitle">Helping People Live With Cancer</h3>
             </li>
             <li class="margin-top-md"><a [routerLink]=" './events' " routerLinkActive="active-link"><h2>Events</h2></a></li>
             <li class="margin-top-sm"><a [routerLink]=" './awards' " routerLinkActive="active-link"><h2>Awards</h2></a></li>

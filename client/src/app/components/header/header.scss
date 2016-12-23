@@ -34,6 +34,10 @@
     font-weight: 400;
     padding-bottom: 4px;
   }
+  .subtitle {
+    font-size: 35px;
+    font-family: $font-family-cursive;
+  }
   h5 {
     padding-bottom: 3px;
   }
@@ -55,6 +59,7 @@
   }
 
   .more {
+    display: inline-block;
     padding-right: 15px;
   }
 }
