@@ -15,11 +15,15 @@ import {AppState} from "./app.service";
     './index.scss'
   ],
   template: `
-    <header></header>
-
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+    <div class="content">
+      <header></header>
+  
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+      
+      <div class="push"></div>
+    </div>
     
     <footer></footer>
 `

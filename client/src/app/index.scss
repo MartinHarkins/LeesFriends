@@ -2,6 +2,29 @@
 @import '~bootstrap/scss/bootstrap';
 @import './globals';
 
+
+html, body {height: 100%;}
+.container {min-height: 100%;}
+
+app {
+  //height: 100%;
+  //display: flex;
+  //flex-direction: column;
+}
+app > .content {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -165px;
+  vertical-align: bottom;
+}
+header {
+  //height: 213px;
+}
+footer, .push {
+  height: 165px;
+}
+
 body {
   background-color: $color-body;
   color: $color-font;

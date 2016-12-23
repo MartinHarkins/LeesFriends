@@ -62,28 +62,31 @@ $font-sizes: (xs: 10px, sm: 15px, md: 20px, lg: 30px, xl: 40px);
   }
 }
 
+body {
+  font-family: 'Work Sans', sans-serif;
+}
 
 h1 {
-  font-family: 'Work Sans', sans-serif;
+  //font-family: 'Work Sans', sans-serif;
   font-size: 50px;
 }
 h2 {
-  font-family: 'Work Sans', sans-serif;
+  //font-family: 'Work Sans', sans-serif;
   font-size: 40px;
 }
 h3 {
-  font-family: 'Work Sans', sans-serif;
+  //font-family: 'Work Sans', sans-serif;
   font-size: 30px;
 }
 h4 {
-  font-family: 'Work Sans', sans-serif;
+  //font-family: 'Work Sans', sans-serif;
   font-size: 25px;
 }
 h5 {
-  font-family: 'Work Sans', sans-serif;
+  //font-family: 'Work Sans', sans-serif;
   font-size: 20px;
 }
 
-body {
-  font-family: 'Work Sans', sans-serif;
+.cursive {
+  font-family: $font-family-cursive;
 }
