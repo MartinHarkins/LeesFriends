@@ -13,18 +13,23 @@ class FaqItem {
   template: `
 <div class="container">
   <div class="row">
-      <h2 *ngFor="let faqItem of faqItems; let i = index">
+      <h3 class="question" *ngFor="let faqItem of faqItems; let i = index">
         <a href="#{{'faqItem' + i}}" pageScroll [pageScrollDuration]="200">
             {{faqItem.question}}
         </a>
-      </h2>
+      </h3>
       
-      <div *ngFor="let faqItem of faqItems; let i = index" id="{{'faqItem' + i}}">
-        <h1>{{faqItem.question}}</h1>
-        <p>{{faqItem.answer}}</p>
+      <div class="margin-top-md" *ngFor="let faqItem of faqItems; let i = index" id="{{'faqItem' + i}}">
+        <h3>{{faqItem.question}}</h3>
+        <div [innerHTML]="faqItem.answer"></div>
       </div>"
   </div>
-</div>`
+</div>`,
+  styles: [`
+  h3.question {
+      cursor: pointer;
+  }
+`]
 })
 export class FaqComponent implements OnInit {
   constructor() {
