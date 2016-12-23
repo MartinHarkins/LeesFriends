@@ -10,7 +10,7 @@
 2. `npm install`
 3. `cd ../client`
 4. `npm install`
-5. `mongo` (start mongo - no credentials needed for local environment)
+5. `mongod` (start mongo - no credentials needed for local environment)
 
 /!\  
 
