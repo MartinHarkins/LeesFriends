@@ -9,17 +9,33 @@
 
   color: $color-font;
   a {
+    cursor: pointer;
     color: $color-font;
+    text-decoration: none;
   }
 
+  a:hover, a.active-link {
+    h2 {
+      border-bottom: 1px solid $color-font;
+      padding-bottom: 3px;
+    }
+    h5 {
+      border-bottom: 1px solid $color-font;
+      padding-bottom: 2px;
+    }
+  }
   h1 {
-    font-family: Gunny, sans-serif;
+    font-family: $font-family-cursive;
     font-size: 60px;
   }
   h2 {
     font-family: 'Work Sans', sans-serif;
     font-size: 35px;
     font-weight: 400;
+    padding-bottom: 4px;
+  }
+  h5 {
+    padding-bottom: 3px;
   }
 
   ul {
