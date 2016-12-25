@@ -25,8 +25,8 @@ const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
-  GOOGLE_MAP_API_KEY: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo',
   API_URL: 'http://lees-friends.appspot-preview.com/api',
+  GOOGLE_MAP_API_KEY: 'AIzaSyB9zm1hM7zQnqyW4nwq_K-_GCmavrMacHc',
   host: HOST,
   port: PORT,
   ENV: ENV,

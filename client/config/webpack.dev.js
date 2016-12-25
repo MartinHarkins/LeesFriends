@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   API_URL: 'http://localhost:8080/api',
-  GOOGLE_MAP_API_KEY: 'AIzaSyAmDSiQkhkeb-2cenntVEoaBdrHHhKtVQo',
+  GOOGLE_MAP_API_KEY: 'AIzaSyDwpcE01iUEHEbQxtXu5V_LnbqSTlbgdco',
   host: HOST,
   port: PORT,
   ENV: ENV,
