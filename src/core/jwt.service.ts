@@ -56,7 +56,6 @@ export class JwtService {
     }
 
     private getSecret(): string {
-        console.log('this.envConfig.keys.jwtSecret:' + this.envConfig.keys.jwtSecret);
         return this.envConfig.keys.jwtSecret;
     }
 }
