@@ -76,18 +76,14 @@ export class EventsService {
    * @param updatedEvent the event to be updated
    * @returns {Observable<Event>} the updated event
    */
-  public deleteEvent(updatedEvent: Event): Observable<Event> {
-    // TODO: handle error
-    return this.getAllRestangularizedEvents()
-      .switchMap(events => {
-        for (let i = 0; i < events.length; i++) {
-          const event = events[i];
-          if (event._id == updatedEvent._id) {
-            return event.remove();
-          }
-        }
+  public deleteEvent(event: Event): Observable<boolean> {
+    // Restangular delete (customDelete or even event.remove()) don't return an obserbable
+    // There is no way for us to know if it will have successfully been deleted.
+    // At least we'll unpublish it.
+    event.published = false;
 
-        return Observable.throw(new Error('Could not find matching event'));
-      });
+    return this.updateEvent(event)
+      .do(event => this.restangular.all('events').customDELETE(event._id))
+      .map(event => true);
   }
 }

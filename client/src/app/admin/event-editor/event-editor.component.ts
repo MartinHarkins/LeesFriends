@@ -201,6 +201,7 @@ export class EventEditorComponent implements OnInit, HasChanges {
     // TODO: handle errors
     RxUtils.ensureMinDuration(this.service.addEvent(newEvent), 1000)
       .subscribe(() => {
+        this.message = '';
         this.onEventAdded.emit(newEvent);
 
         // Clear the form

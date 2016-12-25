@@ -25,6 +25,10 @@ export class ResponseWrapper<T> {
         return responseWrapper;
     }
 
+    static successNoResult(): ResponseWrapper<void> {
+        return new ResponseWrapper<void>();
+    }
+
     static error<T>(error: Error): ResponseWrapper<T> {
         const responseWrapper = new ResponseWrapper<T>();
         responseWrapper.error = error;

@@ -79,9 +79,6 @@ export class EventsRouter {
                 return;
             }
 
-            console.log('put id' + id);
-            console.log('put event', event);
-
             dataService.updateEvent(id, event)
                 .subscribe((responseWrapper: ResponseWrapper<Event>) => {
                         if (responseWrapper.isSuccessful()) {
@@ -93,6 +90,28 @@ export class EventsRouter {
                     (err) => {
                         console.error('Error updating event in dataservice', JSON.stringify(err));
                         res.status(500).send({error: 'Unknown error updating event'});
+                    });
+        });
+
+        router.delete('/:eventId', (req: Request, res: Response, next: NextFunction) => {
+            const id = req.params.eventId;
+
+            if (!id) {
+                res.status(400).send({error: 'Event Id was missing.'});
+                return;
+            }
+
+            dataService.deleteEvent(id)
+                .subscribe((responseWrapper: ResponseWrapper<void>) => {
+                        if (responseWrapper.isSuccessful()) {
+                            res.status(200).json(responseWrapper.response);
+                        } else {
+                            res.status(404).json({error: 'Error deleting the event'});
+                        }
+                    },
+                    (err) => {
+                        console.error('Error deleting event in dataservice', JSON.stringify(err));
+                        res.status(500).send({error: 'Unknown error deleting event'});
                     });
         });
 

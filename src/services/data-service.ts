@@ -9,7 +9,10 @@ import {User} from "../models/user";
 
 import {Observable, Subscriber, AsyncSubject} from "rxjs";
 import {ResponseWrapper} from "../core/response-wrapper";
-import {Db, MongoClient, Collection, MongoError, UpdateWriteOpResult, ObjectID} from "mongodb";
+import {
+    Db, MongoClient, Collection, MongoError, UpdateWriteOpResult, ObjectID,
+    DeleteWriteOpResultObject
+} from "mongodb";
 
 class Collections {
     constructor(public events: Collection, public users: Collection) {
@@ -114,6 +117,7 @@ export class DataService {
         this.collections.events.find(filters).sort({date: -1})
             .toArray()
             .then((events: Event[]) => {
+            console.log('sorted events:', JSON.stringify(events));
                 subject.next(ResponseWrapper.success(events));
                 subject.complete();
             }, (err: MongoError) => {
@@ -130,6 +134,9 @@ export class DataService {
         if (!event) {
             return Observable.of(ResponseWrapper.error<Event>(new Error('Event cannot be empty', event)));
         }
+
+        // Convert date string to Date object
+        event.date = new Date(event.date);
 
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
         this.collections.events.insertOne(event, (err: MongoError, newEvent: Event) => {
@@ -151,6 +158,9 @@ export class DataService {
         // TODO: find a better mechanism, this is hacky
         event._id = new ObjectID(event._id.toString());
 
+        // Convert date string to Date object
+        event.date = new Date(event.date);
+
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
         this.collections.events.updateOne({_id: event._id}, event, (err: MongoError, res: UpdateWriteOpResult) => {
             console.log(JSON.stringify(res));
@@ -168,6 +178,36 @@ export class DataService {
             }
 
             subject.next(ResponseWrapper.success(event));
+            subject.complete();
+        });
+        return subject;
+    }
+
+    deleteEvent(id: string): Observable<ResponseWrapper<void>> {
+        if (!id) {
+            return Observable.of(ResponseWrapper.error<void>(new Error('Missing event id')));
+        }
+
+        // TODO: find a better mechanism, this is hacky
+        const eventId = new ObjectID(id);
+
+        const subject = new AsyncSubject<ResponseWrapper<void>>();
+        this.collections.events.deleteOne({_id: eventId}, (err: MongoError, res: DeleteWriteOpResultObject) => {
+            console.log(JSON.stringify(res));
+            if (res && (res.result.ok == 0 || res.result.n == 0)) {
+                console.log('Could not update event', res);
+                subject.next(ResponseWrapper.error<void>(new Error('Could not update event for id' + id)));
+                subject.complete();
+                return;
+            }
+            if (err) {
+                console.log('Error updating event', err);
+                subject.next(ResponseWrapper.error<void>(new Error('Could not update event for id' + id)));
+                subject.complete();
+                return;
+            }
+
+            subject.next(ResponseWrapper.successNoResult());
             subject.complete();
         });
         return subject;

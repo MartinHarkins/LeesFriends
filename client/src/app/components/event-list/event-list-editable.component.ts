@@ -139,7 +139,10 @@ export class EventListEditableComponent implements OnInit, HasChanges {
             eventWrapper.message = 'Deleting event ...';
             this.service.deleteEvent(eventWrapper.event)
               .subscribe(
-                () => _.remove(this.eventWrappers, eventWrapper),
+                () => {
+                  _.remove(this.allEvents, eventWrapper.event);
+                  _.remove(this.eventWrappers, eventWrapper);
+                },
                 (err) => {
                   console.debug("Could not remove event", err);
                   eventWrapper.message = 'Sorry, could not delete the event. Please contact administrator.'
