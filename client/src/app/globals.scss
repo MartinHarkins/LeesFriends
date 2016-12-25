@@ -66,26 +66,14 @@ body {
   font-family: 'Work Sans', sans-serif;
 }
 
-h1 {
-  //font-family: 'Work Sans', sans-serif;
-  font-size: 50px;
-}
+h1 { font-size: 45px; }
 h2 {
-  //font-family: 'Work Sans', sans-serif;
-  font-size: 40px;
+  font-size: 35px;
+  font-weight: 400;
 }
-h3 {
-  //font-family: 'Work Sans', sans-serif;
-  font-size: 30px;
-}
-h4 {
-  //font-family: 'Work Sans', sans-serif;
-  font-size: 25px;
-}
-h5 {
-  //font-family: 'Work Sans', sans-serif;
-  font-size: 20px;
-}
+h3 { font-size: 30px; }
+h4 { font-size: 25px; }
+h5 { font-size: 20px; }
 
 .cursive {
   font-family: $font-family-cursive;

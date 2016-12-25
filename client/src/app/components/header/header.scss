@@ -25,34 +25,30 @@
       padding-bottom: 2px;
     }
   }
-  h1 {
+  .title {
     font-family: $font-family-cursive;
     font-size: 60px;
   }
   h2 {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 35px;
     font-weight: 400;
     padding-bottom: 4px;
   }
   .subtitle {
-    font-size: 35px;
     font-family: $font-family-cursive;
   }
-  h5 {
-    padding-bottom: 3px;
-  }
 
-  ul {
-    list-style: none;
-    display: inline-block;
+  .menu {
     margin: 0;
     padding: 0;
     /* For IE, the outcast */
     zoom: 1;
     *display: inline;
   }
-  li {
+  .menu-group {
+    display: inline-block;
+  }
+  .menu-item {
+    display: inline-block;
     float: left;
     padding: 10px;
     margin-left: 20px;
@@ -62,5 +58,126 @@
   .more {
     display: inline-block;
     padding-right: 15px;
+
+    h5 {
+      padding-bottom: 3px;
+      font-size: 30px;
+    }
   }
+
+  @media only screen and (max-width: 1781px) {
+
+    .menu-item {
+      padding: 10px;
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+
+  }
+  @media only screen and (max-width: 1701px) {
+    h1 {
+      font-size: 40px;
+    }
+    h2 {
+      font-size: 30px;
+    }
+    h3 {
+      font-size: 25px;
+    }
+    h4 {
+      font-size: 20px;
+    }
+    h5 {
+      font-size: 15px;
+    }
+
+    .title {
+      font-size: 50px;
+    }
+    .subtitle {
+      font-size: 35px;
+    }
+
+    .more h5 {
+      font-size: 25px;
+    }
+
+    .menu-item {
+      padding: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 1487px) {
+    h1 {
+      font-size: 35px;
+    }
+    h2 {
+      font-size: 25px;
+    }
+    h3 {
+      font-size: 20px;
+    }
+    h4 {
+      font-size: 15px;
+    }
+    h5 {
+      font-size: 15px;
+    }
+
+    padding-top: 20px;
+
+    > .row {
+      margin-top: -5px;
+      margin-bottom: -5px;
+      margin-left: -5px;
+      margin-right: -5px;
+    }
+
+    .title {
+      font-size: 45px;
+    }
+    .subtitle {
+      font-size: 30px;
+    }
+
+    .more h5 {
+      font-size: 20px;
+    }
+
+    .menu-item {
+      padding: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  @media only screen and (max-width: 1292px) {
+    .menu-item {
+      padding: 10px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  @media only screen and (max-width: 1152px) {
+    h2 {
+      display: inline-block;
+    }
+
+    .menu-group {
+      float: left;
+      width: 33%;
+    }
+    .menu-item {
+      float: left;
+      display: block;
+      width: 100%;
+      margin-top: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
 }
