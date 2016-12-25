@@ -109,7 +109,7 @@
     }
   }
 
-  @media only screen and (max-width: 1487px) {
+  @media only screen and (max-width: 1488px) {
     h1 {
       font-size: 35px;
     }
@@ -177,6 +177,13 @@
       margin-top: 0;
       padding-top: 0;
       padding-bottom: 0;
+    }
+
+    .menu-group-left a{
+      float: left;
+    }
+    .menu-group-right a {
+      float: right;
     }
   }
 

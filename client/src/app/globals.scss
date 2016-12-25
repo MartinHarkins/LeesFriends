@@ -78,3 +78,41 @@ h5 { font-size: 20px; }
 .cursive {
   font-family: $font-family-cursive;
 }
+
+
+@media only screen and (max-width: 1701px) {
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  h3 {
+    font-size: 25px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  h5 {
+    font-size: 15px;
+  }
+}
+
+
+@media only screen and (max-width: 1488px) {
+  h1 {
+    font-size: 35px;
+  }
+  h2 {
+    font-size: 25px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  h4 {
+    font-size: 15px;
+  }
+  h5 {
+    font-size: 15px;
+  }
+}

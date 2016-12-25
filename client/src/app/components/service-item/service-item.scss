@@ -2,13 +2,25 @@
 
 .service-item {
   .image-container {
-    height:245px;
+    height: 245px;
     max-width: 100%;
     //border: 1px solid $color-font;
   }
 
   img {
-    max-width:100%;
-    max-height:100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  @media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .image-container {
+      height: 200px;
+    }
+  }
+
+  @media only screen and (min-width: 778px) and (max-width: 991px) {
+    .image-container {
+      height: 145px;
+    }
   }
 }

@@ -13,3 +13,39 @@
   padding-left: 150px;
   padding-right: 150px;
 }
+
+@media only screen and (max-width: 1701px) {
+  .container-fluid {
+    padding-left: 125px;
+    padding-right: 125px;
+  }
+}
+
+@media only screen and (max-width: 1488px) {
+  .container-fluid {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .col-lg-1 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1105px) {
+  /deep/ our-mission .container {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .event-wrapper {
+    margin-top: 2em;
+  }
+}
+@media only screen and (max-width: 610px) {
+  .container-fluid {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

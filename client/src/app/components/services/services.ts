@@ -3,7 +3,6 @@ import {Service} from "../../models/service";
 
 @Component({
   selector: 'services',
-  styleUrls: [ '../../gunny-styles.scss' ],
   templateUrl: './services.html'
 })
 export class ServicesComponent implements OnInit {
