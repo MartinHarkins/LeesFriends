@@ -45,3 +45,8 @@ Can be found in `{project_root}`
 - `npm run grunt:dev watch`
 2. Start server
 - `npm run dev` (watched dev mode @ http://localhost:8080)
+
+## Google API keys
+To load the Contact Us map, you'll need to add your public IP address to the whitelist in the Google Cloud Console.  
+Please contact an admin of the Cloud Console to do so.
+Another solution is to generate your own key to use during development.
