@@ -25,7 +25,16 @@
       padding-bottom: 2px;
     }
   }
+
+  .title-image{
+      height: 50px;
+      float: left;
+      margin-top: 5px;
+      margin-right: 1em;
+  }
+
   .title {
+    float: left;
     font-family: $font-family-cursive;
     font-size: 60px;
   }

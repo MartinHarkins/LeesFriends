@@ -11,7 +11,8 @@ import {Component} from "@angular/core";
             <div class="menu-item margin-top-md"><a [routerLink]=" './history' " routerLinkActive="active-link"><h2>History</h2></a></div>
           </div>
           <div class="menu-group menu-group-center" >
-              <a [routerLink]=" './home' " routerLinkActive="active-link">
+            <a [routerLink]=" './home' " routerLinkActive="active-link">
+              <img class="title-image" src="../../../assets/images/lees-friends-icon.png" alt=""/>
               <h1 class="title">
                 Lee's Friends
               </h1>
