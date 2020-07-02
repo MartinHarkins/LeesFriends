@@ -1,4 +1,5 @@
 # LeesFriends
+> now purely an Angular + Typescript + MongoDB testbed.
 
 ##Environment setup
 1. `node -v`-> v6.3.1
