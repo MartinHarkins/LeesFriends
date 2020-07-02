@@ -7,6 +7,7 @@ import {DataService} from "../services/data-service";
 import {Event} from "../models/event";
 import {ResponseWrapper} from "../core/response-wrapper";
 import {JwtService} from "../core/jwt.service";
+import {InsertOneWriteOpResult} from "mongodb";
 
 export class EventsRouter {
     private constructor() {

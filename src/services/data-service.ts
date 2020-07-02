@@ -11,7 +11,7 @@ import {Observable, Subscriber, AsyncSubject} from "rxjs";
 import {ResponseWrapper} from "../core/response-wrapper";
 import {
     Db, MongoClient, Collection, MongoError, UpdateWriteOpResult, ObjectID,
-    DeleteWriteOpResultObject
+    DeleteWriteOpResultObject, InsertOneWriteOpResult
 } from "mongodb";
 
 class Collections {
@@ -132,19 +132,21 @@ export class DataService {
 
     addEvent(event: Event): Observable<ResponseWrapper<Event>> {
         if (!event) {
-            return Observable.of(ResponseWrapper.error<Event>(new Error('Event cannot be empty', event)));
+            return Observable.of(ResponseWrapper.error(new Error('Event cannot be empty', event)));
         }
 
         // Convert date string to Date object
         event.date = new Date(event.date);
 
         const subject = new AsyncSubject<ResponseWrapper<Event>>();
-        this.collections.events.insertOne(event, (err: MongoError, newEvent: Event) => {
+        this.collections.events.insertOne(event, (err: MongoError, op: InsertOneWriteOpResult) => {
             if (err) {
-                return Observable.of(ResponseWrapper.error<Event>(new Error('Could not add event', err.message)));
+                return Observable.of(ResponseWrapper.error(new Error('Could not add event', err.message)));
+            } else if (op.result.ok === 1) {
+                return Observable.of(ResponseWrapper.error(new Error('Unkown error adding event.')));
             }
 
-            subject.next(ResponseWrapper.success(newEvent));
+            subject.next(ResponseWrapper.success(op.ops[0] as Event));
             subject.complete();
         });
         return subject;
