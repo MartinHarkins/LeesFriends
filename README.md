@@ -8,10 +8,9 @@
 
 ##Setup
 1. `cd {project_root}/`
-2. `npm install`
-3. `cd ../client`
-4. `npm install`
-5. `mongod` (start mongo - no credentials needed for local environment)
+2. `(cd server && npm install)`
+3. `(cd client && npm install)`
+4. `mongod` (start mongo - no credentials needed for local environment)
 
 /!\  
 

@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "./client/dist",
+                        cwd: "../client/dist",
                         src: ["**"],
                         dest: "./dist/client"
                     }
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "./client/dist",
+                        cwd: "../client/dist",
                         src: ["**"],
                         dest: "./dist/client"
                     }
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "./client/dist",
+                        cwd: "../client/dist",
                         src: ["**"],
                         dest: "./dist/client"
                     }
