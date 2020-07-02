@@ -2,7 +2,6 @@ import {Component, EventEmitter,
   Output, Input, ChangeDetectorRef, OnInit, ElementRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {DatepickerOptions} from "ng2-datepicker";
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
 import {TinymceEditorDirective} from "../../directives/tiny.directive";
@@ -29,7 +28,6 @@ export class EventEditorComponent implements OnInit, HasChanges {
 
   // Date wrapper used by ng2-datepicker
   tinyDateModel: Date;
-  datepickerOptions: DatepickerOptions;
   isEditing = false;
 
   formErrors = {
@@ -65,9 +63,9 @@ export class EventEditorComponent implements OnInit, HasChanges {
 
   ngOnInit() {
     // Initialize date picker
-    this.datepickerOptions = {
-      displayFormat: DATE_FORMAT
-    };
+    // this.datepickerOptions = {
+    //   displayFormat: DATE_FORMAT
+    // };
 
     this.reset();
   }
@@ -98,7 +96,7 @@ export class EventEditorComponent implements OnInit, HasChanges {
     // Clone object in order to check for changes later.
     this.originalEvent = Event.clone(this.event);
 
-    this.tinyDateModel = TinymceEditorDirective.buildDateModel(DATE_FORMAT, this.event.date);
+    // this.tinyDateModel = TinymceEditorDirective.buildDateModel(DATE_FORMAT, this.event.date);
 
     this.buildForm();
   }

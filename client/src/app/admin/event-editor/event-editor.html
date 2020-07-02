@@ -7,8 +7,8 @@
 
     <div class="form-group">
       <label for="date">Date:</label>
-      <ng2-datepicker class="form-control" [options]="datepickerOptions" formControlName="date" id="date" required
-                      [(ngModel)]="tinyDateModel"></ng2-datepicker>
+<!--      <ng2-datepicker class="form-control" [options]="datepickerOptions" formControlName="date" id="date" required-->
+<!--                      [(ngModel)]="tinyDateModel"></ng2-datepicker>-->
     </div>
     <input type="submit" class="btn btn-primary" value="Save draft" [disabled]="eventEditForm.invalid"/>
     <input type="button" class="btn btn-success" value="Publish" (click)="onPublish()" [disabled]="eventEditForm.invalid"/>
