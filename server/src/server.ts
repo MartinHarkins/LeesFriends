@@ -15,7 +15,7 @@ import * as favicon from 'serve-favicon';
 import {EventsRouter} from "./routes/events.router";
 import {DataService} from "./services/data-service";
 import {HttpError} from "./common/http-error";
-import {IndexRouter} from "./routes/index";
+import {IndexRouter} from "./routes";
 import {EnvConfig} from "./core/env-config";
 import {AuthRouter} from "./routes/auth.router";
 import {PublicRouter} from "./routes/public.router";
