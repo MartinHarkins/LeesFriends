@@ -1,3 +1,4 @@
+/* tslint:disable:import-destructuring-spacing */
 // Angular 2
 // rc2 workaround
 import {enableDebugTools, disableDebugTools} from "@angular/platform-browser";

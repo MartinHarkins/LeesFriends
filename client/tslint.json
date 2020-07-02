@@ -78,7 +78,7 @@
       100
     ],
     "no-require-imports": false,
-    "no-trailing-whitespace": true,
+    "no-trailing-whitespace": false,
     "object-literal-sort-keys": false,
     "trailing-comma": [
       true,
@@ -106,7 +106,7 @@
       "check-whitespace"
     ],
     "quotemark": [
-      true,
+      false,
       "single",
       "avoid-escape"
     ],
@@ -125,6 +125,6 @@
       "check-separator",
       "check-type"
     ],
-    "import-destructuring-spacing": true
+    "import-destructuring-spacing": false
   }
 }
