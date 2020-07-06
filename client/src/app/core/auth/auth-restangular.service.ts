@@ -1,16 +1,16 @@
-import {OpaqueToken} from "@angular/core";
-import {Restangular} from "ng2-restangular";
+import {Restangular} from "ngx-restangular";
 import {AuthService} from "./auth.service";
+import {InjectionToken} from "@angular/core";
 
 /**
  * A restangular service configured to connect to authenticated apis.
  */
-export const AuthRestangular = new OpaqueToken('AuthRestangular');
+export const authRestangular = new InjectionToken('AuthRestangular');
 
 export function AuthRestangularFactory(restangular: Restangular, authService: AuthService) {
-  return restangular.withConfig((RestangularConfigurer) => {
+  return restangular.withConfig((restangularConfigurer) => {
     console.log('setting up AuthRestangular');
-    RestangularConfigurer.setDefaultHeaders({
+    restangularConfigurer.setDefaultHeaders({
       'x-access-token': authService.getToken()
     });
     console.log('did set up AuthRestangular');

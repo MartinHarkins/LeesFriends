@@ -1,15 +1,30 @@
-import {Injectable, Inject, OpaqueToken} from "@angular/core";
+import {Injectable, Inject} from "@angular/core";
 import {Observable} from "rxjs";
 import {Event} from "../models/event";
 import * as _ from "lodash";
-import {AuthRestangular} from "../core/auth/auth-restangular.service";
+import {authRestangular} from "../core/auth/auth-restangular.service";
+import {map, switchMap, tap} from "rxjs/operators";
+import {Restangular} from "ngx-restangular";
+
+type Put<T> = () => Observable<T>;
+
+interface MyType<T> {
+  _id?: number;
+  put: Put<T>;
+  post: (e: {event: T}) => Observable<MyType<T>>;
+}
+
+type RType<T> = MyType<T> | T;
+
+interface REvent extends Event, Restangular {}
+interface REventList extends Array<Event>, Restangular {}
 
 /**
  * Service used to interact with the `/events` api
  */
 @Injectable()
 export class EventsService {
-  constructor(@Inject(AuthRestangular) public restangular) {
+  constructor(@Inject(authRestangular) public restangular) {
   }
 
   /**
@@ -17,7 +32,7 @@ export class EventsService {
    *
    * @returns {Observable<Event[]>}
    */
-  public getEventsByDateDesc(opt?: {includeDrafts: boolean}): Observable<Event[]> {
+  public getEventsByDateDesc(opt?: { includeDrafts: boolean }): Observable<Event[]> {
     const query = {
       includeDrafts: opt ? opt.includeDrafts : false
     };
@@ -36,16 +51,9 @@ export class EventsService {
   public addEvent(newEvent: Event): Observable<Event> {
     // TODO: handle error
     return this.getAllRestangularizedEvents()
-      .switchMap(events => events.post({event: newEvent}));
-  }
-
-  /**
-   * Get's all the events including drafts.
-   *
-   * @returns {any}
-   */
-  private getAllRestangularizedEvents() {
-    return this.restangular.all('events').getList({includeDrafts: true});
+      .pipe(
+        switchMap((events: REventList) => events.post({event: newEvent})  as Observable<Event>)
+      );
   }
 
   /**
@@ -57,17 +65,18 @@ export class EventsService {
   public updateEvent(updatedEvent: Event): Observable<Event> {
     // TODO: handle error
     return this.getAllRestangularizedEvents()
-      .switchMap(events => {
-        for (let i = 0; i < events.length; i++) {
-          const event = events[i];
-          if (event._id == updatedEvent._id) {
-            _.assignIn(event, updatedEvent);
-            return event.put();
+      .pipe(
+        switchMap((events: Event[]) => {
+          for (let i = 0; i < events.length; i++) {
+            const event = events[i];
+            if (event._id === updatedEvent._id) {
+              _.assignIn(event, updatedEvent);
+              return (event as REvent).put() as Observable<Event>;
+            }
           }
-        }
 
-        return Observable.throw(new Error('Could not find matching event'));
-      });
+          throw new Error('Could not find matching event');
+        }));
   }
 
   /**
@@ -83,7 +92,17 @@ export class EventsService {
     event.published = false;
 
     return this.updateEvent(event)
-      .do(event => this.restangular.all('events').customDELETE(event._id))
-      .map(event => true);
+      .pipe(
+        tap(unpublishedEvent => this.restangular.all('events').customDELETE(unpublishedEvent._id)),
+        map(unpublishedEvent => true));
+  }
+
+  /**
+   * Get's all the events including drafts.
+   *
+   * @returns {any}
+   */
+  private getAllRestangularizedEvents(): Observable<REventList> {
+    return this.restangular.all('events').getList({includeDrafts: true});
   }
 }

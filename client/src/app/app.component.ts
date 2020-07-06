@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, ViewEncapsulation} from "@angular/core";
+import {Component, OnInit, ViewEncapsulation} from "@angular/core";
 import {AppState} from "./app.service";
 
 /*
@@ -17,21 +17,20 @@ import {AppState} from "./app.service";
   template: `
     <div class="content">
       <header></header>
-  
+
       <main>
         <router-outlet></router-outlet>
       </main>
-      
+
       <div class="push"></div>
     </div>
-    
+
     <footer></footer>
-`
+  `
 })
-export class AppComponent {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
-  name = 'Angular 2 Webpack Starter';
-  url = 'https://twitter.com/AngularClass';
+export class AppComponent implements OnInit {
+  title = `Lee's Friends`;
+  url = 'https://github.com/MartinHarkins/LeesFriends';
 
   constructor(public appState: AppState) {
 

@@ -16,12 +16,12 @@
   </div>
 
   <div class="row">
-    <sebm-google-map [latitude]="coords.lat" [longitude]="coords.lng" [zoom]="14">
-        <sebm-google-map-info-window [latitude]="coords.lat" [longitude]="coords.lng" [disableAutoPan]="true" [isOpen]="true">
+    <agm-map [latitude]="coords.lat" [longitude]="coords.lng" [zoom]="14">
+        <agm-info-window [latitude]="coords.lat" [longitude]="coords.lng" [disableAutoPan]="true" [isOpen]="true">
           <div style="overflow: auto;">Lee's Friends
             7400 Hampton Boulevard, Room 201
             Norfolk, VA 23503</div>
-        </sebm-google-map-info-window>
-    </sebm-google-map>
+        </agm-info-window>
+    </agm-map>
   </div>
 </div>

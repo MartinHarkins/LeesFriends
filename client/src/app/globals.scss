@@ -1,16 +1,16 @@
 @font-face {
   font-family: Gunny;
   src:
-    url('../assets/fonts/gnyrwn971-webfont.woff2') format('woff2'),
-    url('../assets/fonts/gnyrwn971-webfont.woff') format('woff'),
-    url('../assets/fonts/gnyrwn971.ttf');
+    url('../../../client/src/assets/fonts/gnyrwn971-webfont.woff2') format('woff2'),
+    url('../../../client/src/assets/fonts/gnyrwn971-webfont.woff') format('woff'),
+    url('../../../client/src/assets/fonts/gnyrwn971.ttf');
 }
 
 @font-face {
   font-family: 'FontAwesome';
   font-weight: normal;
   font-style: normal;
-  src: url(../assets/fonts/fontawesome-webfont.woff)
+  src: url(../../../client/src/assets/fonts/fontawesome-webfont.woff)
 }
 
 

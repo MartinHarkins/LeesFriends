@@ -2,8 +2,8 @@ import {NgModule} from "@angular/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {TinymceEditorDirective} from "../../directives/tiny.directive";
-import {ModalModule} from "angular2-modal";
-import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
+import {ModalModule} from "ngx-modialog";
+import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
 
 import {EventListEditableComponent} from "../event-list/event-list-editable.component";
 import {EventEditorComponent} from "../../admin/event-editor/event-editor.component";
