@@ -1,10 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
-import "rxjs/add/observable/of";
-import "rxjs/add/operator/do";
-import "rxjs/add/operator/delay";
 import {CookieService} from "angular2-cookie/core";
-import {Restangular} from "ng2-restangular";
+import {Restangular} from "ngx-restangular";
+import {Observable, of} from 'rxjs';
 
 export class Enum<T> {
   public constructor(public readonly value: T) {}
@@ -45,11 +42,11 @@ export class AuthService {
       .map(response => {
         this.cookieService.put(AuthCookieKeys.TOKEN.toString(), response.token);
         this.isLoggedIn = true;
-        return Observable.of(true);
+        return of(true);
       })
       .catch(err => {
         console.error('Error logging in', err);
-        return Observable.of(false);
+        return of(false);
       });
   }
 

@@ -7,10 +7,10 @@ import {UsersService} from "../services/users.service";
 import {EventsModule} from "../components/events/events.module";
 import {AdminEventsComponent} from "./events/events.component";
 import {AdminWelcomeComponent} from "./admin.welcome";
-import {Restangular} from "ng2-restangular";
+import {Restangular} from "ngx-restangular";
 import {AuthModule} from "../core/auth/auth.module";
 import {AuthService} from "../core/auth/auth.service";
-import {AuthRestangularFactory, AuthRestangular} from "../core/auth/auth-restangular.service";
+import {AuthRestangularFactory, authRestangular} from "../core/auth/auth-restangular.service";
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import {AuthRestangularFactory, AuthRestangular} from "../core/auth/auth-restang
   providers: [
     UsersService,
     {
-      provide: AuthRestangular,
+      provide: authRestangular,
       useFactory: AuthRestangularFactory,
       deps: [Restangular, AuthService]
     }

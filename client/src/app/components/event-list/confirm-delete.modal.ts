@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {DialogRef, ModalComponent} from "angular2-modal";
+import {DialogRef, ModalComponent} from "ngx-modialog";
 
 export class ConfirmDeleteEventModalComponentData {
   public event: Event;

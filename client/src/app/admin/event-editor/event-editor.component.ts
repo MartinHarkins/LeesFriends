@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Output, Input, ChangeDetectorRef, OnInit, ElementRef} from "@angular/core";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {DatePickerOptions, DateModel} from "ng2-datepicker";
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
-import {TinymceEditorDirective} from "../../directives/tiny.directive";
 import * as _ from "lodash";
 import {HasChanges} from "../../core/has-changes.interface";
 import {RxUtils} from "../../core/utils/RxUtils";
+
+const DATE_FORMAT = 'MM/DD/YYYY';
 
 @Component({
   selector: 'event-editor',
@@ -21,20 +21,37 @@ export class EventEditorComponent implements OnInit, HasChanges {
 
   @Input() event?: Event;
 
-  private originalEvent: Event;
 
   eventEditForm: FormGroup;
 
   // Date wrapper used by ng2-datepicker
-  tinyDateModel: DateModel;
-  datepickerOptions: DatePickerOptions;
-
-  private message: string;
-
+  tinyDateModel: Date;
   isEditing = false;
 
+  formErrors = {
+    'title': '',
+    'date': '',
+    'content': ''
+  };
+
+  validationMessages = {
+    'title': {
+      'required': 'Set a title for the event.'
+    },
+    'date': {
+      'required': 'Set a date for the event.'
+    },
+    'content': {
+      'required': 'Set a content for the event.'
+    }
+  };
+
+  // Needed to stop callbacks coming upon destroy.
+  private valueChangeSubscription: Subscription;
+  private originalEvent: Event;
+  message: string;
+
   // TODO: extract
-  DATE_FORMAT = 'MM/DD/YYYY';
 
   constructor(private fb: FormBuilder,
               private changeDetectorRef: ChangeDetectorRef,
@@ -44,9 +61,9 @@ export class EventEditorComponent implements OnInit, HasChanges {
 
   ngOnInit() {
     // Initialize date picker
-    this.datepickerOptions = new DatePickerOptions({
-      format: this.DATE_FORMAT
-    });
+    // this.datepickerOptions = {
+    //   displayFormat: DATE_FORMAT
+    // };
 
     this.reset();
   }
@@ -77,13 +94,10 @@ export class EventEditorComponent implements OnInit, HasChanges {
     // Clone object in order to check for changes later.
     this.originalEvent = Event.clone(this.event);
 
-    this.tinyDateModel = TinymceEditorDirective.buildDateModel(this.DATE_FORMAT, this.event.date);
+    // this.tinyDateModel = TinymceEditorDirective.buildDateModel(DATE_FORMAT, this.event.date);
 
     this.buildForm();
   }
-
-  // Needed to stop callbacks coming upon destroy.
-  valueChangeSubscription: Subscription;
 
   buildForm(): void {
     this.eventEditForm = this.fb.group({
@@ -92,7 +106,8 @@ export class EventEditorComponent implements OnInit, HasChanges {
       'content': [this.event.content, [Validators.required]]
     });
 
-    this.valueChangeSubscription = this.eventEditForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.valueChangeSubscription =
+      this.eventEditForm.valueChanges.subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged();
   }
@@ -124,31 +139,13 @@ export class EventEditorComponent implements OnInit, HasChanges {
     this.changeDetectorRef.detectChanges();
   }
 
-  formErrors = {
-    'title': '',
-    'date': '',
-    'content': ''
-  };
-
-  validationMessages = {
-    'title': {
-      'required': 'Set a title for the event.'
-    },
-    'date': {
-      'required': 'Set a date for the event.'
-    },
-    'content': {
-      'required': 'Set a content for the event.'
-    }
-  };
-
   /**
    * Called when the form is submitted
    */
   onSaveDraft(): void {
     // Update event model
     _.assignIn(this.event, {
-      date: this.tinyDateModel.momentObj.toDate(),
+      date: this.tinyDateModel,
       published: false
     });
 
@@ -162,7 +159,7 @@ export class EventEditorComponent implements OnInit, HasChanges {
   onPublish(): void {
     // Update event model
     _.assignIn(this.event, {
-      date: this.tinyDateModel.momentObj.toDate(),
+      date: this.tinyDateModel,
       published: true
     });
 
@@ -178,10 +175,18 @@ export class EventEditorComponent implements OnInit, HasChanges {
    */
   onCancel(): void {
     // Needed to prevent onValueChanged() to be called anymore.
-    // `this.changeDetectorRef.detectChanges();` crashes the dom if tinymce is destroyed when it's called.
+    // `this.changeDetectorRef.detectChanges();`
+    // crashes the dom if tinymce is destroyed when it's called.
     this.valueChangeSubscription.unsubscribe();
 
     this.onEditCancel.emit();
+  }
+
+  hasChanges(): boolean {
+    return !(_.isEqual(this.originalEvent.title, this.event.title)
+      && _.isEqual(this.originalEvent.date, this.event.date)
+      && _.isEqual(this.originalEvent.content, this.event.title));
+
   }
 
   /**
@@ -228,12 +233,5 @@ export class EventEditorComponent implements OnInit, HasChanges {
           console.error('Error updating event', err);
           this.message = 'Sorry, we could not update the event.';
         });
-  }
-
-  hasChanges(): boolean {
-    return !(_.isEqual(this.originalEvent.title, this.event.title)
-    && _.isEqual(this.originalEvent.date, this.event.date)
-    && _.isEqual(this.originalEvent.content, this.event.title));
-
   }
 }

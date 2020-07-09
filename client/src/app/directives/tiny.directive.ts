@@ -1,11 +1,10 @@
 import {AfterViewInit, Directive, forwardRef, Input} from "@angular/core";
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
-import {DateModel} from "ng2-datepicker";
 import * as moment from "moment";
 
 declare const tinymce: any;
 
-//This is needed to update the tinymce editor when the model gets changed
+// This is needed to update the tinymce editor when the model gets changed
 const CUSTOM_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => TinymceEditorDirective),
@@ -18,12 +17,13 @@ const CUSTOM_VALUE_ACCESSOR = {
   providers: [CUSTOM_VALUE_ACCESSOR]
 })
 export class TinymceEditorDirective implements AfterViewInit, ControlValueAccessor {
-  private val: any = "";
 
-  //selector string: Id of the host element
+  // selector string: Id of the host element
   @Input() selector: string;
 
-  //All the options needed for tinymce editor
+  private val: any = "";
+
+  // All the options needed for tinymce editor
   private options = {
     plugins: [
       'link image code'
@@ -56,11 +56,11 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
     this.onTouched = fn;
   }
 
-  //This method is called whenever model gets updated
+  // This method is called whenever model gets updated
   writeValue(value: any): void {
     this.val = value;
 
-    //This check is necessary because, this method gets called before editor gets initialised. Hence undefined/null pointer exceptions gets thrown
+    // This check is necessary because, this method gets called before editor gets initialised. Hence undefined/null pointer exceptions gets thrown
     const selector = tinymce.get(this.selector);
     if (selector && value !== undefined && value !== null) {
       if (selector.getContent() !== value) {
@@ -143,12 +143,16 @@ export class TinymceEditorDirective implements AfterViewInit, ControlValueAccess
    * @returns {DateModel}
    */
   static buildDateModelFromMoment(format: string, momentDate: any): DateModel {
-    return new DateModel({
+    return {
       day: momentDate.date() + '',
       month: momentDate.month() + '',
       year: momentDate.year() + '',
       momentObj: momentDate,
       formatted: momentDate.format(format)
-    });
+    };
   }
+}
+
+interface DateModel {
+  day: string; month: string; year: string; momentObj: any; formatted: string;
 }

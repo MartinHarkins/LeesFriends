@@ -1,4 +1,4 @@
-@import '../../globals.scss';
+@import './src/app/globals';
 
 .event-list-container {
   background-color: $color-light-background;
@@ -33,7 +33,7 @@
 }
 
 @media only screen and (max-width: 1105px) {
-  /deep/ our-mission .container {
+  ::ng-deep our-mission .container {
     width: 100%;
   }
 }
