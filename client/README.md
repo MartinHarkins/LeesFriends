@@ -1,27 +1,29 @@
-# ClientCli
+# Client
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Create .env with:
+> GOOGLE_MAP_API_KEY=[how to get it](#google-api-keys)
+2. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Adjust local environment settings
+[local-env-producer.ts](./local-env-producer.ts)
+> ie. API_URL
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Google API keys
+To load the Contact Us map, you'll need to add your public IP address to the whitelist in the [Google Cloud Console](https://console.cloud.google.com/?pli=1).  
+Please contact an admin of the Cloud Console to do so.
+Another solution is to generate your own key to use during development.
 
-## Build
+## Client code
+Can be found in `client/` directory.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+`webpack` build environment.  
+`Typescript 2.0.10` for JS language.  
+`Angular 2.0` for framework.  
 
-## Running unit tests
+- `npm start` (watched dev mode @ http://localhost:3000)
+> For more commands see package.json > scripts: {...}
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
