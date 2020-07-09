@@ -1,24 +1,24 @@
+import "@angular/compiler";
 import {NgModule, ApplicationRef} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {RouterModule, PreloadAllModules} from "@angular/router";
-import {removeNgStyles, createNewHosts, createInputTransfer} from "@angularclass/hmr";
-import {RestangularModule} from "ng2-restangular";
+// import {removeNgStyles, createNewHosts, createInputTransfer} from "@angularclass/hmr";
+import {RestangularModule} from "ngx-restangular";
 // UI
-import {Ng2PageScrollModule} from "ng2-page-scroll/ng2-page-scroll";
-import {AgmCoreModule} from "angular2-google-maps/core";
+import {AgmCoreModule} from "@agm/core";
 /*
  * Platform and Environment providers/directives/pipes
  */
-import {ENV_PROVIDERS} from "./environment";
+// import {ENV_PROVIDERS} from "./environment";
 import {ROUTES} from "./app.routes";
 // App is our top level component
 import {AppComponent} from "./app.component";
 import {APP_RESOLVER_PROVIDERS} from "./app.resolver";
 import {AppState, InternalStateType} from "./app.service";
 import {HomeComponent} from "./components/home";
-import {NoContentComponent} from "./components/no-content/no-content.component";
+import {NoContentComponent} from "./components/no-content";
 import {OurMissionComponent} from "./components/our-mission/our-mission";
 import {HeaderComponent} from "./components/header/header";
 import {HistoryComponent} from "./components/history/history";
@@ -34,6 +34,7 @@ import {PublicService} from "./services/public.service";
 import {EventsComponent} from "./components/events/events.component";
 import {FadeInDirective} from "./directives/fade-in";
 import {FooterComponent} from "./components/footer/footer";
+import {environment as env} from "../environments/environment";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -76,66 +77,25 @@ type StoreType = {
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    Ng2PageScrollModule.forRoot(),
-    AgmCoreModule.forRoot({apiKey: GOOGLE_MAP_API_KEY}),
+    AgmCoreModule.forRoot({apiKey: env.GOOGLE_MAP_API_KEY}),
     RouterModule.forRoot(ROUTES, {useHash: true, preloadingStrategy: PreloadAllModules}),
-    RestangularModule.forRoot((RestangularProvider) => {
+    RestangularModule.forRoot((restangularProvider) => {
       // API_URL is declared in /config/webpack.{env}.js
-      RestangularProvider.setBaseUrl(API_URL);
-      RestangularProvider.setDefaultHeaders({
+      restangularProvider.setBaseUrl(env.API_URL);
+      restangularProvider.setDefaultHeaders({
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       });
       // Server returns _.id
-      RestangularProvider.setRestangularFields({
+      restangularProvider.setRestangularFields({
         id: '_id'
       });
     })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    ENV_PROVIDERS,
     APP_PROVIDERS,
     PublicService
   ]
 })
-export class AppModule {
-  constructor(public appRef: ApplicationRef, public appState: AppState) {
-  }
-
-  hmrOnInit(store: StoreType) {
-    if (!store || !store.state) return;
-    console.log('HMR store', JSON.stringify(store, null, 2));
-    // set state
-    this.appState._state = store.state;
-    // set input values
-    if ('restoreInputValues' in store) {
-      let restoreInputValues = store.restoreInputValues;
-      setTimeout(restoreInputValues);
-    }
-
-    this.appRef.tick();
-    delete store.state;
-    delete store.restoreInputValues;
-  }
-
-  hmrOnDestroy(store: StoreType) {
-    const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
-    // save state
-    const state = this.appState._state;
-    store.state = state;
-    // recreate root elements
-    store.disposeOldHosts = createNewHosts(cmpLocation);
-    // save input values
-    store.restoreInputValues = createInputTransfer();
-    // remove styles
-    removeNgStyles();
-  }
-
-  hmrAfterDestroy(store: StoreType) {
-    // display new elements
-    store.disposeOldHosts();
-    delete store.disposeOldHosts;
-  }
-
-}
+export class AppModule {}
 

@@ -9,7 +9,7 @@ class LatLng {
   selector: 'contact-us',
   templateUrl: 'contact-us.html',
   styles: [`
-   .sebm-google-map-container {
+   .agm-container {
      height: 300px;
      color: black;
    }

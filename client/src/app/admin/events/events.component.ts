@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from "@angular/core";
 import {Observable} from "rxjs";
-import {Modal} from "angular2-modal/plugins/bootstrap/modal";
+import {Modal} from "ngx-modialog/plugins/bootstrap";
 import {EventEditorComponent} from "../event-editor/event-editor.component";
 import {CanDeactivateGuard} from "../../core/can-deactivate-guard.service";
 import {EventListEditableComponent} from "../../components/event-list/event-list-editable.component";
@@ -8,12 +8,12 @@ import {EventListEditableComponent} from "../../components/event-list/event-list
 @Component({
   selector: 'admin-events',
   template: `
-<div class="container">
-  <div class="row">
-    <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
-  </div>
-  <event-list-editable [editable]="true"></event-list-editable>
-</div>`
+    <div class="container">
+      <div class="row">
+        <event-editor (onEventAdded)="onNewEvent($event)"></event-editor>
+      </div>
+      <event-list-editable [editable]="true"></event-list-editable>
+    </div>`
 })
 export class AdminEventsComponent implements OnInit, CanDeactivateGuard {
   @ViewChild(EventListEditableComponent)
@@ -22,7 +22,7 @@ export class AdminEventsComponent implements OnInit, CanDeactivateGuard {
   private eventEditor: EventEditorComponent;
 
   constructor(vcRef: ViewContainerRef, public modal: Modal) {
-    modal.overlay.defaultViewContainer = vcRef;
+    // modal.overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -43,13 +43,12 @@ export class AdminEventsComponent implements OnInit, CanDeactivateGuard {
       return this.modal.confirm()
         .size('sm')
         .body('Discard Changes?')
-        .open()
-        .then(dialogRef => dialogRef.result)
+        .open().result
         .catch(err => {
           // An error is thrown when the user cancels the dialog.
           // That's because the dialog returns `undefined`
-          console.debug('Error returning from dialog.', err)
-        })
+          console.debug('Error returning from dialog.', err);
+        });
     }
     return true;
   }

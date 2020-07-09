@@ -1,14 +1,15 @@
 import {Component, OnInit, Input, ViewContainerRef, QueryList, ViewChildren} from "@angular/core";
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
 import * as _ from "lodash";
 import {ConfirmDeleteEventModalComponent, EventDeleteAction} from "./confirm-delete.modal";
-import {overlayConfigFactory} from "angular2-modal";
-import {Modal, BSModalContext} from "angular2-modal/plugins/bootstrap";
+import {overlayConfigFactory} from "ngx-modialog";
+import {Modal, BSModalContext} from "ngx-modialog/plugins/bootstrap";
 import {HasChanges} from "../../core/has-changes.interface";
 import {EventEditorComponent} from "../../admin/event-editor/event-editor.component";
 import {RxUtils} from "../../core/utils/RxUtils";
+import {map, switchMap, take, toArray} from "rxjs/operators";
 
 /**
  * A wrapper for the {@link Event} components.
@@ -20,27 +21,34 @@ class EventWrapper {
               public editing?: boolean) {
   }
 }
+
 @Component({
   selector: 'event-list-editable',
   styleUrls: ['event-list.scss'],
   template: `
-  <div class="row" *ngFor="let eventWrapper of eventWrappers">
-    <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
+    <div class="row" *ngFor="let eventWrapper of eventWrappers">
+      <div *ngIf="editable && !eventWrapper.editing" class="pull-right">
         <div class="message">{{eventWrapper.message}}</div>
         <button class="btn btn-primary" type="button" (click)="edit(eventWrapper)">Edit</button>
-        <button *ngIf="eventWrapper.event.published" class="btn btn-warning" type="button" (click)="unpublish(eventWrapper)">Unpublish</button>
-        <button *ngIf="!eventWrapper.event.published" class="btn btn-success" type="button" (click)="publish(eventWrapper)">Publish</button>
+        <button *ngIf="eventWrapper.event.published" class="btn btn-warning"
+                type="button" (click)="unpublish(eventWrapper)">Unpublish
+        </button>
+        <button *ngIf="!eventWrapper.event.published" class="btn btn-success"
+                type="button" (click)="publish(eventWrapper)">Publish
+        </button>
         <button class="btn btn-danger" type="button" (click)="deleteEvent(eventWrapper)">Delete</button>
+      </div>
+
+      <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
+
+      <event-editor *ngIf="editable && eventWrapper.editing"
+                    [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)"
+                    (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
+      <hr/>
     </div>
-    
-    <event-item *ngIf="!eventWrapper.editing" [event]="eventWrapper.event"></event-item>
-    
-    <event-editor *ngIf="editable && eventWrapper.editing" [event]="eventWrapper.event" (onEventUpdated)="onEventUpdated(eventWrapper)" (onEditCancel)="onEditEventCancelled(eventWrapper)"></event-editor>
-    <hr/>
-  </div>
-  <div *ngIf="hasMore" class="more">
-    <a (click)="loadMore()"><strong>More...</strong></a> 
-  </div>`
+    <div *ngIf="hasMore" class="more">
+      <a (click)="loadMore()"><strong>More...</strong></a>
+    </div>`
 })
 export class EventListEditableComponent implements OnInit, HasChanges {
   @Input() editable?: boolean;
@@ -55,7 +63,7 @@ export class EventListEditableComponent implements OnInit, HasChanges {
   private allEvents: Event[];
 
   constructor(private service: EventsService, vcRef: ViewContainerRef, public modal: Modal) {
-    modal.overlay.defaultViewContainer = vcRef;
+    // modal.overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -70,29 +78,30 @@ export class EventListEditableComponent implements OnInit, HasChanges {
     // Get dates in the order of decreasing dates.
     // Angular 2 doc recommends doing sorting away from template.
     this.service.getEventsByDateDesc(this.editable ? {includeDrafts: true} : undefined)
-      .switchMap((eventList: Event[]) => {
+      .pipe(switchMap((eventList: Event[]) => {
         this.allEvents = eventList;
 
         return this.wrapEvents(eventList);
-      })
+      }))
       .subscribe((wrappedEvents: EventWrapper[]) => {
         this.eventWrappers = wrappedEvents;
       }, (error) => {
-        console.log('Error getting list of events', error)
+        console.log('Error getting list of events', error);
       });
   }
 
   private wrapEvents(events: Event[]): Observable<EventWrapper[]> {
     // break up event list and wrap each item. then build list up again
-    let obs = Observable.from<Event>(events);
+    let obs = from<Event[]>(events);
     // Only take [count] elements
     if (this.count) {
       this.hasMore = events.length > this.count;
-      obs = obs.take(this.count);
+      obs = obs.pipe(take(this.count));
     }
     return obs
-      .map(event => new EventWrapper(event, false))
-      .toArray();
+      .pipe(
+        map(event => new EventWrapper(event, false)),
+        toArray());
   }
 
   private loadMore(): void {
@@ -106,10 +115,10 @@ export class EventListEditableComponent implements OnInit, HasChanges {
 
     const eventsToLoad = this.allEvents.slice(visibleCount, visibleCount + this.count);
     this.wrapEvents(eventsToLoad)
-      .switchMap((wrappedEvents: EventWrapper[]) => Observable.from(wrappedEvents))
+      .pipe(switchMap((wrappedEvents: EventWrapper[]) => from(wrappedEvents)))
       .subscribe((wrappedEvent: EventWrapper) => {
         this.eventWrappers.push(wrappedEvent);
-      })
+      });
   }
 
   /**
@@ -123,6 +132,7 @@ export class EventListEditableComponent implements OnInit, HasChanges {
 
   private deleteEvent(eventWrapper) {
     this.modal.open(ConfirmDeleteEventModalComponent, overlayConfigFactory({event: eventWrapper.event}, BSModalContext))
+      .result
       .then((dialogRef) => {
         console.log('test');
         if (dialogRef.result) {
@@ -145,7 +155,7 @@ export class EventListEditableComponent implements OnInit, HasChanges {
                 },
                 (err) => {
                   console.debug("Could not remove event", err);
-                  eventWrapper.message = 'Sorry, could not delete the event. Please contact administrator.'
+                  eventWrapper.message = 'Sorry, could not delete the event. Please contact administrator.';
                 });
 
             break;
@@ -166,8 +176,8 @@ export class EventListEditableComponent implements OnInit, HasChanges {
     eventWrapper.message = 'Unpublishing event ...';
 
     RxUtils.ensureMinDuration(this.service.updateEvent(event), 1000)
-      .subscribe((event: Event) => {
-          eventWrapper.event = event;
+      .subscribe((unpublishedEvent: Event) => {
+          eventWrapper.event = unpublishedEvent;
           eventWrapper.message = '';
         },
         err => {
@@ -183,8 +193,8 @@ export class EventListEditableComponent implements OnInit, HasChanges {
     eventWrapper.message = 'Publishing event ...';
 
     RxUtils.ensureMinDuration(this.service.updateEvent(event), 1000)
-      .subscribe((event: Event) => {
-          eventWrapper.event = event;
+      .subscribe((publishedEvent: Event) => {
+          eventWrapper.event = publishedEvent;
           eventWrapper.message = '';
         },
         err => {

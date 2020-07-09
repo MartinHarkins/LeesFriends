@@ -1,10 +1,8 @@
-import {Component, EventEmitter,
-  Output, Input, ChangeDetectorRef, OnInit, ElementRef} from "@angular/core";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {Event} from "../../models/event";
 import {EventsService} from "../../services/events.service";
-import {TinymceEditorDirective} from "../../directives/tiny.directive";
 import * as _ from "lodash";
 import {HasChanges} from "../../core/has-changes.interface";
 import {RxUtils} from "../../core/utils/RxUtils";
@@ -51,7 +49,7 @@ export class EventEditorComponent implements OnInit, HasChanges {
   // Needed to stop callbacks coming upon destroy.
   private valueChangeSubscription: Subscription;
   private originalEvent: Event;
-  private message: string;
+  message: string;
 
   // TODO: extract
 
